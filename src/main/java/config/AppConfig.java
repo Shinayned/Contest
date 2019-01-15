@@ -77,7 +77,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/WEB-INF/static/**")
+                .addResourceHandler("/static/**")
                 .addResourceLocations("/WEB-INF/static/");
     }
 }
