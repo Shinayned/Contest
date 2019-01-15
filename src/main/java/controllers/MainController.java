@@ -9,4 +9,19 @@ public class MainController {
     public String onIndex() {
         return "index";
     }
+
+    @RequestMapping("/avtorization")
+    public String onAvtorization() {
+        return "avtorization";
+    }
+
+    @RequestMapping("/main")
+    public String onMain() {
+        return "main";
+    }
+
+    @RequestMapping("/registration")
+    public String onRegistration() {
+        return "registration";
+    }
 }
