@@ -138,12 +138,20 @@
 .social i:hover
 {
 	background-color: #11a3fc;
-	color: #000;
-	border-radius: 10px;
+	color: #fff;
+	border-radius: 15px;
 	cursor: pointer;
+	padding: 12px;
 }
 p
 {
 	color: red;
 	font-size: 12px;
+}
+.btn:hover
+{
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-bottom: 12px;
+	padding-top: 12px;
 }
