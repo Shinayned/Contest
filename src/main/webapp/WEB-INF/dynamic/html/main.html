@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="static/css/style1.css">
+    <link rel="stylesheet" href="../../static/css/style1.css">
 
     <title>YSA Kvest</title>
   </head>
   <body>
    
-    <div id="wrapper" style="background-image: url(img/bg.jpg); height: 1000px;">
+    <div id="wrapper" style="background-image: url(static/img/bg.jpg); height: 1000px;">
     <div class="overlay"></div>
  
      <!-- Sidebar -->
@@ -23,14 +23,15 @@
       <ul class="nav sidebar-nav">
         <div class="sidebar-brand">
             <a href="#">
-             <img src="static/img/avatar.png" alt="avatar" width="50" height="50" style="margin: 15px;">
+             <img src="../../static/img/avatar.png" alt="avatar" width="50" height="50" style="margin: 15px;">
              <span class="head-menu">Admin Text</span>
             </a>
             <div class="info">email@email.com</div>
         </div>
         <li>
-          <a href="#">Головна</a>
+          <a href="home.html">Головна</a>
         </li>
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Конкурси<span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -45,18 +46,17 @@
       </ul>
     </nav>
  
-    <nav class="navbar navbar-light bg-faded fi sticky-top" style="background-color: rgba(90,90,90,.7); border-radius: 0px; height: 75px;">
+    <nav class="navbar navbar-light bg-faded fi sticky-top" style="background-color: rgba(90,90,90,.7); border-radius: 0px; height: 52px;">
       <div class="row">
-        <a href="http://ysa.nau.edu.ua" class="navbar-brand " style="float: right; margin-right: 10px;">
-          <img src="static/img/site-top.png" alt="logo" width="250" height="50">
+        <a href="http://ysa.nau.edu.ua" class="navbar-brand" style="float: right; margin-right: 10px;">
+          <img src="../../static/img/site-top.png" alt="logo" width="150" height="30">
         </a>
       </div>
-   
     </nav>
  <!-- /#sidebar-wrapper -->
 
  <!-- Page Content -->
-    <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+    <button type="button" class="hamburger is-closed" data-toggle="offcanvas"> 
       <span class="hamb-top"></span>
       <span class="hamb-middle"></span>
       <span class="hamb-bottom"></span>
@@ -70,10 +70,10 @@
           </div>
           <div class = "doubleBtn">
             <div>
-              <button type="button" class="btn btn-primary btn-lg">Увійти</button>
+              <a type="button" class="btn btn-primary btn-lg" href="avtorization.html">Увійти</a>
             </div>
             <div>
-              <button type="button" class="btn btn-primary btn-lg">Створити акаунт</button>
+              <a type="button" class="btn btn-primary btn-lg" href="reg.html">Створити акаунт</a>
             </div>
           </div>
         </div>
@@ -82,35 +82,7 @@
   </div>
  <!-- /#wrapper -->
 
-<script>
-$(document).ready(function () {
- var trigger = $('.hamburger'),
- overlay = $('.overlay'),
- isClosed = false;
-
- trigger.click(function () {
- hamburger_cross(); 
- });
-
- function hamburger_cross() {
-
- if (isClosed == true) { 
-    overlay.hide();
-    trigger.removeClass('is-open');
-    trigger.addClass('is-closed');
-    isClosed = false;
- } else { 
-    overlay.show();
-    trigger.removeClass('is-closed');
-    trigger.addClass('is-open');
-    isClosed = true;
- }
- }
- 
- $('[data-toggle="offcanvas"]').click(function () {
- $('#wrapper').toggleClass('toggled');
- }); 
-});
+<script src="../../static/js/burger-animation.js">
 </script>
  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>

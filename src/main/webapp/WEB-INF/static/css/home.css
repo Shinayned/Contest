@@ -1,0 +1,226 @@
+.nav-hor{
+	background-color: #ff8207; height: 52px;
+}
+.btn-quit
+{
+  margin-left: auto;
+}
+.btn-outline-light
+{
+  font-size: 16px;
+  border: 0px;
+}
+.btn-outline-light:hover
+{
+  background-color: #ff8207;
+  font-size: 18px;
+}
+
+
+body {
+  overflow-x: hidden;
+}
+
+/* Sidebar Styles */
+#sidebar-wrapper {
+ z-index: 1000;
+ background: #2d2d2d;
+ -webkit-transition: all 0.5s ease;
+ -moz-transition: all 0.5s ease;
+ -o-transition: all 0.5s ease;
+ transition: all 0.5s ease;
+}
+
+.sidebar-nav {
+  position: absolute;
+  top: 0px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar-nav li {
+ position: relative; 
+ line-height: 20px;
+ display: inline-block;
+ width: 100%;
+ font-size: 15px;
+}
+.sidebar-nav li:before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ z-index: -1;
+ height: 100%;
+ width: 3px;
+ -webkit-transition: width .2s ease-in;
+ -moz-transition: width .2s ease-in;
+ -ms-transition: width .2s ease-in;
+ transition: width .2s ease-in;
+
+}
+.sidebar-nav li:nth-child(2n+1):before {
+ background-color: #ff8207; 
+}
+.sidebar-nav li:nth-child(2n):before {
+ background-color: #2ebb4e;
+}
+
+
+.sidebar-nav li:hover:before,
+.sidebar-nav li.open:hover:before {
+ width: 100%;
+ -webkit-transition: width .2s ease-in;
+ -moz-transition: width .2s ease-in;
+ -ms-transition: width .2s ease-in;
+ transition: width .2s ease-in;
+
+}
+
+.sidebar-nav li a {
+ display: block;
+ color: #fff;
+ text-decoration: none;
+ font-family: Century Gothic;
+ padding: 10px 15px 10px 30px; 
+}
+.sidebar-nav li a:hover,
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus,
+.sidebar-nav li.open a:hover,
+.sidebar-nav li.open a:active,
+.sidebar-nav li.open a:focus{
+ color: #fff;
+ text-decoration: none;
+ background-color: transparent;
+}
+
+.img-fluid {
+  display: inline-block;
+  height: 565px;
+  max-width: 100%;
+}
+ .dropdown-menu {
+ position: relative;
+ width: 100%;
+ padding: 0;
+ margin: 0;
+ margin-left: -5px;
+ border-radius: 0;
+ border: none;
+ background-color: #2d2d2d;
+ box-shadow: none;
+}
+.info
+{
+	margin-left: 15px;
+	font-size: 14px;
+	font-style: italic;
+	color: #fff;
+	font-family: Century Gothic;
+}
+@font-face {
+    font-family: Century Gothic; /* Имя шрифта */
+    src: url(../fonts/Century Gothic.ttf); /* Путь к файлу со шрифтом */
+   }
+.head-menu
+{
+	font-family: Century Gothic;
+	color: #fff;
+	font-size: 20px;
+}
+a:hover
+{
+	text-decoration: none;
+}
+
+
+/*Bar*/
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 0px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 92%;
+  margin-left: -255px;
+  overflow-y: auto;
+  background: #2d2d2d;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 300px;
+  margin-top: 52px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -300px;
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 0;
+  }
+  #wrapper.toggled {
+    padding-left: 0px;
+  }
+  #sidebar-wrapper {
+  	margin-top: 52px;
+    width: 345px;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 345px;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+.btn-light
+{ 
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 30px;
+  background-color: rgba(250,250,250,0.9);
+  border: 0px;
+}
+
+.btn-active:hover
+{
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.nav-icon
+{
+  background-color: #555555; height: 40px; padding: 5px; 
+  position:absolute; /* добавили */
+  bottom:0;
+  width: 100%;
+}

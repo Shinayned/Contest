@@ -148,6 +148,11 @@ p
 	color: red;
 	font-size: 12px;
 }
+.btn 
+{
+	border-radius: 30px;
+	background-color: #11a3fc;
+}
 .btn:hover
 {
 	padding-left: 30px;
