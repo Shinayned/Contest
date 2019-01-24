@@ -1,4 +1,4 @@
-﻿
+
 
 <!doctype html>
 <html lang="en">
@@ -13,17 +13,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="http://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="../../static/css/style.css">
     <title>YSA Kvest</title>
-    <script type="text/javascript" src="static/js/telMask.js">
+    <script type="text/javascript" src="../static/js/telMask.js">
 </script>
   </head>
   <body>
 
   	<div class="container">
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				
+			<div class="col col-md-offset-3">
  				<form data-toggle="validator" role="form" class="form-horizontal">
  					<span class="heading">Реєстрація</span>
  				<div class="form-group">
@@ -74,7 +73,7 @@
  					</div>
  				</div>-->
  				<div class="form-group">
- 					<button type="submit" class="btn btn-primary">Реєстрація</button>
+ 					<button type="submit" class="btn btn-primary" href="home.html">Реєстрація</button>
  				</div>
  				</form>
 			</div></div></div>

@@ -20,36 +20,16 @@
 
  		<div class="col-md-offset-3 col-md-6">
  			<form class="form-horizontal">
- 				<span class="heading">Вхід</span>
-							
+ 				<span class="heading">Відновлення паролю</span>
+							<label for="inputEmail" class="control-label" style="font-size: 18px;">Введіть email:</label>
  				<div class="form-group">
+
  					<input type="email" class="form-control" id="inputEmail" placeholder="E-mail">
  					<i class="fa fa-user"></i>
  				</div>
- 				<div class="form-group help">
- 					<input type="password" class="form-control" id="inputPassword" placeholder="Password">
- 					<i class="fa fa-lock"></i>
- 					<p>Неправильний логін чи пароль</p>
- 				</div>
-
- 				<div class="form-group">
- 					<div class="main-checkbox">
- 						<input type="checkbox" value="none" id="checkbox1" name="check"/>
- 							<label for="checkbox1"></label>
-					 </div>
- 					<span class="text">Запам'ятати</span>
-          <div style="height: 50px;">
-            <button type="submit" class="btn btn-default">Вхід</button>
+            <button type="submit" class="btn btn-default">Відправити</button>
           </div>
  					
- 				</div>
- 					<a href="#" >Забув пароль?</a>
- 					<hr>
-				<div class="social">
- 						<i class="fab fa-twitter"></i>
- 						<i class="fab fa-facebook-f"></i>
- 						<i class="fab fa-google-plus-g"></i>	
-				</div>
 		</form>
   </div>
  </div><!-- /.row -->
