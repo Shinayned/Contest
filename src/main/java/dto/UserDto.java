@@ -1,31 +1,19 @@
-package model;
+package dto;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "Users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class UserDto {
+    @NotNull
+    @NotEmpty
     private String email;
+
+    @NotEmpty
+    @NotNull
     private String password;
 
     private String fullName;
     private String birthdate;
-
-    public User(String email, String password, String fullName, String birthdate) {
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.birthdate = birthdate;
-    }
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;
