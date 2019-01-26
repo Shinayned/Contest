@@ -173,6 +173,11 @@ a:hover
 }
 
 @media(min-width:768px) {
+  .nav-hor{
+  background-color: #ff8207; 
+  height: 6vh;
+}
+
   #wrapper {
     padding-left: 0;
   }
@@ -180,12 +185,12 @@ a:hover
     padding-left: 0px;
   }
   #sidebar-wrapper {
-    height: 576px;
-  	margin-top: 50px;
-    width: 345px;
+    height: 94vh;
+  	margin-top: 6vh;
+    width: 25.54%;
   }
   #wrapper.toggled #sidebar-wrapper {
-    width: 345px;
+    width: 25.54%;
   }
   #page-content-wrapper {
     margin-left: 10px;
