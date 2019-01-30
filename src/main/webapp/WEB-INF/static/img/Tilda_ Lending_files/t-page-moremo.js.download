@@ -1,0 +1,352 @@
+function pagePublish(){
+    savesortmodeifactive();
+    showpublishpopup();
+    		    
+	if(typeof window.projectalias!='undefined' && window.projectalias=='' && typeof window.projectcustomdomain!='undefined' && window.window.projectcustomdomain=='' && typeof window.userwithus!='undefined' && window.userwithus>60*60*12 && typeof window.dontaskprojectalias_pagepublish=='undefined'){
+		pagePublish__askProjectAlias();
+		return;
+	}
+
+	if(typeof window.pagealias!='undefined' && window.pagealias=='' && typeof window.pageisindex!='undefined' && window.pageisindex!='y' && typeof window.dontaskpagealias_pagepublish=='undefined'){
+		pagePublish__askPageAlias();
+		return;
+	}
+	
+	pagePublish_do();
+	
+}
+
+function pagePublish__askProjectAlias(){
+    
+    //if(window.dontaskprojectalias_pagepublish=='yes'){
+	//    pagePublish_do();
+	//    return;
+    //}
+	window.dontaskprojectalias_pagepublish='yes';
+	    
+	var data = "";
+	var url = "";
+	
+	data += "<div style='margin:20px 60px;font-size:14px; text-align:center;'>";
+		data += "<div style='margin-bottom:40px; margin-top:60px;font-size:20px;'>";
+		data += "<div id='pub_setprojectalias_error_div' style='background-color:yellow; color:#000; font-size:18px; display:none; padding:20px; margin-bottom:30px;'></div>";	
+		data += ""+(lang=="RU" ? "Задайте адрес сайта" : "Please set site address")+"";
+		data += "</div>";	
+		data += '<table width="100%" style="font-size:16px;">';
+		data += '<tr>';
+		data += '<td style="width:100%;"><input type="text" name="projectalias" id="popup-ps-input-projectalias" class="td-input td-item-group__page-url" value="" placeholder="project'+$projectid+'" style="padding-top:5px;" autofocus></td>';
+		data += '<td><div class="td-item-group__project-url" style="color:#333;" onclick="$(\'#popup-ps-input-projectalias\').focus();">.tilda.ws</div></td>';		
+		data += '</tr>';
+		data += '</table>';	
+		data += "<div style='margin-top:30px; margin-bottom:30px; font-size:14px; opacity:0.7;'>";	
+		data += ""+(lang=="RU" ? "Изменить адрес сайта или подключить свой домен вы всегда можете в <a href='/projects/settings/?projectid="+$projectid+"' target='_blank' style='color:#ff8562;'>настройках&nbsp;сайта</a>." : "To change the site address or assign your own domain go to <a href='/projects/settings/?projectid="+$projectid+"' target='_blank' style='color:#ff8562;'>Site&nbsp;Settings</a>.")+"";		
+		data += "</div>";	
+		data+='<div style="padding:30px;text-align:center;">';
+		data+='<a href="javascript:skipProjectAlias_and_pagePublish()" type="button" class="btn btn-default">'+(lang=="RU" ? "Пропустить" : "Skip this step")+'</a>';
+		data+='<a href="javascript:saveProjectAlias_and_pagePublish()" type="button" class="btn btn-primary" style="margin-left:10px;">'+(lang=="RU" ? "Сохранить и продолжить" : "Save and continue")+'</a>';	
+		data+='</div>';		
+	data += "</div>";
+	
+	$('#myModal').modal('show');
+	$('#myModalContent').html(data);
+	
+	setTimeout(function() { 
+		$('#popup-ps-input-projectalias').focus();		
+	},1000);
+		
+	$('#popup-ps-input-projectalias').change(function() {
+		var v=$(this).val();
+		if(v!=''){
+			var foo=v.replace(/ /g,'');
+			if(foo!=v){
+				v=foo;
+				$(this).val(v);
+			}
+		}
+		saveProjectAlias_check(v);
+	});	
+	
+}
+
+function skipProjectAlias_and_pagePublish(){
+	//window.dontaskprojectalias_pagepublish='yes';
+	//$('#page_menu_publishlink').attr('href','javascript:pagePublish()');
+	pagePublish();
+}
+
+function saveProjectAlias_and_pagePublish(){
+	var alias=$('#popup-ps-input-projectalias').val();
+	//window.dontaskprojectalias_pagepublish='yes';
+	$('#page_menu_publishlink').attr('href','javascript:pagePublish()');
+	if(alias!==''){
+		showLoadIcon();
+		var csrf=getCSRF();
+	    $.ajax({
+	      type: "POST",
+	      url: "/projects/submit/",
+	      data: {comm:'saveprojectalias', projectid: $projectid, alias: alias, csrf: csrf},
+	      dataType : "text",
+	      success: function(data){
+		        hideLoadIcon();
+		        if(data==''){
+			        alias=str_stripTags(alias);
+			        window.projectalias=alias;
+			  		pagePublish();
+			  	}else{
+				  	check_logout(data);
+				  	$('#pub_setprojectalias_error_div').css('display','block');
+				  	$('#pub_setprojectalias_error_div').html(data);
+			  	}
+	      },
+	      error: function(){
+	            alert('Request timeout (page save url). Please try again.');
+	            hideLoadIcon();
+	      },
+	      timeout: 1000*90
+	    });	
+	}else{
+		pagePublish();
+	}
+}
+
+function saveProjectAlias_check(alias){
+	var err='';
+	if(alias!==''){
+		if(alias.length < 4){
+	 		err = (lang=='RU' ? '<p>Адрес должен содержать не менее 4 символов</p>' : '<p>Address must be more than 4 chars</p>') ;	  	
+		}
+		if(alias.length > 30){
+	 		err = (lang=='RU' ? '<p>Адрес должен содержать не более 30 символов</p>' : '<p>Address must be less than 30 chars</p>') ;	  	
+		}		
+		if( /^[A-Za-z0-9.-]*$/.test(alias) ){
+			//
+		}else{
+			err = (lang=='RU' ? '<p>Адрес может содержать только латинские буквы и цифры</p>' : '<p>Address can contian only latin chars and numbers</p>') ;
+		}
+		if(alias.indexOf('project') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "project"</p>' : '<p>Sorry, address can not contian word "Project"</p>') ;
+		}
+		if(alias.indexOf('css') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "css"</p>' : '<p>Sorry, address can not contian word "css"</p>') ;
+		}		
+		if(alias.indexOf('files') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "files"</p>' : '<p>Sorry, address can not contian word "files"</p>') ;
+		}		
+		if(alias.indexOf('index') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "index"</p>' : '<p>Sorry, address can not contian word "index"</p>') ;
+		}				
+	}
+	if(err!=''){
+		$('#pub_setprojectalias_error_div').css('display','block');
+		$('#pub_setprojectalias_error_div').html(err);		
+	}else{
+		$('#pub_setprojectalias_error_div').css('display','none');
+		$('#pub_setprojectalias_error_div').html('');		
+	}
+}
+
+
+
+
+
+
+
+
+
+function pagePublish__askPageAlias(){
+    
+    //if(window.dontaskpagealias_pagepublish=='yes'){
+	//    pagePublish();
+	//    return;
+    //}
+    window.dontaskpagealias_pagepublish='yes';
+    
+	var data = "";
+	var url = "project"+$projectid+".tilda.ws";
+	if(typeof window.projectalias!='' && window.projectalias!=''){
+		url = window.projectalias+".tilda.ws";
+	}
+	if(typeof window.projectcustomdomain!='' && window.projectcustomdomain!=''){
+		url = window.projectcustomdomain;
+	}
+		
+	data += "<div style='margin:20px 60px;font-size:14px; text-align:center;'>";
+		data += "<div style='margin-bottom:40px; margin-top:60px;font-size:20px;'>";
+		data += "<div id='pub_setpagealias_error_div' style='background-color:yellow; color:#000; font-size:18px; display:none; padding:20px; margin-bottom:30px;'></div>";	
+		data += ""+(lang=="RU" ? "Укажите адрес страницы" : "Please set link for this page")+"";
+		data += "</div>";	
+		data += '<table width="100%" style="font-size:16px;">';
+		data += '<tr>';
+		data += '<td><div class="td-item-group__project-url" style="color:#333;" onclick="$(\'#popup-ps-input-pagealias\').focus();">'+url+'/</div></td>';
+		data += '<td style="width:100%;"><input type="text" name="pagealias" id="popup-ps-input-pagealias" class="td-input td-item-group__page-url" value="" placeholder="page'+$pageid+'.html" style="padding-top:5px;" autofocus></td>';
+		data += '</tr>';
+		data += '</table>';	
+		data += "<div style='margin-top:30px; margin-bottom:30px; font-size:14px; opacity:0.7;'>";	
+		data += ""+(lang=="RU" ? "Вы всегда можете изменить адрес <br>в <a href='javascript:showformEditPageSettings_new(\""+$pageid+"\")' style='color:#ff8562;'>настройках страницы.</a>" : "You can always change a page address <br>in <a href='javascript:showformEditPageSettings_new(\""+$pageid+"\")' style='color:#ff8562;'>Page Settings</a>.")+"";	
+		data += "</div>";	
+		data+='<div style="padding:30px;text-align:center;">';
+		data+='<a href="javascript:skipPageAlias_and_pagePublish()" type="button" class="btn btn-default">'+(lang=="RU" ? "Пропустить" : "Skip this step")+'</a>';
+		data+='<a href="javascript:savePageAlias_and_pagePublish()" type="button" class="btn btn-primary" style="margin-left:10px;">'+(lang=="RU" ? "Сохранить и продолжить" : "Save and continue")+'</a>';	
+		data+='</div>';		
+	data += "</div>";
+	
+	$('#myModal').modal('show');
+	$('#myModalContent').html(data);
+	
+	$('#popup-ps-input-pagealias').focus();
+	
+	$('#popup-ps-input-pagealias').change(function() {
+		var v=$(this).val();
+		if(v!=''){
+			var foo=v.replace(/ /g,'');
+			if(foo!=v){
+				v=foo;
+				$(this).val(v);
+			}
+		}		
+		savePageAlias_check(v);
+	});		
+	
+}
+
+function skipPageAlias_and_pagePublish(){
+	//window.dontaskpagealias_pagepublish='yes';
+	//$('#page_menu_publishlink').attr('href','javascript:pagePublish()');
+	pagePublish_do();
+}
+
+function savePageAlias_and_pagePublish(){
+	var alias=$('#popup-ps-input-pagealias').val();
+	//window.dontaskalias_pagepublish='yes';
+	$('#page_menu_publishlink').attr('href','javascript:pagePublish()');
+	if(alias!==''){
+		showLoadIcon();
+		var csrf=getCSRF();
+	    $.ajax({
+	      type: "POST",
+	      url: "/projects/submit/",
+	      data: {comm:'savepagealias', pageid: $pageid, alias: alias, csrf: csrf},
+	      dataType : "text",
+	      success: function(data){
+		        hideLoadIcon();
+		        if(data==''){
+			        alias=str_stripTags(alias);
+			        window.pagealias=alias;
+			  		pagePublish_do();
+			  	}else{
+				  	check_logout(data);
+				  	$('#pub_setpagealias_error_div').css('display','block');
+				  	$('#pub_setpagealias_error_div').html(data);
+			  	}
+	      },
+	      error: function(){
+	            alert('Request timeout (page save url). Please try again.');
+	            hideLoadIcon();
+	      },
+	      timeout: 1000*90
+	    });	
+	}else{
+		pagePublish();
+	}
+}
+
+
+function savePageAlias_check(alias){
+	var err='';
+	if(alias!==''){
+		if(alias.length < 1){
+	 		err = (lang=='RU' ? '<p>Адрес должен содержать не менее 1 символа</p>' : '<p>Address must be more than 1 chars</p>') ;	  	
+		}
+		if(alias.length > 80){
+	 		err = (lang=='RU' ? '<p>Адрес должен содержать не более 80 символов</p>' : '<p>Address must be less than 80 chars</p>') ;	  	
+		}				
+		if( /^[A-Za-z0-9._\/-]*$/.test(alias) ){
+			//
+		}else{
+			err = (lang=='RU' ? '<p>Адрес может содержать только латинские буквы и цифры</p>' : '<p>Address can contian only latin chars and numbers</p>') ;
+		}
+		if(alias.indexOf('css') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "css"</p>' : '<p>Sorry, address can not contian word "css"</p>') ;
+		}		
+		if(alias.indexOf('js') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "js"</p>' : '<p>Sorry, address can not contian word "js"</p>') ;
+		}		
+		if(alias.indexOf('404') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "404"</p>' : '<p>Sorry, address can not contian word "404"</p>') ;
+		}				
+		if(alias.indexOf('403') !== -1){
+			err = (lang=='RU' ? '<p>Извините, адрес не может содержать в себе слово "403"</p>' : '<p>Sorry, address can not contian word "403"</p>') ;
+		}						
+	}
+	if(err!=''){
+		$('#pub_setpagealias_error_div').css('display','block');
+		$('#pub_setpagealias_error_div').html(err);		
+	}else{
+		$('#pub_setpagealias_error_div').css('display','none');
+		$('#pub_setpagealias_error_div').html('');		
+	}
+}
+
+
+function pagePublish_do(){
+    savesortmodeifactive();
+    showpublishpopup();
+    var csrf=getCSRF();
+    $.ajax({
+      type: "POST",
+      url: "/page/publish/",
+      data: {pageid: $pageid, csrf: csrf},
+      dataType : "text",
+      success: function(data){
+	        check_logout(data);
+	        check_publish_error5xx(data);
+            $('#myModalContent #loadingcenter').slideUp();
+            $('#myModalContent').append(data);
+      },
+      error: function(data){
+            alert('Request timeout (page publishing). Please try again.');
+			console.log(data);
+            hideLoadIcon();
+      },
+      timeout: 1000*90
+    });
+}
+
+
+function check_publish_error5xx(data){
+	if(typeof data=='string' && data.indexOf('work on server')!==-1){
+	    $.ajax({
+			type: "POST",
+			url: "/page/publish/trackerrors/",
+			data: {comm:'logpublisherr', pageid: $pageid, projectid: $projectid, msg: data},
+			dataType : "text",
+			success: function(data){
+			},
+			error: function(data){
+			},
+			timeout: 1000*90
+	    });		
+	}
+}
+
+function showformEditProjectFonts(projectid){
+    showLoadIcon();
+    var csrf=getCSRF();
+    $.ajax({
+      type: "POST",
+      url: "/projects/submit/",
+      data: {comm: "editprojectfonts", projectid: projectid, csrf: csrf},
+      dataType : "text",
+      success: function(data){
+            hideLoadIcon();
+            check_logout(data);
+            $('#myModal').modal('show');
+			$('#myModalContent').html(data);
+      },
+      error: function(){
+            alert('Request timeout (opening page settings)');
+            hideLoadIcon();
+      },
+      timeout: 1000*90
+    });
+}

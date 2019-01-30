@@ -1,0 +1,1499 @@
+function edli__init(){
+
+	var wrapper=$('.editlist__wrapper');
+
+	/* prevent double init */
+	if( wrapper.attr('data-init-status')!='undefined' && (wrapper.attr('data-init-status')=='inited' || wrapper.attr('data-init-status')=='begin') ){
+		console.log('error: editlist already inited');
+		return;
+	}
+
+	wrapper.attr('data-init-status','begin');
+
+	var datastr=$('.editlist__data').html();
+	if(typeof datastr=='undefined' || datastr=='')datastr="{}";
+	var data=JSON.parse(datastr);
+	data=edli__dublCheck_Ids(data);
+	for(var key in data){
+		edli__drawItem( data[key] );
+	}
+
+	wrapper.attr('data-init-status','inited');
+
+}
+
+function edli__dublCheck_Ids(data){
+	var ids=[];
+	var item;
+	var lid;
+	var i=0;
+	for(var key in data){
+		item=data[key];
+		if (item != null && typeof item == 'object') {
+
+			i++;
+			data[key]['i']=i;
+
+			lid=item['lid'];
+			if (lid in ids){
+				var rnd=Math.floor(Math.random() * 1000) + 10;
+				var newlid=Date.now() - rnd;
+				console.log('new lid: '+newlid);
+				data[key]['lid']=newlid;
+			}else{
+				ids[lid]='y';
+			}
+
+		}else{
+			delete data[key];
+		}
+	}
+
+	return data;
+}
+
+function edli__drawItem(item,afterlid){
+
+	//console.log(item);
+	var wrapper=$('.editlist__wrapper');
+	var lid=item['lid'];
+	var ls=item['ls'];
+	var loff=item['loff'];
+	var fields=wrapper.attr('data-lfields').split(',');
+
+	var str = '';
+	str += '<div class="pe-list-item" data-listitem-id="'+lid+'" data-listitem-sort="'+ls+'" data-listitem-off="'+loff+'" style="background-color:#efefef; padding:40px; margin:10px 0px; '+(loff=='y' ? 'opacity:0.5;' : '')+'">';
+	str += '<div class="pe-list-item-title" style="padding:0px 0px 35px 0px;">';
+	str += '<table style="width:100%; font-size:12px;">';
+	str += '<tr>';
+	str += '<td style="width:100%; letter-spacing:1px;"><b>'+(lang=="RU" ? "КАРТОЧКА" : "ITEM")+' <span class="pe-list-item-i">'+item['i']+'</span></b></td>';
+	str += '<td class="pe-list-item-btn-dubl" style="padding:0 10px;"><a href="javascript:edli__dupl('+lid+')">'+(lang=="RU" ? "Дублировать" : "Duplicate")+'</a></td>';
+	str += '<td class="pe-list-item-btn-offon" style="padding:0 10px;"><a href="javascript:edli__off('+lid+')">';
+	if(item['loff']=='y'){
+	str += ''+(lang=="RU" ? "Включить" : "On")+'';
+	}else{
+	str += ''+(lang=="RU" ? "Выключить" : "Off")+'';
+	}
+	str += '</a></td>';
+	str += '<td class="pe-list-item-btn-del" style="padding:0 10px;"><a href="javascript:edli__del('+lid+')">'+(lang=="RU" ? "Удалить" : "Delete")+'</a></td>';
+	str += '<td class="pe-list-item-btn-up" style="padding:0 10px;"><a href="javascript:edli__up('+lid+')">'+(lang=="RU" ? "Вверх" : "Up")+'</a></td>';
+	str += '<td class="pe-list-item-btn-down" style="padding:0 0 0 10px;"><a href="javascript:edli__down('+lid+')">'+(lang=="RU" ? "Вниз" : "Down")+'</a></td>';
+	str += '</div>';
+	str += '</div>';
+
+	if(afterlid>0){
+		var afteritemwrapper=wrapper.find('[data-listitem-id='+afterlid+']');
+		afteritemwrapper.after(str);
+	}else{
+		wrapper.append(str);
+	}
+
+	var flag_hascut='';
+
+	fields.forEach(function(field, i, arr) {
+	  var value=item[field];
+
+	  if(field=='li_img' || field=='li_img2'){
+		edli__drawUI__upload(value,field,lid);
+	  }else if(field=='li_gallery'){
+		edli__drawUI__gallery(value,field,lid);
+	  }else if(field=='li_imgalt' || field=='li_img2alt'){
+		edli__drawUI__imgalt(value,field,lid);
+	  }else if(field=='li_select'){
+		edli__drawUI__select(value,field,lid);
+	  }else if(field=='li_link' || field=='li_buttonlink' || field=='li_buttonlink2'){
+		edli__drawUI__link(value,field,lid);
+	  }else if(field=='li_linkprod' || field=='li_buttonlinkprod' || field=='li_buttonlinkprod2'){
+		edli__drawUI__linkprod(value,field,lid);
+	  }else if(field=='li_linktarget' || field=='li_buttonlinktarget' || field=='li_buttonlinktarget2'){
+		edli__drawUI__linktarget(value,field,lid);
+	  }else if(field=='li_string' || field=='li_string2' || field=='li_buttontitle' || field=='li_buttontitle2' || field=='li_price' || field=='li_price_old' || field=='li_mark' || field=='li_prod_option' || field=='li_prod_option2' || field=='li_prod_option3' || field=='li_geokeys' || field=='li_source' || field=='li_blocks' || field=='li_blocks2'){
+		edli__drawUI__input(value,field,lid);
+	  }else if(field=='li_prod_variants' || field=='li_prod_variants2' || field=='li_prod_variants3'){
+		edli__drawUI__textarea(value,field,lid);
+	  }else if(field=='li_cb' || field=='li_cb2'){
+		edli__drawUI__checkbox(value,field,lid);
+	  }else if(field=='li_cut'){
+		flag_hascut='yes';
+		edli__drawUI__cut(value,field,lid);
+	  }else{
+		edli__drawUI__text(value,field,lid);
+	  }
+	});
+
+	if(flag_hascut=='yes'){
+		edli__cutonoff(lid);
+	}
+
+}
+
+
+function edli__drawUI__input(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_buttontitle')label = (lang=="RU" ? "Название кнопки" : "Button title");
+	if(label=='li_buttontitle2')label = (lang=="RU" ? "Название второй кнопки" : "Second button title");
+	if(label=='li_price')label = (lang=="RU" ? "Стоимость услуги/товара" : "Price of product or service");
+	if(label=='li_price_old')label = (lang=="RU" ? "Старая цена" : "Old price");
+	if(label=='li_mark')label = (lang=="RU" ? "Отметка на карточке (например: sale, new, -30%)" : "Card mark (for example, sale, new, -50%)");
+	if(label=='li_prod_option')label = (lang=="RU" ? "Название параметра" : "Option name");
+	if(label=='li_prod_option2')label = (lang=="RU" ? "Название второго параметра" : "Option second name");
+	if(label=='li_prod_option3')label = (lang=="RU" ? "Название третьего параметра" : "Option third name");
+
+	var hint='';
+	if(field=='li_price'){
+		hint = (lang=="RU" ? "Знак валюты добавляется автоматически. Изменить валюту можно в Настройках сайта." : "The currency sign is added automatically. You can change the currency in the Site Settings.");
+	}
+	if(field=='li_geokeys'){
+		hint = "<a href=\"javascript:edli_geokeys_open('"+field+"','"+lid+"')\">" + (lang=="RU" ? "Выбрать гео регион" : "Select geo area" + "</a>");
+	}
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+		if( typeof rep['hint']=='object'){ if(lang=='RU'){hint=rep['hint'][0];}else{hint=rep['hint'][1];} }
+	}
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <label class="pe-label">'+label+'</label>';
+	str += '    <input type="text" name="'+field+'" class="pe-input" value="'+value+'" />';
+
+	if(field=='li_blocks' || field=='li_blocks2'){
+	str += '	<div class="pe-field-link-more" style="margin-top:5px;">';
+	str += '	<span class="pe-field-link-link-an" style="padding-right:15px; font-size:12px; cursor:context-menu;">' + (lang=='RU' ? 'Выбрать блоки' : 'Choose blocks') + '</span>';
+	str += '	</div>';
+	}
+
+	if(hint!=''){
+	str += '    <div class="pe-hint">'+hint+'</div>';
+	}
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+
+		if(field=='li_blocks' || field=='li_blocks2'){
+			if(v!=''){
+				var foo=v.replace(/[^0-9,]*/g, '');
+				if(v!=foo){
+					$(this).val(foo);
+					v=foo;
+				}
+			}
+		}
+
+		edli__setFieldValue(v,field,lid);
+	});
+
+	if(field=='li_blocks' || field=='li_blocks2'){
+		inp.parent().find('.pe-field-link-link-an').click(function() {
+				var el_input=$(this).parent().parent().find('.pe-input');
+				pe__RecordsidsPiker__show(el_input);
+		});
+	}
+}
+
+function edli__drawUI__text(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_title')label = (lang=="RU" ? "Заголовок" : "Title");
+	if(label=='li_descr')label = (lang=="RU" ? "Описание" : "Description");
+	if(label=='li_subtitle')label = (lang=="RU" ? "Подзаголовок" : "Subtitle");
+	if(label=='li_text')label = (lang=="RU" ? "Текст" : "Text");
+	if(label=='li_date')label = (lang=="RU" ? "Дата" : "Date");
+	if(label=='li_time')label = (lang=="RU" ? "Время" : "Time");
+	if(label=='li_persname')label = (lang=="RU" ? "Имя персоны" : "Person name");
+	if(label=='li_persdescr')label = (lang=="RU" ? "Информ. о персоне" : "Person description");
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+		if( typeof rep['redactor_nohref']=='string' && rep['redactor_nohref']=='yes'){
+			setTimeout(function() {
+				$(".pe-form-group"+"[data-lid="+lid+"]"+"[data-lfield="+field+"]").find(".re-link").css('display','none');
+			}, 1500);
+		}
+	}
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <label class="pe-label">'+label+'</label>';
+	str += '    <div class="pe-redactor">';
+	str += '    	<textarea name="'+field+'" class="pe-textarea" rows="2">'+value+'</textarea>';
+	str += '    </div>';
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		//console.log('list item onchange input');
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+	});
+
+	addRedactor_to_textarea(inp);
+
+}
+
+function edli__drawUI__textarea(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_prod_variants')label = (lang=="RU" ? "Значения параметра" : "Option values");
+	if(label=='li_prod_variants2')label = (lang=="RU" ? "Значения второго параметра" : "Second option values");
+	if(label=='li_prod_variants3')label = (lang=="RU" ? "Значения третьего параметра" : "Third option values");
+
+	var ph='';
+	if(field=='li_prod_variants' || field=='li_prod_variants2' || field=='li_prod_variants3'){
+		ph = (lang=="RU" ? "Перечислите варианты, отделяя их переносом строки" : "Set variants by dividing them with a new line");
+	}
+
+	var hint='';
+	if(field=='li_prod_variants'){
+		hint = (lang=="RU" ? "Перечислите варианты товара, отделяя их переносом строки. Если вариант имеет свою цену, поставьте знак = и укажите цену (только цифры, без знака валюты). Например: Большой размер 1000 руб. = 1000" : "Put product options by dividing them with a new line. If variant has own price, add the sign = and write a price (only numbers, without currency). For example: Large size $10 = 10");
+	}
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+	}
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <label class="pe-label">'+label+'</label>';
+	str += '    <div class="">';
+	str += '    	<textarea name="'+field+'" style="height:100px; box-sizing: border-box; margin-top:10px;" class="pe-textarea" rows="2" placeholder="'+ph+'">'+value+'</textarea>';
+	str += '    </div>';
+	if(hint!=''){
+	str += '    <div class="pe-hint">'+hint+'</div>';
+	}
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+	});
+
+}
+
+function edli__drawUI__select(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_select')label = (lang=="RU" ? "Опции" : "Options");
+
+	var options=[['','По умолчанию','by Default'],['v2','Вариант 2','Option 2'],['v3','Вариант 3','Option 3']];
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+		if( typeof rep['options']=='object')options=rep['options'];
+	}
+
+
+	var str = '';
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <label class="pe-label">'+label+'</label>';
+	str += '    <div class="pe-select">';
+	str += '		<select class="pe-input pe-select" name="'+field+'">';
+	for(var i=0; i<options.length; i++) {
+	str += '			<option value="'+options[i][0]+'" '+(value==options[i][0] ? "selected" : "")+'>'+(lang=="RU" ? options[i][1] : options[i][2])+'</option>';
+	}
+	str += '		</select>';
+	str += '    </div>';
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+	});
+
+}
+
+function edli__drawUI__link(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_link')label = (lang=="RU" ? "Ссылка" : "Link");
+	if(label=='li_buttonlink')label = (lang=="RU" ? "Ссылка для кнопки" : "Button link");
+	if(label=='li_buttonlink2')label = (lang=="RU" ? "Ссылка для второй кнопки" : "Second button link");
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+	}
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '  	<label class="pe-label">'+label+'</label>';
+	str += '	<div class="form-url-group">';
+	str += '    	<input type="text" name="'+field+'" class="pe-input" value="'+value+'" style="width:100%;"/>';
+
+	str += '		<div class="pe-field-link-more" style="margin-top:-2px;">';
+	str += '		<span class="pe-field-link-link-pg" style="padding-right:15px; font-size:11px; cursor:context-menu;">' + (lang=='RU' ? 'Выбрать страницу' : 'Link to Page') + '</span>';
+	str += '		<span class="pe-field-link-link-an" style="padding-right:15px; font-size:11px; cursor:context-menu;">' + (lang=='RU' ? 'Выбрать блок' : 'Link to Block') + '</span>';
+	str += '		</div>';
+
+	str += '	</div>';
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+
+		if(v!=''){
+			var foo=v.trim();
+			if(v!=foo){
+				$(this).val(foo);
+			}
+		}
+		checkLinkCCtoWS(v);
+
+		edli__setFieldValue(v,field,lid);
+	});
+
+	//
+	var inpwrapper=inp.closest('.form-url-group');
+
+	inpwrapper.find('.pe-field-link-link-pg').click(function() {
+			var el_input=$(this).parent().parent().find('.pe-input');
+			pe__showPopUp__pageslist(el_input);
+	});
+
+	inpwrapper.find('.pe-field-link-link-an').click(function() {
+			var el_input=$(this).parent().parent().find('.pe-input');
+			pe__RecordPiker__show(el_input);
+	});
+
+	inpwrapper.find(".pe-field-link-cb-target").change(function(){
+		//var tempv=$(this).is(':checked');
+		//if(tempv){tempv="_blank";}else{tempv="";}
+		//inpwrapper.find('.pe-field-link-input-target').val(tempv);
+	});
+
+}
+
+function edli__drawUI__linkprod(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_linkprod')label = (lang=="RU" ? "Ссылка c карточки товара" : "Product Link");
+	if(label=='li_buttonlinkprod')label = (lang=="RU" ? "Ссылка для кнопки" : "Button Link");
+	if(label=='li_buttonlinkprod2')label = (lang=="RU" ? "Ссылка для второй кнопки" : "Second Button Link");
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+	}
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '  	<label class="pe-label">'+label+'</label>';
+	str += '    <div class="pe-select">';
+	str += '		<select class="pe-input pe-select" name="'+field+'">';
+	str += '			<option value="" '+(value=="" ? "selected" : "")+'>'+(lang=="RU" ? "Ссылка на страницу" : "Link on page")+'</option>';
+	str += '			<option value="popup" '+(value=="popup" ? "selected" : "")+'>'+(lang=="RU" ? "Подробнее о товаре" : "View full product info")+'</option>';
+	str += '			<option value="order" '+(value=="order" ? "selected" : "")+'>'+(lang=="RU" ? "Добавить в корзину" : "Add to Cart")+'</option>';
+	str += '		</select>';
+	str += '    </div>';
+	str += '</div>';
+
+	var linkfield=field.replace("prod", "");
+	var linkwrapper=itemwrapper.find('[data-lfield='+linkfield+']');
+	linkwrapper.before(str);
+	linkwrapper.find('.pe-label').remove();
+
+	var linkinp=itemwrapper.find("[name="+linkfield+"]");
+	var linkuiwrapper=linkwrapper.find('.form-url-group');
+	linkuiwrapper.css('margin-top','-20px');
+
+	if(value=="popup" || value=="order"){
+		linkuiwrapper.css('display','none');
+	}
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+
+		if(v=='popup' || v=='order'){
+			linkuiwrapper.css('display','none');
+		}else{
+			linkuiwrapper.css('display','block');
+		}
+
+		if(v==''){
+			linkinp.val('');
+			edli__setFieldValue('',linkfield,lid);
+		}
+		if(v=='popup'){
+			linkinp.val('#prodpopup');
+			edli__setFieldValue('#prodpopup',linkfield,lid);
+		}
+		if(v=='order'){
+			linkinp.val('#order');
+			edli__setFieldValue('#order',linkfield,lid);
+		}
+
+	});
+
+}
+
+function edli__drawUI__linktarget(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var str = '';
+	str += '<div class="pe-target-div" data-lid="'+lid+'" data-lfield="'+field+'" style="display:inline-block;">';
+
+	str += '	<label class="pe-label-checkbox pe-label-target" style="padding-right:15px; font-size:11px;">';
+	str += '	  	<input type="hidden" name="'+field+'" value="'+value+'" class="pe-input-target pe-cb-target-'+field+'"/>';
+	str += '      	<input type="checkbox" style="width:auto;" class="pe-cb-target pe-cb-target-'+field+'" ' + (value=='_blank' ? 'checked="checked"' : '') +'> <span class="pe-checkbox-title">'+(lang=="RU" ? "В новом окне" : "New window")+'</span>';
+	str += '	</label>';
+
+	//str += '    <div class="pe-select">';
+	//str += '		<select class="pe-input pe-select" name="'+field+'">';
+	//str += '			<option value="" '+(value=="" ? "selected" : "")+'>'+(lang=="RU" ? "В этом же окне" : "Same window")+'</option>';
+	//str += '			<option value="_blank" '+(value=="_blank" ? "selected" : "")+'>'+(lang=="RU" ? "В новом окне" : "New window")+'</option>';
+	//str += '		</select>';
+	//str += '    </div>';
+
+	str += '</div>';
+
+	var linkfield=field.replace("target", "");
+	var linkwrapper=itemwrapper.find('[data-lfield='+linkfield+']').find('.form-url-group');
+	linkwrapper.find('.pe-field-link-more').prepend(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+	});
+
+	linkwrapper.find(".pe-cb-target-"+field).change(function(){
+		var tempv=$(this).is(':checked');
+		if(tempv){tempv="_blank";}else{tempv="";}
+		linkwrapper.find('.pe-cb-target-'+field+'').val(tempv);
+	});
+
+
+}
+
+function edli__drawUI__linktarget_old(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var str = '';
+	str += '<div class="pe-select-div" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <div class="pe-select">';
+	str += '		<select class="pe-input pe-select" name="'+field+'">';
+	str += '			<option value="" '+(value=="" ? "selected" : "")+'>'+(lang=="RU" ? "В этом же окне" : "Same window")+'</option>';
+	str += '			<option value="_blank" '+(value=="_blank" ? "selected" : "")+'>'+(lang=="RU" ? "В новом окне" : "New window")+'</option>';
+	str += '		</select>';
+	str += '    </div>';
+	str += '</div>';
+
+	var linkfield=field.replace("target", "");
+	//console.log(linkfield);
+	var linkwrapper=itemwrapper.find('[data-lfield='+linkfield+']').find('.form-url-group');
+	linkwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+	});
+
+}
+
+function edli__drawUI__upload(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var form = itemwrapper.closest('form');
+	var recid = (form.length > 0 ? form.data('rec-id') : '');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_img')label = (lang=="RU" ? "Изображение" : "Image");
+	if(label=='li_img2')label = (lang=="RU" ? "Изображение 2" : "Image 2");
+
+	var tumaxwidth='';
+	var tumaxheight='';
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+		if(typeof rep['tu-max-width']=='string')tumaxwidth='data-tu-max-width="'+rep['tu-max-width']+'"';
+		if(typeof rep['tu-max-height']=='string')tumaxheight='data-tu-max-height="'+rep['tu-max-height']+'"';
+	}
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <label class="pe-label">'+label+'</label>';
+	str += '	<br>';
+	str += '    <div class="js-image-box">';
+	str += '    	<input name="'+field+'" value="'+value+'" style="display:none;" class="js-img-cdnurl"/>';
+	str += '	    <table style="width:100%;">';
+	str += '		<tr>';
+	str += '		<td style="width:240px; vertical-align:top;">';
+	str += '		<div style="width:100%;">';
+	str += '		<input type="text" name="li-tubutton" class="js-img-button" value="" data-tu-is-image="yes" '+tumaxwidth+' '+tumaxheight+' id="tuwidget'+lid+'_'+field+'" /><br>';
+	//str += '		<input type="hidden" name="'+field+'-tuinfo-uuid" class="js-img-uuid" value="" />';
+	//str += '		<input type="hidden" name="'+field+'-tuinfo-cdnurl" class="js-img-cdnurl" value="" />';
+	//str += '		<input type="hidden" name="'+field+'-tuinfo-name" class="js-img-name" value="" />';
+	//str += '		<input type="hidden" name="'+field+'-tuinfo-width" class="js-img-width" value="" />';
+	//str += '		<input type="hidden" name="'+field+'-tuinfo-height" class="js-img-height" value="" />';
+	//str += '		<input type="hidden" name="'+field+'-tuinfo-size" class="js-img-size" value="" />';
+	//str += '		<input type="hidden" name="'+field+'-uploadmethod" value="tu"/>';
+	//str += '		<input type="hidden" name="'+field+'-del" class="js-img-del" value="" />';
+	str += '		</div>';
+	str += '		</td>';
+	str += '		<td style="vertical-align:top; text-align:right;">';
+	str += '		<a href="javascript:openImageSearchPopup(\'lst'+lid+'_'+field+'id'+'\',\''+recid+'\');" class="pe-imagesearch-btn" data-imagesearch-type=""><table><tr><td><img src="https://tilda.ws/img/linea/basic_magnifier.svg" width="20px" style="padding:10px;"></td><td>'+(lang=="RU" ? "Искать в библиотеке" : "Search photos")+'</td></tr></table></a>';
+	str += '		</td>';
+
+	str += '		</tr>';
+	str += '	    </table>';
+	str += '		<div class="js-img-div"></div>';
+	str += '	</div>';
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	if(value!='')edli__drawUI__upload__imgdiv(value,field,lid);
+
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+
+	var inp=fieldwrapper.find("[name="+field+"]");
+	inp.change(function() {
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+	});
+
+	fieldwrapper.find('.js-img-button').each(function(){
+		var $this = $(this), elementid;
+		var elementid = $this.attr('id');
+
+		if (! elementid) {
+			elementid = 'tuwidget'+parseInt(Math.floor(Math.random() * (999999 - 99999 + 1)) + 99999);
+			$this.attr('id', elementid);
+		}
+
+		TUWidget.init($this).done(function(file){
+			inp.val(file.tuInfo.cdnUrl);
+			//fieldwrapper.find('.js-img-uuid').val(file.tuInfo.uuid);
+			//fieldwrapper.find('.js-img-cdnurl').val(file.tuInfo.cdnUrl);
+			//fieldwrapper.find('.js-img-name').val(file.tuInfo.name);
+			//fieldwrapper.find('.js-img-width').val(file.tuInfo.width);
+			//fieldwrapper.find('.js-img-height').val(file.tuInfo.height);
+
+			inp.trigger('change');
+
+			edli__drawUI__upload__imgdiv(file.tuInfo.cdnUrl,field,lid);
+
+			setTimeout(function(){
+				$('#'+elementid+'-previews').removeClass('tu-popup-progressbar-completed').removeClass('tu-processing').removeClass('tu-image-preview').removeClass('tu-success').removeClass('tu-complete').addClass('tu-popup-progressbar-start');
+			},3000);
+
+		}).fail(function(file, message){
+		});
+	});
+
+}
+
+function edli__drawUI__upload__imgdiv(src,field,lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+	var div=fieldwrapper.find('.js-img-div');
+
+	var name=src;
+	name = name.substr(name.length - 30);
+
+	var fields=wrapper.attr('data-lfields');
+	if(typeof fields=='undefined')fields='';
+	var needalt=fields.indexOf(field+"alt");
+
+	var str='';
+	str += '<br>';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td>';
+	str += '<img src="'+src+'" width="135" class="js-img-thumb" id="lst'+lid+'_'+field+'id" />';
+	str += '</td>';
+	str += '<td style="padding-left:20px; padding-right:20px; width:500px; font-size:12px; color:#333;"><a href="'+src+'" target="_blank" class="js-img-title" data-li-img-href="">... '+name+'</a></td>';
+	if(needalt>0){
+	str += '<td style="white-space: nowrap;"><a href="javascript:edli__drawUI__upload__showmore(\''+field+'\',\''+lid+'\');">...</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+	}
+	if(name!='' && name.indexOf('.svg')=== -1){
+	str += '<td style="white-space: nowrap; padding-right: 10px;"><a href="javascript:tui_editimage(\''+lid+'\',\'lst'+lid+'_'+field+'id'+'\');" class="js-edit-img"><span class="glyphicon glyphicon-pencil"></span></a></td>';
+	}
+	str += '<td><a href="javascript:edli__drawUI__upload__del(\''+field+'\',\''+lid+'\');"><span class="glyphicon glyphicon-trash"></span></a></td>';
+	str += '</tr>';
+	str += '</table>';
+
+	div.html(str);
+}
+
+function edli__drawUI__upload__showmore(field,lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var div=itemwrapper.find('.pe-form-group__'+field+'alt');
+	if(div.css('display')=='none'){
+		div.css('display','block');
+	}else{
+		div.css('display','none');
+	}
+}
+
+
+function edli__drawUI__imgalt(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_imgalt' || label=='li_img2alt')label = (lang=="RU" ? "SEO: Альт-текст для изображения" : "SEO: Image alt text");
+
+	var str = '';
+
+	str += '<div class="pe-form-group pe-form-group__'+field+'" data-lid="'+lid+'" data-lfield="'+field+'" style="display:none;">';
+	str += '    <label class="pe-label">'+label+'</label>';
+	str += '    <input type="text" name="'+field+'" class="pe-input" value="'+value+'" />';
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+
+	inp.change(function() {
+		var v=inp.val();
+		edli__setFieldValue(v,field,lid);
+	});
+
+}
+
+function edli__drawUI__upload__del(field,lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+	var div=fieldwrapper.find('.js-img-div');
+	var inp=fieldwrapper.find("[name="+field+"]");
+	div.html('');
+	inp.val('');
+	inp.trigger('change');
+}
+
+function edli__drawUI__upload__tui_editimg(field,lid){
+	$(document).ready(function(){
+		var wrapper=$('.editlist__wrapper');
+		var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+		var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+		var src = fieldwrapper.find('.js-img-thumb').attr('src');
+		var imageitemid='lst'+lid+'_'+field+'id';
+
+		tui_editimage(lid, imageitemid, function(imgid, tuInfo){
+			if (tuInfo) {
+				var newURL = tuInfo.cdnUrl;
+
+				var $box = $('#'+imgid).closest('.js-image-box');
+				if ($box.length > 0) {
+					$box.find('.js-img-cdnurl').val(newURL);
+					$box.find('.js-img-uuid').val('');
+					$box.find('.js-img-name').val('');
+					$box.find('.js-img-size').val('');
+					$box.find('.js-img-width').val('');
+					$box.find('.js-img-height').val('');
+					var title = newURL.substring(newURL.length-30);
+					$box.find('.js-img-title').attr('href', newURL).html('...'+title);
+
+					if( tuInfo.width > 0){
+						$box.find('js-img-width').val(tuInfo.width);
+					}
+				}
+			}
+		});
+	});
+}
+
+function edli__drawUI__upload__aviary_editimg(field,lid){
+	$(document).ready(function(){
+		aviaryOnReady(function(){
+			var wrapper=$('.editlist__wrapper');
+			var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+			var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+			var src = fieldwrapper.find('.js-img-thumb').attr('src');
+			var imageitemid='lst'+lid+'_'+field+'id';
+			//if (src.substring(0,1) == '/') {
+			//	src = 'https://tilda.cc' + src;
+			//}
+
+			window.featherEditor.launch({
+				image: imageitemid,
+				url: src,
+				onLoad: function(){ alert('loadd'); },
+				onSave: function(imageID, newURL) {
+					var img = document.getElementById(imageID);
+					img.src = newURL;
+
+					var $box = $('#'+imageitemid).closest('.js-image-box');
+					$box.find('.js-img-cdnurl').val(newURL);
+					$box.find('.js-img-uuid').val('');
+					$box.find('.js-img-name').val('');
+					$box.find('.js-img-size').val('');
+					$box.find('.js-img-width').val('');
+					$box.find('.js-img-height').val('');
+					var title = newURL.substring(newURL.length-30);
+					$box.find('.js-img-title').attr('href', newURL).html('...'+title);
+
+					var size = window.featherEditor.getImageDimensions();
+					if( size && size.width){
+						$box.find('js-img-width').val(size.width);
+					}
+					return window.featherEditor.close();
+				}
+			});
+
+		});
+	});
+}
+
+function edli__drawUI__checkbox(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label='';
+	//var label=field;
+	//if(label=='li_cb')label = (lang=="RU" ? "Checkbox" : "Checkbox");
+	//if(label=='li_cb2')label = (lang=="RU" ? "Checkbox 2" : "Checkbox 2");
+
+	var labelcb='';
+	if(field=='li_cb')labelcb = (lang=="RU" ? "Checkbox" : "Checkbox");
+	if(field=='li_cb2')labelcb = (lang=="RU" ? "Checkbox 2" : "Checkbox 2");
+
+	var hint='';
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+		if( typeof rep['labelcb']=='object'){ if(lang=='RU'){labelcb=rep['labelcb'][0];}else{labelcb=rep['labelcb'][1];} }
+		if( typeof rep['hint']=='object'){ if(lang=='RU'){hint=rep['hint'][0];}else{hint=rep['hint'][1];} }
+	}
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	if(label!='')str += '<label class="pe-label">'+label+'</label>';
+	str += '<input class="pe-input" type="hidden" name="'+field+'" value="'+value+'" style="display:none;" />';
+	str += '<div class="pe-checkbox-box">';
+	str += '<label class="pe-label-checkbox">';
+	str += '<input type="checkbox" name="'+field+'-cb" '+(value=='on'?'checked="checked"':'')+'> <span class="pe-checkbox-title pe-labelcb">'+labelcb+'</span>';
+	str += '</label>';
+	str += '</div>';
+	if(hint!=''){
+	str += '    <div class="pe-hint">'+hint+'</div>';
+	}
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find("[name="+field+"]");
+	var inpcb=itemwrapper.find("[name="+field+"-cb]");
+
+	inpcb.change(function() {
+		console.log(inpcb.prop('checked'));
+		var v='';
+		if(inpcb.prop('checked')==true){
+			v='on';
+		}
+		inp.val(v);
+		edli__setFieldValue(v,field,lid);
+	});
+
+}
+
+function edli__drawUI__cut(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	label=(lang=="RU" ? "Еще..." : "More...");
+
+	var str = '';
+
+	if(typeof window.lireplaces[field]=='object'){
+		var rep=window.lireplaces[field];
+		if( typeof rep['label']=='object'){ if(lang=='RU'){label=rep['label'][0];}else{label=rep['label'][1];} }
+	}
+
+	str += '<div class="pe-form-group" data-list-cut="yes" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <span class="editlist__btncut" style="cursor:pointer;color:#ff855D;" data-label="'+label+'">'+label+'</a>';
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+	var inp=itemwrapper.find('.editlist__btncut');
+
+	inp.click(function(){
+		if( inp.html()=='Свернуть' || inp.html()=='Hide' ){
+			inp.html(inp.attr('data-label'));
+		}else{
+			inp.html((lang=="RU" ? "Свернуть" : "Hide"));
+		}
+		edli__cutonoff(lid);
+	});
+
+}
+
+function edli__cutonoff(lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	var flag='';
+	itemwrapper.find('.pe-form-group').each(function() {
+		var el=$(this);
+
+		if(flag=='y'){
+			if(el.css('display') == 'none'){
+				el.css('display','block');
+			}else{
+				el.css('display','none');
+			}
+		}
+		if(el.attr('data-list-cut')=='yes'){
+			flag='y';
+		}
+	});
+}
+
+function edli__drawUI__cutclose(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+
+	var str = '';
+
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+}
+
+function edli__setFieldValue(v,field,lid){
+	var v_len=v.length;
+	if(v_len>3000){
+		alert( (lang=="RU" ? "Предупреждение: в поле слишком много текста. Мы настойчиво рекомендуем его сократить." : "Notice: there are a lot of data in this field. We stringly recommend decrese information.") );
+		return;
+	}
+
+	edli__allitems__getData__inJson();
+}
+
+function edli__allitems__getData__inJson(){
+
+	var wrapper=$('.editlist__wrapper');
+
+	if( wrapper.attr('data-init-status') != 'inited' ){
+		console.log('Error getdatainjson: Initing listeditor not finished');
+		return;
+	}
+
+	var fields=wrapper.attr('data-lfields').split(',');
+
+	var data={};
+	var i=0;
+
+
+	$('.pe-list-item').each(function(){
+		var it = $(this);
+
+		var item={};
+		item['lid']=it.attr('data-listitem-id');
+		item['ls']=it.attr('data-listitem-sort');
+		item['loff']=it.attr('data-listitem-off');
+		if(item['loff']=='y'){item['loff']='y';}else{item['loff']='';}
+
+		fields.forEach(function(field, i, arr) {
+			if(field!='lid' && field!='ls' && field!='loff'){
+				item[field]=it.find('[name='+field+']').val();
+			}
+		});
+
+		data[i]=item;
+		i++;
+	});
+
+	var datastr=JSON.stringify(data);
+
+	var datastr_len=datastr.length;
+	if(datastr_len>45000){
+		alert( (lang=="RU" ? "Ошибка: слишком много текста. Изменения не будут сохранены. Пожалуйста, удалите часть информации." : "Error: too much data. Changes can not be saved. Please delete some information.") );
+		return;
+	}
+
+	$('.editlist__data').val(datastr);
+	//console.log(datastr);
+
+}
+
+function edli__add(){
+	var item={};
+	var rnd=Math.floor(Math.random() * 1000) + 10;
+	var newlid=Date.now() - rnd;
+	item['lid']=newlid;
+
+	var maxsort=edli__getMaxSort();
+	item['ls']=maxsort+10;
+
+	edli__drawItem(item);
+	edli__allitems__Resort();
+	edli__allitems__getData__inJson();
+
+	var wrapper=$('.editlist__wrapper');
+	var newitemwrapper=wrapper.find('[data-listitem-id='+newlid+']');
+	$('#editformsxl').animate({scrollTop: $('#editformsxl').scrollTop() + newitemwrapper.position().top -100}, 700);
+
+}
+
+function edli__del(lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	itemwrapper.slideUp( "fast", function() {
+		itemwrapper.remove();
+		edli__allitems__Resort();
+		edli__allitems__getData__inJson();
+	});
+
+}
+
+function edli__off(lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	var off=itemwrapper.attr('data-listitem-off');
+	if(off=='y'){
+		itemwrapper.attr('data-listitem-off','');
+		itemwrapper.css('opacity','');
+		itemwrapper.find('.pe-list-item-btn-offon').find('a').html( (lang=="RU" ? "Выключить" : "Off") );
+	}else{
+		itemwrapper.attr('data-listitem-off','y');
+		itemwrapper.css('opacity','0.5');
+		itemwrapper.find('.pe-list-item-btn-offon').find('a').html( (lang=="RU" ? "Включить" : "On") );
+	}
+
+	//edli__allitems__Resort();
+	edli__allitems__getData__inJson();
+}
+
+function edli__down(lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var nextitemwrapper=itemwrapper.next('.pe-list-item');
+	if(nextitemwrapper.length==0)return;
+
+	var content=itemwrapper.detach();
+	nextitemwrapper.after(content);
+
+	edli__allitems__Resort();
+	edli__allitems__getData__inJson();
+
+	setTimeout(function() {
+		var newitemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+		$('#editformsxl').animate({scrollTop: $('#editformsxl').scrollTop() + newitemwrapper.position().top -100}, 700);
+	}, 100);
+
+}
+
+function edli__up(lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var previtemwrapper=itemwrapper.prev('.pe-list-item');
+	if(previtemwrapper.length==0)return;
+
+	var content=itemwrapper.detach();
+	previtemwrapper.before(content);
+
+	edli__allitems__Resort();
+	edli__allitems__getData__inJson();
+
+	setTimeout(function() {
+		var newitemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+		$('#editformsxl').animate({scrollTop: $('#editformsxl').scrollTop() + newitemwrapper.position().top -100}, 700);
+	}, 100);
+
+}
+
+function edli__dupl(lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fields=wrapper.attr('data-lfields').split(',');
+
+	var item={};
+	var rnd=Math.floor(Math.random() * 1000) + 10;
+	var newlid=Date.now() - rnd;
+	item['lid']=newlid;
+
+	fields.forEach(function(field, i, arr) {
+		if(field!='lid' && field!='ls'){
+			item[field]=itemwrapper.find('[name='+field+']').val();
+		}
+	});
+
+	var sort=parseInt(itemwrapper.attr('data-listitem-sort'))*1;
+	item['ls']=sort+5;
+
+	var afterlid=lid;
+	edli__drawItem(item,afterlid);
+
+	edli__allitems__Resort();
+	edli__allitems__getData__inJson();
+
+	setTimeout(function() {
+		var newitemwrapper=wrapper.find('[data-listitem-id='+newlid+']');
+		$('#editformsxl').animate({scrollTop: $('#editformsxl').scrollTop() + newitemwrapper.position().top -100}, 700);
+	}, 100);
+
+}
+
+function edli__getMaxSort(){
+	var wrapper=$('.editlist__wrapper');
+	var max=0;
+	var isort=0;
+	wrapper.find('.pe-list-item').each(function() {
+		isort=parseInt($(this).attr('data-listitem-sort'));
+		if( max < isort )max=isort;
+	});
+	return(max);
+}
+
+function edli__allitems__Resort(){
+
+	var wrapper=$('.editlist__wrapper');
+	var sort=10;
+	var i=0;
+
+	wrapper.find('.pe-list-item').each(function(){
+		var it = $(this);
+		i++;
+		sort=i*10;
+		it.attr('data-listitem-sort',sort);
+		it.find('.pe-list-item-i').html(i);
+		//console.log(sort);
+	});
+
+}
+
+
+
+
+
+function edli__drawUI__gallery(value,field,lid){
+
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+
+	if ( typeof value == 'undefined')value='';
+
+	var label=field;
+	if(label=='li_gallery')label = (lang=="RU" ? "Список изображений" : "Images list");
+
+	var tumaxwidth='';
+	var tumaxheight='';
+
+
+	var str = '';
+
+	str += '<div class="pe-form-group" data-lid="'+lid+'" data-lfield="'+field+'">';
+	str += '    <label class="pe-label">'+label+'</label>';
+	str += '	<br>';
+	str += '    <div class="js-gallery-upload-widget">';
+	str += '    	<textarea name="'+field+'" class="js-gallery-json" style="display:none;" rows="1">'+value+'</textarea>';
+	str += '	    <table style="width:100%;">';
+	str += '		<tr>';
+	str += '		<td style="width:240px; vertical-align:top;">';
+	str += '		<div style="width:100%;">';
+	str += '		<input type="text" name="li-tubutton" class="js-imgs-button" value="" data-tu-is-image="yes" data-tu-multiple="yes" '+tumaxwidth+' '+tumaxheight+' id="tuwidget'+lid+'_'+field+'" /><br>';
+	str += '		</div>';
+	str += '		</td>';
+	str += '		<td style="vertical-align:top; text-align:right;">';
+	str += '		</td>';
+
+	str += '		</tr>';
+	str += '	    </table>';
+	str += '		<div class="js-gallery-items"></div>';
+	str += '	</div>';
+	str += '</div>';
+
+	itemwrapper.append(str);
+
+
+	/* draw exist items */
+	if(value!=''){
+
+		try {
+			var obj = $.parseJSON(value);
+		}catch(err){
+			console.log('Some BUG');
+		}
+
+		if(typeof obj=='object'){
+			$.each(obj, function( index, item ) {
+				if(typeof item['img']!='undefined' && item['img']!=''){
+					edli__drawUI__gallery__drawitem(item['img'],item['alt'],field,lid);
+				}
+			});
+		}
+	}
+
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+
+	/* set main upload widget action */
+	fieldwrapper.find('.js-imgs-button').each(function(){
+		var $this = $(this), elementid;
+		var elementid = $this.attr('id');
+
+		if (! elementid) {
+			elementid = 'tuwidget'+parseInt(Math.floor(Math.random() * (999999 - 99999 + 1)) + 99999);
+			$this.attr('id', elementid);
+		}
+
+		TUWidget.init($this).done(function(file){
+			if (this.options.uploadMultiple) {
+				for(i in file) {
+					var src=file[i].tuInfo.cdnUrl;
+					var uuid=file[i].tuInfo.uuid;
+					edli__drawUI__gallery__drawitem(src,'',field,lid,uuid);
+				}
+				edli__drawUI__gallery__updatejsonvalue(field,lid);
+			} else {
+				console.log('HMMM..!!');
+			}
+
+			setTimeout(function(){
+				$('#'+elementid+'-previews').removeClass('tu-popup-progressbar-completed').removeClass('tu-processing').removeClass('tu-image-preview').removeClass('tu-success').removeClass('tu-complete').addClass('tu-popup-progressbar-start');
+			},500);
+
+		}).fail(function(file, message){
+		});
+	});
+
+	edli__drawUI__gallery__sortable(field,lid);
+
+}
+
+
+function edli__drawUI__gallery__drawitem(src,alt,field,lid,uuid,replace_item_el){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+	var div=fieldwrapper.find('.js-gallery-items');
+
+	var name=src;
+	name = name.substr(name.length - 30);
+
+	if(typeof uuid=='undefined' || uuid==''){
+		uuid=Math.floor(Math.random() * 10000000) + 1000;
+	}
+
+	if(typeof alt=='undefined'){
+		alt='';
+	}
+
+	var fields=wrapper.attr('data-lfields');
+	var needalt=fields.indexOf(field+"alt");
+
+	var str='';
+	str += '<div class="js-gallery-item" data-uuid="'+uuid+'" data-src="'+src+'" data-alt="'+alt+'" style="margin:10px 0;">';
+	str += '<table style="font-size:12px;">';
+	str += '<tr>';
+	str += '<td>';
+	str += '<img src="'+src+'" width="80" class="js-img-thumb" id="lst'+lid+'_'+field+'id_uuid'+uuid+'" />';
+	str += '</td>';
+	str += '<td style="padding-left:20px; padding-right:20px; width:500px; font-size:12px; color:#333;"><a href="'+src+'" target="_blank" class="js-img-title" data-li-img-href="">... '+name+'</a></td>';
+	str += '<td><div class="js-img-updatebtn"><a href="javascript:edli__drawUI__gallery__update(\''+field+'\',\''+lid+'\',\''+uuid+'\');">'+(lang=="RU" ? "Заменить&nbsp;фото" : "Replace&nbsp;image")+'</a></div></td>';
+	str += '<td style="padding-left:20px; white-space: nowrap;"><a href="javascript:edli__drawUI__gallery__showmore(\''+field+'\',\''+lid+'\',\''+uuid+'\');">...</a></td>';
+	str += '<td style="padding-left:10px;"><a href="javascript:edli__drawUI__gallery__tui_editimg(\''+field+'\',\''+lid+'\',\''+uuid+'\');" class="js-edit-img"><span class="glyphicon glyphicon-pencil"></span></a></td>';
+	str += '<td style="padding-left:10px; width:20px;"><a href="javascript:edli__drawUI__gallery__del(\''+field+'\',\''+lid+'\',\''+uuid+'\');"><span class="glyphicon glyphicon-trash"></span></a></td>';
+	str += '</tr>';
+	str += '</table>';
+
+	/* meta alt */
+	str += '<div class="js-gallery-item-showmore-div" style="display:none; margin:30px 0;">';
+	str += '    <label class="pe-label">'+(lang=="RU" ? "SEO: Альт-текст для изображения" : "SEO: Image alt text")+'</label>';
+	str += '    <input type="text" class="pe-input" value="'+alt+'" />';
+	str += '</div>';
+
+	str += '</div>';
+
+	/*add or replace */
+	if(typeof replace_item_el=='object'){
+		replace_item_el.replaceWith(str);
+	}else{
+		div.append(str);
+	}
+
+	var el=div.find("[data-uuid="+uuid+"]");
+
+	el.find('.js-img-updatebtn').each(function(){
+		var $this = $(this), elementid;
+		var elementid = $this.attr('id');
+
+		if (! elementid) {
+			elementid = 'tuwidget'+parseInt(Math.floor(Math.random() * (999999 - 99999 + 1)) + 99999);
+			$this.attr('id', elementid);
+		}
+
+		TUWidget.init($this).done(function(file){
+
+			edli__drawUI__gallery__drawitem(file.tuInfo.cdnUrl,'',field,lid,'',el);
+			edli__drawUI__gallery__updatejsonvalue(field,lid);
+
+		}).fail(function(file, message){
+		});
+	});
+
+	var inpalt=el.find('.js-gallery-item-showmore-div').find('.pe-input');
+
+	inpalt.change(function() {
+		var val=inpalt.val();
+		if(typeof val=='undefined')val='';
+		var map = {
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;'
+		};
+		val = val.replace(/[<>"]/g, function(m) { return map[m]; });
+		el.attr('data-alt',val);
+		edli__drawUI__gallery__updatejsonvalue(field,lid);
+	});
+
+}
+
+function edli__drawUI__gallery__updatejsonvalue(field,lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+
+	var el,src,alt;
+	var arr=[];
+	var itemObj={};
+	fieldwrapper.find('.js-gallery-items').find('.js-gallery-item').each(function(){
+		el=$(this);
+		src=el.attr('data-src');
+		alt=el.attr('data-alt');
+		itemObj={};
+		itemObj['img']=src;
+		if(typeof alt!='undefined' && alt!='')itemObj['alt']=alt;
+		arr.push(itemObj);
+	});
+	var jsonString = JSON.stringify(arr);
+
+	var inp=fieldwrapper.find("[name="+field+"]");
+	inp.val(jsonString);
+	inp.trigger('change');
+}
+
+function edli__drawUI__gallery__del(field,lid,uuid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+	var div=fieldwrapper.find('.js-gallery-items').find('[data-uuid='+uuid+']');
+	div.remove('');
+	edli__drawUI__gallery__updatejsonvalue(field,lid);
+}
+
+
+function edli__drawUI__gallery__sortable(field,lid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+
+	fieldwrapper.find('.js-gallery-items').sortable({
+		helper:'clone',
+		opacity: 0.8,
+		revert: true,
+		tolerance :'pointer',
+		axis:'y',
+		update: function(event, ui) {
+			edli__drawUI__gallery__updatejsonvalue(field,lid);
+		}
+	});
+
+}
+
+function edli__drawUI__gallery__tui_editimg(field,lid,uuid){
+	$(document).ready(function(){
+		var wrapper=$('.editlist__wrapper');
+		var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+		var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+		var itemdiv=fieldwrapper.find('.js-gallery-item[data-uuid="'+uuid+'"]');
+		var src = itemdiv.find('.js-img-thumb').attr('src');
+		var imageitemid='lst'+lid+'_'+field+'id_uuid'+uuid;
+
+
+		tui_editimage(lid, imageitemid, function(imgid, tuInfo){
+			if (tuInfo) {
+				var newURL = tuInfo.cdnUrl;
+
+				var $box = $('#'+imgid).closest('.js-image-box');
+				if ($box.length > 0) {
+					var $box = $('#'+imageitemid).closest('.js-gallery-item');
+					$box.attr('data-src',newURL);
+					var title = newURL.substring(newURL.length-30);
+					$box.find('.js-img-title').attr('href', newURL).html('...'+title);
+
+					$box.find('.js-img-updatebtn').find('a').trigger('click');
+
+					setTimeout(function() {
+						$('.tu-popup').css('display','none');
+					}, 100);
+					setTimeout(function() {
+						$('.tu-popup').find('.tu-uploadurl-input').val(newURL);
+					}, 200);
+					setTimeout(function() {
+						$('.tu-popup').find('.tu-uploadurl-btn').trigger('click');
+					}, 500);
+				}
+			}
+		});
+
+
+	});
+}
+
+function edli__drawUI__gallery__aviary_editimg(field,lid,uuid){
+	$(document).ready(function(){
+		aviaryOnReady(function(){
+			var wrapper=$('.editlist__wrapper');
+			var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+			var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+			var itemdiv=fieldwrapper.find('.js-gallery-item[data-uuid="'+uuid+'"]');
+			var src = itemdiv.find('.js-img-thumb').attr('src');
+			var imageitemid='lst'+lid+'_'+field+'id_uuid'+uuid;
+
+			window.featherEditor.launch({
+				image: imageitemid,
+				url: src,
+				onLoad: function(){ alert('loadd'); },
+				onSave: function(imageID, newURL) {
+					var img = document.getElementById(imageID);
+					img.src = newURL;
+
+					var $box = $('#'+imageitemid).closest('.js-gallery-item');
+					$box.attr('data-src',newURL);
+					var title = newURL.substring(newURL.length-30);
+					$box.find('.js-img-title').attr('href', newURL).html('...'+title);
+
+					$box.find('.js-img-updatebtn').find('a').trigger('click');
+
+					setTimeout(function() {
+						$('.tu-popup').css('display','none');
+					}, 100);
+					setTimeout(function() {
+						$('.tu-popup').find('.tu-uploadurl-input').val(newURL);
+					}, 200);
+					setTimeout(function() {
+						$('.tu-popup').find('.tu-uploadurl-btn').trigger('click');
+					}, 500);
+
+					return window.featherEditor.close();
+				}
+			});
+
+		});
+	});
+}
+
+function edli__drawUI__gallery__showmore(field,lid,uuid){
+	var wrapper=$('.editlist__wrapper');
+	var itemwrapper=wrapper.find('[data-listitem-id='+lid+']');
+	var fieldwrapper=itemwrapper.find('[data-lfield='+field+']');
+	var imgdiv=fieldwrapper.find('.js-gallery-item[data-uuid="'+uuid+'"]');
+	var div=imgdiv.find('.js-gallery-item-showmore-div');
+	if(div.css('display')=='none'){
+		div.css('display','block');
+	}else{
+		div.css('display','none');
+	}
+}
+
+function edli_geokeys_open(field,lid){
+	var el=$(".pe-form-group[data-lid='"+lid+"']").find("input[name='"+field+"']");
+	var l='EN';if(lang=='RU'){l='RU'};
+	$.getScript("https://geo.tildacdn.com/script.js", function(){
+		gs__open(el,l);
+	});
+}
