@@ -2,8 +2,8 @@
             $("#submit").click(function() {
                 var data = $("#my-form").serializeObject();//parse in JSON
             //POST to server
-             $.post("/registration", data, function(data) {
-                           console.log(data);
+             $.post("/registration", JSON.stringify(data), function(data) {
+                           console.log(JSON.stringify(data));
    
                 });
              return false; 
