@@ -5,7 +5,7 @@
              $.post("/registration", JSON.stringify(data), function(data) {
                            console.log(JSON.stringify(data));
    
-                });
+                },Content-Type: application/json);
              return false; 
               
             });
