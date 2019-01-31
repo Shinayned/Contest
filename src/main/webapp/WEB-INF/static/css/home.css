@@ -114,7 +114,7 @@ body {
 }
 @font-face {
     font-family: Century Gothic; /* Имя шрифта */
-    src: url(../fonts/Century Gothic.ttf); /* Путь к файлу со шрифтом */
+    src: url("../fonts/Century Gothic.ttf"); /* Путь к файлу со шрифтом */
    }
 .head-menu
 {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -48,7 +48,7 @@
                 <div class="info" id="phone"> 
                         Телефон: 0978974820
                 </div>
-                <div class="info" id="email">
+                <div class="info" id="email" th:text="${participant} ? |Email: ${participant.email}| : _">
                         Email: oleh.melnechyk@gmail.com
                 </div>
                 <li>
@@ -78,7 +78,7 @@
         <div class="conteiner nav-icon" >
                     <a href="#" class="bottom-panel mx-2"><img src="../static/img/YSA.png" alt="" width="30" height="30"></a>
                     <a href="#" class="bottom-panel"><img src="../static/img/facebook.png" alt="" width="30" height="30"></a>
-                    <a href="#" class="bottom-panel" style="margin-right: 10px; position: absolute; right: 0px;"><img src="../static/img/exit.png" alt="" width="30" height="30"></a>
+                    <a href="/logout" class="bottom-panel" style="margin-right: 10px; position: absolute; right: 0px;"><img src="../static/img/exit.png" alt="" width="30" height="30"></a>
             </div>
             </ul>
         </nav>

@@ -1,48 +1,49 @@
+$("#submit").click(function () {
+    var data = $("#my-form").serializeObject();//parse in JSON
+    //POST to server
+    $.ajax({
+        type: "POST",
+        url: "registration",
+        data: JSON.stringify(data),
+        contentType: "application/json"
+    });
 
-            $("#submit").click(function() {
-                var data = $("#my-form").serializeObject();//parse in JSON
-            //POST to server
-             $.post("/registration", JSON.stringify(data), function(data) {
-                           console.log(JSON.stringify(data));
-   
-                },Content-Type: application/json);
-             return false; 
-              
-            });
+    return false;
+});
 
 
-            //MAGIC
-            (function($){
-    $.fn.serializeObject = function(){
+//MAGIC
+(function ($) {
+    $.fn.serializeObject = function () {
 
         var self = this,
             json = {},
             push_counters = {},
             patterns = {
                 "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
-                "key":      /[a-zA-Z0-9_]+|(?=\[\])/g,
-                "push":     /^$/,
-                "fixed":    /^\d+$/,
-                "named":    /^[a-zA-Z0-9_]+$/
+                "key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+                "push": /^$/,
+                "fixed": /^\d+$/,
+                "named": /^[a-zA-Z0-9_]+$/
             };
 
 
-        this.build = function(base, key, value){
+        this.build = function (base, key, value) {
             base[key] = value;
             return base;
         };
 
-        this.push_counter = function(key){
-            if(push_counters[key] === undefined){
+        this.push_counter = function (key) {
+            if (push_counters[key] === undefined) {
                 push_counters[key] = 0;
             }
             return push_counters[key]++;
         };
 
-        $.each($(this).serializeArray(), function(){
+        $.each($(this).serializeArray(), function () {
 
             // skip invalid keys
-            if(!patterns.validate.test(this.name)){
+            if (!patterns.validate.test(this.name)) {
                 return;
             }
 
@@ -51,23 +52,23 @@
                 merge = this.value,
                 reverse_key = this.name;
 
-            while((k = keys.pop()) !== undefined){
+            while ((k = keys.pop()) !== undefined) {
 
                 // adjust reverse_key
                 reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
 
                 // push
-                if(k.match(patterns.push)){
+                if (k.match(patterns.push)) {
                     merge = self.build([], self.push_counter(reverse_key), merge);
                 }
 
                 // fixed
-                else if(k.match(patterns.fixed)){
+                else if (k.match(patterns.fixed)) {
                     merge = self.build([], k, merge);
                 }
 
                 // named
-                else if(k.match(patterns.named)){
+                else if (k.match(patterns.named)) {
                     merge = self.build({}, k, merge);
                 }
             }

@@ -17,7 +17,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
-@ComponentScan({"services", "repository", "controllers"})
+@ComponentScan({"service", "repository", "controller", "event", "exception", "component"})
 @EntityScan("model")
 @EnableJpaRepositories("repository")
 @EnableTransactionManagement
