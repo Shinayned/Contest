@@ -1,12 +1,13 @@
 
-            $("#my-form").submit(function() {
-                var data = $(this).serializeObject();//parse in JSON
-  
+            $("#submit").click(function() {
+                var data = $("#my-form").serializeObject();//parse in JSON
             //POST to server
              $.post("/registration", data, function(data) {
-                            console.log(data);
+                           console.log(data);
+   
                 });
-              return false;
+             return false; 
+              
             });
 
 
