@@ -1,8 +1,16 @@
 
             $("#my-form").submit(function() {
-             console.log($(this).serializeObject());
+                var data = $(this).serializeObject();//parse in JSON
+  
+            //POST to server
+             $.post("/registration", data, function(data) {
+                            console.log(data);
+                });
               return false;
             });
+
+
+            //MAGIC
             (function($){
     $.fn.serializeObject = function(){
 
@@ -69,3 +77,7 @@
         return json;
     };
 })(jQuery);
+
+
+
+
