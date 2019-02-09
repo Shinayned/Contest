@@ -5,6 +5,8 @@ import dto.ParticipantDto;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Participants")
@@ -22,7 +24,11 @@ public class Participant {
     @Convert(converter = DateTimeConverter.class)
     private DateTime birthdate;
 
+    @OneToMany(mappedBy = "participant")
+    private List<Application> applications;
+
     private boolean enabled;
+    private String filesFolderId;
 
     protected Participant() {
         this.enabled = false;
@@ -88,5 +94,13 @@ public class Participant {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getFilesFolderId() {
+        return filesFolderId;
+    }
+
+    public void setFilesFolderId(String filesFolderId) {
+        this.filesFolderId = filesFolderId;
     }
 }
