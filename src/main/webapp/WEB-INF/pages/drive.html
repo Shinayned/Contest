@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Home</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/stylefile.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="../static/js/drive.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="../static/css/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script type="text/javascript" src="../static/js/telMask.js"></script>  
+
+</head>
+
+<body>
+     <nav class="navbar navbar-expand fixed-top nav-hor">
+ <div class="conteiner-fluid">
+    <div class="row">
+        <div class="col-12">
+           
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <a href="#menu-toggle" class="d-md-none" id="menu-toggle">
+                    <img src="../static/img/hamburger.png" id="hamb" width="35" height="28">
+                </a>
+              </div>
+       
+        </div>
+    </div>
+    </div>
+         </nav>
+<div id="wrapper">
+
+        <!-- Sidebar -->
+        <nav  class="fixed-top">
+           <ul class="sidebar-nav" id="sidebar-wrapper">
+                <a href="#">
+                     <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
+                     <span class="head-menu" id="name">Ім'я Прізвище</span>
+                 </a>
+                <div class="info" id="date">
+                        Дата народження: 00.00.00
+                </div>
+                <div class="info" id="phone"> 
+                        Телефон: 0978974820
+                </div>
+                <div class="info" id="email" th:text="${participant} ? |Email: ${participant.email}| : _">
+                        Email: oleh.melnechyk@gmail.com
+                </div>
+                <li>
+                    <a href="#" class="text-center" style="margin-left: -25px;" id="edit-data">
+                        Редагувати
+                    </a>
+                </li>
+                <hr size="5" width="250" align="center" color="#1f1f1f">
+                <li>
+                    <a href="#">Головна</a>
+                </li>
+                <li>
+          <a href="#">Мій диск</a>
+        </li>
+                 <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Конкурси<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="home.html">Дослідницький відбір</a></li>
+            <li><a href="home.html">Науковий відбір</a></li>
+            <li><a href="home.html">Державне замовлення</a></li>
+          </ul>
+            
+        </li>
+        <li>
+          <a href="#">Про сайт</a>
+        </li>
+        <div class="conteiner nav-icon" >
+                    <a href="#" class="bottom-panel mx-2"><img src="../static/img/YSA.png" alt="" width="30" height="30"></a>
+                    <a href="#" class="bottom-panel"><img src="../static/img/facebook.png" alt="" width="30" height="30"></a>
+                    <a href="/logout" class="bottom-panel" style="margin-right: 10px; position: absolute; right: 0px;"><img src="../static/img/exit.png" alt="" width="30" height="30"></a>
+            </div>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper" class="py-0 px-0">
+           
+        <div class="row">
+        <div class="col-md-3" >
+            <!-- Sidebar -->
+                
+        </div>
+        <div class=" col col-md-9 px-0 my-4 ">
+                <div class="content">
+                    <h1 class="text-align-center" style="margin-top: 3vh;">Мій диск</h1>
+                    <hr>
+                    <img src="../static/img/file.svg" width="70" height="70">
+                    <p>Тут будуть іконки загружених файлів</p>
+                    <hr>
+                    <form id="upload-container" method="POST" action="#"> <!-- Action - name server file--> 
+                        <img id="upload-image" src="../static/img/uplload.svg">
+                        <div>
+                            <input id="file-input" type="file" name="file" multiple>
+                            <label for="file-input">Виберіть файл</label>
+                            <span class="d-none d-md-block px-0 py-0 mx-0 my-0">або перетягніть його сюди</span>
+                        </div>
+                    </form>
+                </div> 
+        </div>
+    </div>
+</div>
+</div>
+        <!-- /#page-content-wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/drive.js"></script>
+    <!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+</body>
+
+</html>

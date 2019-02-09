@@ -125,6 +125,12 @@
  padding: 10px 20px;
  }
 }
+@media only screen and (min-width: 479px){
+#edit
+{
+	margin-left: 200px;
+	}
+}
 .social i
 {
 	background-color: #11a3fc;
@@ -152,11 +158,4 @@ p
 {
 	border-radius: 30px;
 	background-color: #11a3fc;
-}
-.btn:hover
-{
-	padding-left: 30px;
-	padding-right: 30px;
-	padding-bottom: 12px;
-	padding-top: 12px;
 }
