@@ -10,7 +10,7 @@ $(document).ready(function(){
 
 //--------Це затестити треба----------
 	var FileListsArray = [];
-	FileListsArray = $.POST("/drive/upload");
+	FileListsArray = $.post("/drive/upload");
 	console.log(FileList);
 
 	//$('#FilesList').append(View);
