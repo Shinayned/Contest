@@ -33,9 +33,9 @@
                     <input name="password" type="password" class="form-control" id="inputPassword"
                            placeholder="Password">
                     <i class="fa fa-lock"></i>
-                        <div th:if="${param.error}" th:switch="${param.error[0]}">
-                            <p th:case="'token'">Неправильна електронна адреса чи пароль</p>
-                            <p th:case="'disabled'">Аккаунт не активований</p>
+                        <div th:if="${param.error}" th:switch="${param.error[0]}" style="height: 10px;">
+                            <p th:case="'token'" class="py-3">Неправильна електронна адреса чи пароль</p>
+                            <p th:case="'disabled'" class="py-3">Аккаунт не активований</p>
                         </div>
                 </div>
 

@@ -3,16 +3,15 @@ $(document).ready(function(){
 	$("#start").remove();
 
 	View.attr("id", "2sadasfas12e3");
-	View.find('#text').text('txt.pdf');
+	View.find('#text').text('teeext.pdf');
 	$('#FilesList').append(View);
 
 
 
 //--------Це затестити треба----------
 	var FileListsArray = [];
-	FileListsArray = JSON.parse($.post("/drive/upload"));
-	FileListsArray = $.post("/drive/upload");
-	console.log(FileList);
+	FileListsArray = JSON.parse($.post("drive/upload"));
+	console.log(FileListsArray);
 
 	for (var i = FileListsArray.length - 1; i >= 0; i--) {
 		View.attr("id", FileListsArray[i].id);
@@ -23,26 +22,9 @@ $(document).ready(function(){
 });
 
 $("#save").click(function() {
-	$.ajax()
-	{
-			url: "/drive/download?id=" + this.id,
-			type: 'get',
-			success: function() {
-				alert ('Скачивание началось!');
-			}
-	}
-
+	$.get("drive/download?id=" + this.id)
     });
 
-
 $("#delete").click(function() {
-	$.ajax()
-	{
-			url: "/drive/remove?id=" + this.id,
-			type: 'get',
-			success: function(data) {
-				alert ('Удаленно');
-			}
-	}
-
+	$.get("drive/remove?id=" + this.id)
     });
