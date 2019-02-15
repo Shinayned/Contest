@@ -1,17 +1,38 @@
 $(document).ready(function(){
-	var View = $('.showFilesList').clone(true);
+	var View = $('.showFilesList').clone();
 	$("#start").remove();
 
-	View.attr("id", "2sadasfas12e3");
-	View.find('#text').text('teeext.pdf');
-	$('#FilesList').append(View);
+	$.fn.multiply = function( id , name) {
+    var newElements = this.clone();
+    newElements.addClass(name);
+    newElements.attr("id", id);
+    newElements.find('#text').text(name);
+    return newElements;
+	};
 
-	JSON.parse($.post("drive/fileList", function(data) {
+$("#save").click(function(e) {
+	var id = $(this).closest("div[title]").attr("id");
+	console.log(id);
+	$.get("drive/download?id=" + id);
+	e.preventDefault();
+	return false;
+    });
+
+$("#delete").click(function(e){
+	var id = $(this).closest("div[title]").attr("id");
+	console.log(id);
+	$('#'+id).remove();
+	$.get("drive/remove?id=" + id);
+	e.preventDefault();
+	return false;
+    });
+
+
+
+	 JSON.parse($.post("drive/fileList", function(data) {
 		console.log(drive);
         for (var i = data.length - 1; i >= 0; i--) {
-            View.attr("id", data[i].id);
-            View.find('#text').text(data[i].name);
-            $('#FilesList').append(View);
+        	$(View).multiply(1,data[i].id,data[i].name).insertAfter('#FilesList');
         }
 	}));
 

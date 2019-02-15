@@ -12,8 +12,7 @@
     <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/stylefile.css">
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="../static/js/drive.js"></script>
-     <script src="../static/js/show.js"></script>
+
 
     <!-- Custom styles for this template -->
     <link href="../static/css/home.css" rel="stylesheet">
@@ -102,8 +101,9 @@
                     <h1 class="text-align-center" style="margin-top: 3vh;">Мій диск</h1>
                     <hr>
                     <div class="conteiner  mx-4">
-                        <div class="row" id="FilesList">
-                            <div class="col-3 col-md-1 showFilesList" id="start">                                   
+                        <div class="row">
+                            <div id="FilesList">
+                                <div class="col-3 col-md-1 showFilesList" title="parent" id="start">                                   
                                     <div class="row">
                                     <img src="../static/img/file.svg" width="70" height="70">
                                 </div>
@@ -118,12 +118,13 @@
                                 </div>
                                 
                             </div>
-                            
+                            </div>
+  
                         </div>     
                     </div>
                     
                     <hr>
-                    <form id="upload-container" method="POST" action="/drive/upload"> <!-- Action - name server file-->
+                    <form id="upload-container"> <!-- Action - name server file-->
                         <img id="upload-image" src="../static/img/uplload.svg">
                         <div>
                             <input id="file-input" type="file" name="uploadingFiles" multiple>
@@ -142,7 +143,9 @@
     <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../static/js/drive.js"></script>
     <!-- Menu Toggle Script -->
-    <script src="../static/js/eventDrive.js"></script>
+    <script src="../static/js/drive.js"></script>
+    <script src="../static/js/show.js"></script>
+
 <script>
     $("#menu-toggle").click(function(e) {
         e.preventDefault();

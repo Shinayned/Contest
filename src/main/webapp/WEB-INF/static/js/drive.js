@@ -47,8 +47,8 @@ $(document).ready(function(){
 		});
 
 		$.ajax({
-			url: dropZone.attr('action'),
-			type: dropZone.attr('method'),
+			url: "/drive/upload/",
+			type: "POST",
 			data: Data,
 			contentType: false,
 			processData: false,
@@ -56,5 +56,6 @@ $(document).ready(function(){
 				alert ('Файлы были успешно загружены!');
 			}
 		});
+		return false;
 	}
 });
