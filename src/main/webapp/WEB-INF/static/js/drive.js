@@ -30,12 +30,11 @@ $(document).ready(function(){
 		let files = e.originalEvent.dataTransfer.files;
 		sendFiles(files);
 	});
-
-	$('#file-input').change(function() {
+		$('#file-input').change(function() {
 		let files = this.files;
 		sendFiles(files);
 	});
-	
+
 	function sendFiles(files) {
 		let maxFileSize = 15242880;
 		let Data = new FormData();

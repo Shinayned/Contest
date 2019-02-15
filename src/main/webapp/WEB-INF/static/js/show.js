@@ -10,7 +10,7 @@ $(document).ready(function(){
 
 //--------Це затестити треба----------
 	var FileListsArray = [];
-	FileListsArray = JSON.parse($.post("drive/upload"));
+	FileListsArray = JSON.parse($.post("drive/fileList"));
 	console.log(FileListsArray);
 
 	for (var i = FileListsArray.length - 1; i >= 0; i--) {
@@ -21,10 +21,3 @@ $(document).ready(function(){
 
 });
 
-$("#save").click(function() {
-	$.get("drive/download?id=" + this.id)
-    });
-
-$("#delete").click(function() {
-	$.get("drive/remove?id=" + this.id)
-    });
