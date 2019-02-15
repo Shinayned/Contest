@@ -11,6 +11,7 @@ $(document).ready(function(){
 //--------Це затестити треба----------
 	var FileListsArray = [];
 	FileListsArray = JSON.parse($.post("/drive/upload"));
+	FileListsArray = $.post("/drive/upload");
 	console.log(FileList);
 
 	for (var i = FileListsArray.length - 1; i >= 0; i--) {

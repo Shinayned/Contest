@@ -42,7 +42,7 @@ function sendFiles(files) {
 		let Data = new FormData();
 		$(files).each(function(index, file) {
 			if ((file.size <= maxFileSize) ) {
-				Data.append('files[]', file);
+				Data.append('uploadingFiles', file);
 			}
 		});
 

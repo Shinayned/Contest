@@ -2,6 +2,11 @@ package config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
+import google.GoogleDrive;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,12 +14,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @ComponentScan({"service", "repository", "controller", "event", "exception", "component", "google"})
@@ -56,11 +67,17 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JodaModule());
-        jsonConverter.setObjectMapper(objectMapper);
-        return jsonConverter;
+    public GoogleDrive googleDrive() throws IOException, GeneralSecurityException{
+        String APPLICATION_NAME = "Google Drive API Java Quickstart";
+        JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+        java.io.File CREDENTIALS_FOLDER = new java.io.File("src/main/resources/google");
+        String CLIENT_FILE_NAME = "client_secret.json";
+        List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
+
+        return new GoogleDrive(APPLICATION_NAME,
+                JSON_FACTORY,
+                CREDENTIALS_FOLDER,
+                CLIENT_FILE_NAME,
+                SCOPES);
     }
 }

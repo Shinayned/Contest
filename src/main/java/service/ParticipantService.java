@@ -9,7 +9,7 @@ public interface ParticipantService {
     boolean existsByEmail(String email);
     Participant registerNewAccount(ParticipantDto participantDto);
     Participant registerNewAccount(Participant participant);
-    void updateAccount(Participant user);
+    void updateAccount(Participant participant);
     void createVerificationToken(Participant participant, String token);
     VerificationToken getVerificationToken(String VerificationToken);
 }

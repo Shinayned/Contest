@@ -1,10 +1,12 @@
 package model;
 
 import converter.DateTimeConverter;
+import google.FileInfo;
 import dto.ParticipantDto;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,30 +32,32 @@ public class Participant {
     private boolean enabled;
     private String filesFolderId;
 
+    @Lob
+    private ArrayList<FileInfo> uploadedFiles;
+
     protected Participant() {
-        this.enabled = false;
     }
 
     public Participant(ParticipantDto participantDto) {
-        this.email = participantDto.getEmail();
-        this.password = participantDto.getPassword();
-        this.fullName = participantDto.getFullName();
-        this.birthdate = participantDto.getBirthdate();
-        this.enabled = false;
+        this(participantDto.getEmail(),
+                participantDto.getPassword(),
+                participantDto.getFullName(),
+                participantDto.getBirthdate());
     }
 
     public Participant(String email, String password, String fullName, DateTime birthdate) {
-        this.email = email;
-        this.password = password;
+        this(email, password);
+
         this.fullName = fullName;
         this.birthdate = birthdate;
-        this.enabled = false;
     }
 
     public Participant(String email, String password) {
         this.email = email;
         this.password = password;
+
         this.enabled = false;
+        this.uploadedFiles = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -102,5 +106,17 @@ public class Participant {
 
     public void setFilesFolderId(String filesFolderId) {
         this.filesFolderId = filesFolderId;
+    }
+
+    public ArrayList<FileInfo> getUploadedFiles() {
+        return new ArrayList<>(uploadedFiles);
+    }
+
+    public void addUploadedFile(FileInfo fileInfo) {
+        uploadedFiles.add(fileInfo);
+    }
+
+    public void setUploadedFiles(ArrayList<FileInfo> uploadedFiles) {
+        this.uploadedFiles = uploadedFiles;
     }
 }
