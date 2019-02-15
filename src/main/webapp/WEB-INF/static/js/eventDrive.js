@@ -1,11 +1,13 @@
 $("#save").click(function() {
-	console.log(this.id);
-	$.get("drive/download?id=" + this.id)
+	var id = $(this).parent().parent().parent().parent().attr("id");
+	console.log(id);
+	$.get("drive/download?id=" + id)
 	return false;
     });
 
 $("#delete").click(function(){
-	console.log(this.id);
-	$.get("drive/remove?id=" + this.id)
+	var id = $(this).parent().parent().parent().parent().attr("id");
+	console.log(id);
+	$.get("drive/remove?id=" + id)
 	return false;
     });
