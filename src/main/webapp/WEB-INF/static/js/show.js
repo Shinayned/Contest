@@ -10,9 +10,38 @@ $(document).ready(function(){
 
 //--------Це затестити треба----------
 	var FileListsArray = [];
-	FileListsArray = $.POST("/drive/upload");
+	FileListsArray = JSON.parse($.post("/drive/upload"));
 	console.log(FileList);
 
-	//$('#FilesList').append(View);
-	//document.querySelector("body").appendChild(ViewFiles);
+	for (var i = FileListsArray.length - 1; i >= 0; i--) {
+		View.attr("id", FileListsArray[i].id);
+		View.find('#text').text(FileListsArray[i].name);
+		$('#FilesList').append(View);
+	}
+
 });
+
+$("#save").click(function() {
+	$.ajax()
+	{
+			url: "/drive/download?id=" + this.id,
+			type: 'get',
+			success: function() {
+				alert ('Скачивание началось!');
+			}
+	}
+
+    });
+
+
+$("#delete").click(function() {
+	$.ajax()
+	{
+			url: "/drive/remove?id=" + this.id,
+			type: 'get',
+			success: function(data) {
+				alert ('Удаленно');
+			}
+	}
+
+    });

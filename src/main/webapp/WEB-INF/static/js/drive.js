@@ -35,9 +35,9 @@ $(document).ready(function(){
 		let files = this.files;
 		sendFiles(files);
 	});
+})
 
-
-	function sendFiles(files) {
+function sendFiles(files) {
 		let maxFileSize = 15242880;
 		let Data = new FormData();
 		$(files).each(function(index, file) {
@@ -57,5 +57,4 @@ $(document).ready(function(){
 			}
 		});
 	}
-})
 
