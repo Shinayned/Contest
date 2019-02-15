@@ -18,6 +18,14 @@ $(document).ready(function(){
 		View.find('#text').text(FileListsArray[i].name);
 		$('#FilesList').append(View);
 	}
+	JSON.parse($.post("drive/fileList", function(data) {
+		console.log(drive);
+        for (var i = data.length - 1; i >= 0; i--) {
+            View.attr("id", data[i].id);
+            View.find('#text').text(data[i].name);
+            $('#FilesList').append(View);
+        }
+	}));
 
 });
 
