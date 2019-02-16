@@ -1,6 +1,6 @@
 
 $("#save").click(function(e) {
-	var id = $(this).parent().parent().parent().parent().attr("id");
+	var id = $(this).closest("div[title]").attr("id");
 	console.log(id);
 	$.get("drive/download?id=" + id);
 	e.preventDefault();
@@ -8,8 +8,9 @@ $("#save").click(function(e) {
     });
 
 $("#delete").click(function(e){
-	var id = $(this).parent().parent().parent().parent().attr("id");
+	var id = $(this).closest("div[title]").attr("id");
 	console.log(id);
+	$('#'+id).remove();
 	$.get("drive/remove?id=" + id);
 	e.preventDefault();
 	return false;
