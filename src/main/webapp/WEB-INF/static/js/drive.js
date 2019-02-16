@@ -31,7 +31,6 @@ $(document).ready(function(){
 		let files = e.originalEvent.dataTransfer.files;
 		sendFiles(files);
 	});
-		
 		$('#file-input').change(function() {
 		let files = this.files;
 		sendFiles(files);
@@ -44,9 +43,8 @@ $(document).ready(function(){
 			if ((file.size <= maxFileSize) ) {
 				Data.append('uploadingFiles', file);
 			}
-		});
 
-		$.ajax({
+			$.ajax({
 			url: "/drive/upload/",
 			type: "POST",
 			data: Data,
@@ -56,6 +54,9 @@ $(document).ready(function(){
 				alert ('Файлы были успешно загружены!');
 			}
 		});
+		});
+
+
 		return false;
 	}
 });
