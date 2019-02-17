@@ -10,30 +10,17 @@ $(document).ready(function(){
     return newElements;
 	};
 
-
-$(".save").click(function(e) {
-	var id = $(this).closest("div[title]").attr("id");
-	console.log(id);
-	$.get("drive/download?id=" + id);
-	e.preventDefault();
-	return false;
-    });
-
-$(".remove").click(function(e){
-	var id = $(this).closest("div[title]").attr("id");
-	console.log(id);
-	$('#'+id).remove();
-	$.get("drive/remove?id=" + id);
-	e.preventDefault();
-	return false;
-});
-
-	JSON.parse($.post("drive/fileList", function(data) {
-		console.log(drive);
+	/*var i = 0;
+	$("#add").click(function(e){
+		$(View).multiply("id"+i,"name"+i).insertAfter('#FilesList');
+		i++;
+		return false;
+	})*/
+		$.post("drive/fileList", function(data) {
         for (var i = data.length - 1; i >= 0; i--) {
         	$(View).multiply(data[i].id,data[i].name).insertAfter('#FilesList');
         }
-	}));
+	});
 
 });
 

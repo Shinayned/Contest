@@ -52,6 +52,7 @@ $(document).ready(function(){
 			processData: false,
 			success: function(data) {
 				alert ('Файлы были успешно загружены!');
+				location.reload();
 			}
 		});
 		});
