@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Сраница ошибки 404</title>
+    <title th:text="${error}">Сраница ошибки 404</title>
     <link rel="stylesheet" href="../static/css/error.css">
     <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -10,11 +10,7 @@
 <div class="comingcontainer">
     <div class="checkbacksoon">
         <p>
-            <span class="go3d">4</span>
-            <span class="go3d">0</span>
-            <span class="go3d">4</span>
-            <span class="go3d">!</span>
-            
+                <span class="go3d" th:text="${status + '!'}"></span>
         </p>    
     </div>
 </div>

@@ -176,6 +176,7 @@ body { font-family: 'Open Sans', sans-serif; font-size: 14px; color: #3c3c3c;
 	-o-transition: all 0.1s linear;
 	-ms-transition: all 0.1s linear;
 	transition: all 0.1s linear;
+	cursor: default;
 }
 
 /* Нижняя панель навигации
