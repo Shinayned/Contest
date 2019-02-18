@@ -1,8 +1,8 @@
 $(".save").click(function(e) {
 	//var id = $(this).closest("div[title]").attr("id");
 	var name = $(this).closest("div[title]").attr("name");
-	//$.get("drive/download?id=" + id);
-	this.href = name;
+	
+	this.href = $.get("drive/download?id=" + id);
 	//return false;
     });
 
