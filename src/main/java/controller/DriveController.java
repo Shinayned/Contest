@@ -37,6 +37,9 @@ public class DriveController {
     public List<FileInfo> onUpload(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, Principal principal) throws Exception{
         String participantEmail = principal.getName();
         List<FileInfo> uploadedFiles = driveService.uploadFiles(participantEmail, uploadingFiles);
+        for(FileInfo file : uploadedFiles) {
+            System.out.println(file);
+        }
         return uploadedFiles;
     }
 
@@ -63,6 +66,7 @@ public class DriveController {
     }
 
     @GetMapping("/drive/remove")
+    @ResponseBody
     public void onRemove(@RequestParam(value = "id") String fileId, Principal principal) {
         driveService.deleteFile(fileId);
     }
