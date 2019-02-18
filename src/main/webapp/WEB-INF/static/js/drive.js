@@ -54,10 +54,10 @@ $(document).ready(function(){
 				alert ('Файлы были успешно загружены!');
 				location.reload();
 			}
-		});
-		});
 
-
+		});
+		
+		});
 		return false;
 	}
 });
