@@ -1,5 +1,7 @@
 $(".save").click(function(e) {
 	var id = $(this).closest("div[title]").attr("id");
+	var name = $(this).closest("div[title]").attr("name");
+	this.setAttribute('download',name);
 	this.href = "drive/download?id=" + id;
     });
 
