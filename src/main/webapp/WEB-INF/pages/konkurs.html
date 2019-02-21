@@ -14,6 +14,7 @@
     <!-- Custom styles for this template -->
     <link href="../static/css/home.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/stylefile.css">
     <script type="text/javascript" src="../static/js/telMask.js"></script>  
 
 </head>
@@ -65,7 +66,7 @@
           <a href="drive.html">Мій диск</a>
         </li>
                  <li class="dropdown">
-            <a href="home.html" >Конкурси</a>
+          <a href="home.html" >Конкурси</a>
             
         </li>
         <li>
@@ -90,7 +91,7 @@
         </div>
         <div class=" col-12 col-md-5 px-0 text-align-center" id="edit">
             <form data-toggle="validator" role="form" class="form-horizontal" id="my-form">
-                    <span class="heading">Зміна інформації</span>
+                    <span class="heading">Подача заявки</span>
                 <div class="form-group">
                     <label for="inputName" class="control-label">Ваш ПІБ:</label>
                     <input type="text" class="form-control" id="inputName" name="FullName" value="Введите Ваше имя" required>
@@ -105,22 +106,29 @@
 
                     <div class="help-block with-errors"></div>
                 </div>
+				<div class="form-group">
+                    <label for="Organization" class="control-label">Організація:</label>
+                    <input type="text" class="form-control" id="Organization" name="Organization" value="Введіть повне ім'я організації" required>
+                </div>     
                 <div class="form-group">
-                    <label for="inputEmail" class="control-label">Ваш E-mail</label>
-                    <input type="email" class="form-control" id="inputEmail" name="email" value="youremail@email.com" data-error="Вы не правильно ввели Ваш E-mail">
-                </div>
+                    <label for="Status" class="control-label">Посада:</label>
+                    <input type="text" class="form-control" id="Status" name="Status" value="Введіть повну назву посаду, яку посідаєте" required>
+                </div>                
                 <div class="form-group">
-                    <label for="inputMessage" class="control-label text-center">Додаткова інформація</label>
+                    <label for="inputMessage" class="control-label text-center">*(для аспірантів) - рік навчання, вчений ступінь, звання /час присудження/ ( поле не обов’язкове для заповнення, лише для аспірантів).</label>
                     <textarea name="FullInfo" id="message" class="form-control" rows="9" cols="25" style="min-height: 150px;" placeholder="Введіть текст"></textarea>
                     <div class="help-block with-errors"></div>
                 </div>
-                <!--<div class="form-group">
-                    <div class="checkbox">
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>-->
+				<div class="form-group">
+                    <label for="Adress" class="control-label">Службова адреса</label>
+                    <input type="text" class="form-control" id="Adress" name="Adress" value="Введіть службову адресу" required>
+                </div>       
+                <div form-group>
+					<input id="file-input" type="file" name="uploadingFiles" multiple>
+                    <label for="file-input">Завантажити документи</label>                	
+                </div>           
                 <div class="form-group">
-                    <button id="submit" class="btn btn-primary a_submit" href="home.html" >Змінити</button>
+                    <button id="submit" class="btn btn-primary a_submit" href="home.html">Відправити</button>
                 </div>
                 </form> 
                 <script src="../static/js/jsonParse.js"></script>
@@ -131,6 +139,7 @@
 </div>
         <!-- /#page-content-wrapper -->
     <!-- Bootstrap core JavaScript -->
+    <script src="../static/js/drive.js"></script>
     <script src="../static/vendor/jquery/jquery.min.js"></script>
     <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

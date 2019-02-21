@@ -122,6 +122,15 @@ body {
 	color: #fff;
 	font-size: 20px;
 }
+p
+{
+  background-color: #ffffff47;
+  border-radius: 35px;
+  padding: 5px;
+  font-family: Century Gothic;
+  color: #000;
+  font-size: 16px;  
+}
 a:hover
 {
 	text-decoration: none;
@@ -173,6 +182,9 @@ a:hover
 }
 
 @media(min-width:768px) {
+  p{
+    color: #fff;
+  }
   .nav-hor{
   background-color: #ff8207; 
   height: 6vh;
@@ -232,4 +244,8 @@ a:hover
 {
   margin: 10px;
   padding:10px;
+}
+.img-fluid
+{
+
 }
