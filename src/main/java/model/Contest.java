@@ -4,17 +4,13 @@ import converter.DateTimeConverter;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Table(name = "Contests")
 public class Contest {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     private String name;
     private boolean isActive;
 
@@ -25,14 +21,17 @@ public class Contest {
     private List<Application> applications;
 
     @ElementCollection
-    @MapKeyColumn(name="name")
-    @Column(name="type")
-    @CollectionTable(name="contest_fields", joinColumns=@JoinColumn(name="id"))
-    private Map<String, String> fields;
+    private List<ContestField> fields;
 
-    public Contest(String name, Map<String, String> fields) {
+    private ContestPage pageData;
+
+    protected Contest(){}
+
+    public Contest(String name, List<ContestField> fields, ContestPage pageData) {
         this.name = name;
-        this.fields = new HashMap<>(fields);
+        this.fields = new ArrayList<>(fields);
+        this.pageData = pageData;
+
         this.isActive = false;
     }
 
@@ -49,12 +48,20 @@ public class Contest {
             return isActive;
         }
 
-        DateTime currentTime = new DateTime();
-        return isActive = currentTime.isBefore(expirationTime);
+        return isActive = DateTime.now().isBefore(expirationTime);
     }
 
+
     public void setActive(boolean active) {
-        isActive = active;
+        if(active) {
+            if(expirationTime.isBefore(DateTime.now())) {
+                throw new RuntimeException("Expiration time is out.");
+            }
+            this.isActive = active;
+        } else {
+            this.expirationTime = null;
+            this.isActive = false;
+        }
     }
 
     public DateTime getExpirationTime() {
@@ -62,7 +69,11 @@ public class Contest {
     }
 
     public void setExpirationTime(DateTime expirationTime) {
-        this.expirationTime = expirationTime;
+        if(expirationTime.isBefore(DateTime.now())) {
+            throw new RuntimeException("Expiration time is out.");
+        } else {
+            this.expirationTime = expirationTime;
+        }
     }
 
     public List<Application> getApplications() {
@@ -73,11 +84,21 @@ public class Contest {
         this.applications = applications;
     }
 
-    public Map<String, String> getFields() {
-        return new HashMap<>(fields);
+    public List<ContestField> getFields() {
+        return new ArrayList<>(fields);
     }
 
-    public void setFields(Map<String, String> fields) {
+    public void setFields(List<ContestField> fields) {
         this.fields = fields;
     }
+
+    public ContestPage getPageData() {
+        return pageData;
+    }
+
+    public void setPageData(ContestPage pageData) {
+        this.pageData = pageData;
+    }
+
+
 }

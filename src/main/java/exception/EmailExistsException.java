@@ -2,9 +2,7 @@ package exception;
 
 
 public class EmailExistsException extends RuntimeException {
-
-    public EmailExistsException(final String message) {
+    public EmailExistsException(String message) {
         super(message);
     }
-
 }

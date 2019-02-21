@@ -1,12 +1,12 @@
 package model;
 
 import converter.DateTimeConverter;
+import enums.FieldType;
+import exception.FieldException;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "Applications")
@@ -23,32 +23,50 @@ public class Application {
     @JoinColumn(name = "participant_id")
     private Participant participant;
 
-    @ElementCollection
-    @MapKeyColumn(name="field")
-    @Column(name="value")
-    @CollectionTable(name="application_data", joinColumns=@JoinColumn(name="id"))
-    private Map<String, String> data;
+    @Lob
+    private HashMap<String, ArrayList<String>> data;
 
     @Convert(converter = DateTimeConverter.class)
     private DateTime fillingDate;
     private boolean isVerified;
 
-    public Application(Contest contest,Participant participant, Map<String, String> data) {
+    protected Application() {}
+
+    public Application(Contest contest,Participant participant, Map<String, String[]> filledForms) {
         this.contest = contest;
         this.participant = participant;
-        isVerified = false;
-        data = fillDataFields(contest.getFields(), data);
+        this.isVerified = false;
+        this.data = fillDataFields(contest.getFields(), filledForms);
 
-        fillingDate = new DateTime();
+        this.fillingDate = new DateTime();
     }
 
-    private static Map<String, String> fillDataFields(Map<String, String> fields, Map<String, String> data) {
-        Map<String, String> result = new HashMap<>();
+    private static HashMap<String, ArrayList<String>> fillDataFields(List<ContestField> fields, Map<String, String[]> filledForms) throws FieldException {
+        HashMap<String, ArrayList<String>> result = new HashMap<>();
 
-        fields.forEach((fieldName, fieldType) -> {
-            String fieldData = data.getOrDefault(fieldName, "");
-            result.put(fieldName, fieldData);
-        });
+        for (ContestField field : fields) {
+            String fieldName = field.getFieldName();
+            FieldType fieldType = field.getFiledType();
+            String[] formData = filledForms.get(fieldName);
+
+            if(formData == null) {
+                if (formData == null && field.isObligatory()) {
+                    throw new FieldException("Field '" + field.getFieldName() + "' is obligatory.");
+                }
+            } else {
+                switch (fieldType) {
+                    case STRING:
+                        ArrayList<String> singleParameter = new ArrayList<>();
+                        singleParameter.add(formData[0]);
+
+                        result.put(fieldName, singleParameter);
+                        break;
+                    case ARRAY:
+                        result.put(fieldName, new ArrayList<>(Arrays.asList(formData)));
+                        break;
+                }
+            }
+        }
 
         return result;
     }
@@ -69,11 +87,11 @@ public class Application {
         this.participant = participant;
     }
 
-    public Map<String, String> getData() {
+    public HashMap<String, ArrayList<String>> getData() {
         return new HashMap<>(data);
     }
 
-    public void setData(Map<String, String> data) {
+    public void setData(HashMap<String, ArrayList<String>> data) {
         this.data = data;
     }
 
