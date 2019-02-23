@@ -1,24 +1,23 @@
 package model;
 
-import enums.FieldType;
+import enums.FormType;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.io.Serializable;
 
 @Embeddable
 public class ContestField {
     private String fieldName;
 
     @Enumerated(EnumType.STRING)
-    private FieldType filedType;
+    private FormType filedType;
 
     private boolean isObligatory;
 
     protected ContestField() {}
 
-    public ContestField(String fieldName, FieldType filedType) {
+    public ContestField(String fieldName, FormType filedType) {
         this.fieldName = fieldName;
         this.filedType = filedType;
 
@@ -33,11 +32,11 @@ public class ContestField {
         this.fieldName = fieldName;
     }
 
-    public FieldType getFiledType() {
+    public FormType getFiledType() {
         return filedType;
     }
 
-    public void setFiledType(FieldType filedType) {
+    public void setFiledType(FormType filedType) {
         this.filedType = filedType;
     }
 

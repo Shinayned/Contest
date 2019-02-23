@@ -1,7 +1,11 @@
 package config;
 
+import enums.StringFormType;
+import field.FileForm;
+import field.Form;
+import field.StringForm;
 import model.ContestField;
-import enums.FieldType;
+import enums.FormType;
 import google.GoogleDrive;
 import model.Contest;
 import model.ContestPage;
@@ -11,7 +15,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import repository.ContestRepository;
 import service.ContestService;
 import service.ParticipantService;
 
@@ -48,8 +51,8 @@ public class Application {
 
     public void contestTest() {
         List<ContestField> fields = new ArrayList<>();
-        fields.add(new ContestField("User_name", FieldType.STRING));
-        fields.add(new ContestField("Your_works", FieldType.ARRAY));
+        fields.add(new ContestField("User_name", FormType.STRING));
+        fields.add(new ContestField("Your_works", FormType.SELECT_LIST));
         Contest contest = new Contest("Avionica", fields, new ContestPage("Some BODY"));
 
         contestService.createContest(contest);

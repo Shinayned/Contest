@@ -1,7 +1,7 @@
 package model;
 
 import converter.DateTimeConverter;
-import enums.FieldType;
+import enums.FormType;
 import exception.FieldException;
 import org.joda.time.DateTime;
 
@@ -46,7 +46,7 @@ public class Application {
 
         for (ContestField field : fields) {
             String fieldName = field.getFieldName();
-            FieldType fieldType = field.getFiledType();
+            FormType fieldType = field.getFiledType();
             String[] formData = filledForms.get(fieldName);
 
             if(formData == null) {
@@ -61,7 +61,7 @@ public class Application {
 
                         result.put(fieldName, singleParameter);
                         break;
-                    case ARRAY:
+                    case SELECT_LIST:
                         result.put(fieldName, new ArrayList<>(Arrays.asList(formData)));
                         break;
                 }
