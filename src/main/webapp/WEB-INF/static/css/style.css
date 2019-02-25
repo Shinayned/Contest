@@ -1,4 +1,11 @@
-
+@font-face {
+    font-family: Century Gothic; /* Имя шрифта */
+    src: url("../fonts/Century Gothic.ttf"); /* Путь к файлу со шрифтом */
+   }
+body
+{
+	font-family: Century Gothic;
+}
 
 /* Form Style */
 .form-horizontal{
@@ -149,13 +156,54 @@
 	cursor: pointer;
 	padding: 12px;
 }
+
 p
 {
 	color: red;
 	font-size: 12px;
+
 }
 .btn 
 {
-	border-radius: 30px;
 	background-color: #11a3fc;
 }
+
+.contents
+{
+	margin-left: 30px;
+	margin-top: 60px;
+	margin-right: 30px;
+	margin-bottom: 0;
+}
+
+	.contents h1
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+.contents a
+{
+	color: #000;
+}
+.contents p
+{
+	color: #000;
+	font-size: 16px;
+}
+.contents .btn
+{
+	margin: 5px;
+}
+@media(min-width:768px) {
+	.contents .btn
+{
+	width: 200px;
+	height: 50px;
+}
+	.contents .button
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+}
+

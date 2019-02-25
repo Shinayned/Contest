@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>form</title>
+	    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../static/css/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script type="text/javascript" src="../static/js/telMask.js"></script>  
+</head>
+<body>
+<form data-toggle="validator" role="form" class="form-horizontal" id="my-form">
+                    <span class="heading">Зміна інформації</span>
+                <div class="form-group">
+                    <label for="String" class="control-label">STRING</label>
+                    <input type="text" class="form-control" id="STRING" name="string" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="Date" class="control-label">DATE</label>
+                    <input type="date" class="form-control" id="DATE" name="date">
+                </div>
+                <div class="form-group">
+                    <label for="phone_number" class="control-label">PHONE_NUMBER</label>
+                    <input type="text" id="PHONE_NUMBER" class="form-control" name="phone" onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);" value="+38(097)000-00-00" >
+
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group">
+                    <label for="Email" class="control-label">Ваш E-mail</label>
+                    <input type="email" class="form-control" id="EMAIL" name="email" value="youremail@email.com" data-error="Вы не правильно ввели Ваш E-mail">
+                </div>
+                <div class="form-group">
+                	<div class="checkbox" id="MULTIPLE_SELECT_LIST">
+ 						<div>
+  							<input type="checkbox" id="one" name="1" checked>
+  							<label for="one">One</label>
+						</div>
+						<div>
+  							<input type="checkbox" id="two" name="1">
+  							<label for="two">Two</label>
+						</div>						
+
+				    </div>  
+                </div> 
+				<div class="form-group">
+                	<div class="radio" id="SINGLE_SELECT_LIST">
+ 						<div>
+  							<input type="radio" id="one" name="1" checked>
+  							<label for="one">One</label>
+						</div>
+						<div>
+  							<input type="radio" id="two" name="1">
+  							<label for="two">Two</label>
+						</div>						
+
+				    </div>  
+                </div>     
+				<div class="form-group">
+					<div class="align-items-center text-align-center">
+						<a href="#" id="DROPDOWN_LIST" class="dropdown-toggle"  data-toggle="dropdown">dropdown</a>
+                        	<ul class="dropdown-menu " role="menu" style="width: 100px; background-color: #fff;">
+                            	<li><a href="">value1</a></li>
+                            	<li><a href="">value1</a></li>
+                        	</ul>						
+					</div>
+				</div>
+				<div class="form-group">
+					<input id="file-input" type="file" name="uploadingFiles" multiple>
+                    <!--<label for="file-input">Виберіть файл</label>-->						
+				</div> 
+								                                       
+                <div class="form-group">
+                    <button id="submit" class="btn btn-primary a_submit" href="home.html" >Submit</button>
+                </div>
+                </form> 
+                <script src="../static/js/jsonParse.js"></script>	
+
+  <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>                
+</body>
+</html>
