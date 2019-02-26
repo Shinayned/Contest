@@ -2,6 +2,8 @@ package model;
 
 import javax.persistence.Embeddable;
 
+
+// IS NOT USING. DEVELOPING IS FROZEN
 @Embeddable
 public class ContestPage {
     private String body;

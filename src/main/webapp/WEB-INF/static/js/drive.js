@@ -43,6 +43,7 @@ $(document).ready(function () {
                 Data.append('uploadingFiles', file);
             }
         });
+        Data.append("testVar", "IT'S WORKING!!!!!!");
         $.ajax({
             url: "/drive/upload/",
             type: "POST",

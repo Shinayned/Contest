@@ -1,11 +1,9 @@
 package config;
 
-import enums.StringFormType;
-import field.FileForm;
-import field.Form;
-import field.StringForm;
-import model.ContestField;
-import enums.FormType;
+import contest.form.Form;
+import contest.form.SelectForm;
+import contest.form.enums.SelectFormType;
+import contest.form.enums.SimpleFormType;
 import google.GoogleDrive;
 import model.Contest;
 import model.ContestPage;
@@ -50,10 +48,18 @@ public class Application {
     }
 
     public void contestTest() {
-        List<ContestField> fields = new ArrayList<>();
-        fields.add(new ContestField("User_name", FormType.STRING));
-        fields.add(new ContestField("Your_works", FormType.SELECT_LIST));
-        Contest contest = new Contest("Avionica", fields, new ContestPage("Some BODY"));
+        List<Form> forms = new ArrayList<>();
+
+        Form form = new Form(SimpleFormType.EMAIL, "Enter your email");
+        List<String> variants = new ArrayList<>();
+        variants.add("True");
+        variants.add("False");
+        Form form2 = new SelectForm(SelectFormType.SINGLE_SELECT_LIST, variants);
+
+        forms.add(form);
+        forms.add(form2);
+
+        Contest contest = new Contest("Avionica", forms, "Avionica");
 
         contestService.createContest(contest);
     }

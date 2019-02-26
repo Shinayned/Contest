@@ -1,6 +1,8 @@
 package model;
 
+import contest.form.Form;
 import converter.DateTimeConverter;
+import contest.form.Forms;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -11,6 +13,8 @@ import java.util.List;
 @Table(name = "Contests")
 public class Contest {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String name;
     private boolean isActive;
 
@@ -20,19 +24,32 @@ public class Contest {
     @OneToMany(mappedBy = "contest")
     private List<Application> applications;
 
-    @ElementCollection
-    private List<ContestField> fields;
+    @Lob
+    private Forms forms;
 
-    private ContestPage pageData;
+    // ************ IS NOT USING. DEVELOPING IS FROZEN ************
+    //private ContestPage pageData;
+
+    private String page;
+
+    @Convert(converter = DateTimeConverter.class)
+    private DateTime creatingTime;
+
+    private String filesFolderId;
 
     protected Contest(){}
 
-    public Contest(String name, List<ContestField> fields, ContestPage pageData) {
+    public Contest(String name, List<Form> forms, String pageName) {
         this.name = name;
-        this.fields = new ArrayList<>(fields);
-        this.pageData = pageData;
+        this.forms = new Forms(forms);
+        this.page = pageName;
 
         this.isActive = false;
+        this.creatingTime = new DateTime();
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -50,7 +67,6 @@ public class Contest {
 
         return isActive = DateTime.now().isBefore(expirationTime);
     }
-
 
     public void setActive(boolean active) {
         if(active) {
@@ -77,28 +93,38 @@ public class Contest {
     }
 
     public List<Application> getApplications() {
-        return applications;
+        return new ArrayList<>(applications);
     }
 
     public void setApplications(List<Application> applications) {
-        this.applications = applications;
+        this.applications = new ArrayList<>(applications);
     }
 
-    public List<ContestField> getFields() {
-        return new ArrayList<>(fields);
+    public List<Form> getForms() {
+        return forms.getAllForms();
     }
 
-    public void setFields(List<ContestField> fields) {
-        this.fields = fields;
+    public void setForms(List<Form> forms) {
+        this.forms.setForms(forms);
     }
 
-    public ContestPage getPageData() {
-        return pageData;
+    public void addForms(List<Form> forms) {
+        this.forms.addForms(forms);
     }
 
-    public void setPageData(ContestPage pageData) {
-        this.pageData = pageData;
+    public String getPage() {
+        return page;
     }
 
+    public void setPage(String page) {
+        this.page = page;
+    }
 
+    public String getFilesFolderId() {
+        return filesFolderId;
+    }
+
+    public void setFilesFolderId(String filesFolderId) {
+        this.filesFolderId = filesFolderId;
+    }
 }

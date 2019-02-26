@@ -1,14 +1,18 @@
-package field;
+package contest.form;
 
-import enums.FormType;
+import contest.form.enums.FormType;
 
-public class StringForm extends Form {
+public class StringForm extends Form implements Cloneable {
     private String placeHolder;
     private int minLength;
     private int maxLength;
 
-    public StringForm(String name, String title) {
-        super(name, FormType.STRING, title);
+    public StringForm( ) {
+        super(FormType.STRING);
+    }
+
+    public StringForm(String title) {
+        super(FormType.STRING, title);
     }
 
     public String getPlaceHolder() {
@@ -33,5 +37,20 @@ public class StringForm extends Form {
 
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
+    }
+
+    @Override
+    protected boolean specialValidate(String[] values) {
+        String value = values[0];
+
+        if(value.length() >= minLength && value.length() <= maxLength)
+            return true;
+
+        return false;
+    }
+
+    @Override
+    protected Object clone() {
+        return super.clone();
     }
 }

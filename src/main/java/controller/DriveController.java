@@ -11,6 +11,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import service.DriveService;
 import service.ParticipantService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Array;
@@ -34,7 +35,7 @@ public class DriveController {
 
     @PostMapping("/drive/upload")
     @ResponseBody
-    public List<FileInfo> onUpload(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, Principal principal) throws Exception{
+    public List<FileInfo> onUpload(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, HttpServletRequest request, Principal principal) throws Exception{
         String participantEmail = principal.getName();
         List<FileInfo> uploadedFiles = driveService.uploadFiles(participantEmail, uploadingFiles);
         for(FileInfo file : uploadedFiles) {

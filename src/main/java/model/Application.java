@@ -1,8 +1,8 @@
 package model;
 
+import contest.form.Form;
+import contest.form.FormData;
 import converter.DateTimeConverter;
-import enums.FormType;
-import exception.FieldException;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -24,7 +24,7 @@ public class Application {
     private Participant participant;
 
     @Lob
-    private HashMap<String, ArrayList<String>> data;
+    private ArrayList<FormData> data;
 
     @Convert(converter = DateTimeConverter.class)
     private DateTime fillingDate;
@@ -32,67 +32,29 @@ public class Application {
 
     protected Application() {}
 
-    public Application(Contest contest,Participant participant, Map<String, String[]> filledForms) {
+    public Application(Contest contest, Participant participant, List<FormData> data) {
         this.contest = contest;
         this.participant = participant;
         this.isVerified = false;
-        this.data = fillDataFields(contest.getFields(), filledForms);
+        this.data = new ArrayList<>(data);
 
         this.fillingDate = new DateTime();
-    }
-
-    private static HashMap<String, ArrayList<String>> fillDataFields(List<ContestField> fields, Map<String, String[]> filledForms) throws FieldException {
-        HashMap<String, ArrayList<String>> result = new HashMap<>();
-
-        for (ContestField field : fields) {
-            String fieldName = field.getFieldName();
-            FormType fieldType = field.getFiledType();
-            String[] formData = filledForms.get(fieldName);
-
-            if(formData == null) {
-                if (formData == null && field.isObligatory()) {
-                    throw new FieldException("Field '" + field.getFieldName() + "' is obligatory.");
-                }
-            } else {
-                switch (fieldType) {
-                    case STRING:
-                        ArrayList<String> singleParameter = new ArrayList<>();
-                        singleParameter.add(formData[0]);
-
-                        result.put(fieldName, singleParameter);
-                        break;
-                    case SELECT_LIST:
-                        result.put(fieldName, new ArrayList<>(Arrays.asList(formData)));
-                        break;
-                }
-            }
-        }
-
-        return result;
     }
 
     public Contest getContest() {
         return contest;
     }
 
-    public void setContest(Contest contest) {
-        this.contest = contest;
-    }
-
     public Participant getParticipant() {
         return participant;
     }
 
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
+    public List<FormData> getData() {
+        return new ArrayList<>(data);
     }
 
-    public HashMap<String, ArrayList<String>> getData() {
-        return new HashMap<>(data);
-    }
-
-    public void setData(HashMap<String, ArrayList<String>> data) {
-        this.data = data;
+    public void setData(ArrayList<FormData> data) {
+        this.data = new ArrayList<>(data);
     }
 
     public DateTime getFillingDate() {

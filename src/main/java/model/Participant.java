@@ -119,4 +119,8 @@ public class Participant {
     public void setUploadedFiles(ArrayList<FileInfo> uploadedFiles) {
         this.uploadedFiles = uploadedFiles;
     }
+
+    public List<Application> getApplications() {
+        return applications;
+    }
 }
