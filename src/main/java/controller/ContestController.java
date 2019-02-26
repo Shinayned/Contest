@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class ContestController {
                                   Model model) {
         String participantEmail = principal.getName();
         Map<String, String[]> formsData = request.getParameterMap();
-        contestService.submitApplication(contestId, participantEmail, formsData, files);
+        contestService.submitApplication(contestId, participantEmail, formsData, Arrays.asList(files));
     }
 
     @GetMapping("/contest/{contestId}/application")

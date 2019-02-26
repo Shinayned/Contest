@@ -17,6 +17,7 @@ import repository.ContestRepository;
 import javax.transaction.Transactional;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -50,27 +51,14 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     @Transactional
-    public void submitApplication(long contestId, String participantEmail, Map<String, String[]> formsData, MultipartFile[] files)
+    public void submitApplication(long contestId, String participantEmail, Map<String, String[]> formsData, List<MultipartFile> files)
             throws ResourceNotFoundException, BadRequestException{
         Contest contest = getContest(contestId);
         Participant participant = participantService.getParticipantByEmail(participantEmail);
 
         checkForDuplicateSubmit(participant, contestId);
 
-        List<Form> contestForms = contest.getForms();
-        List<Form> forms = new ArrayList<>();
-        List<FileForm> fileForms = new ArrayList<>();
-
-        contestForms.forEach(form -> {
-            if (form instanceof FileForm)
-                fileForms.add((FileForm) form);
-            else
-                forms.add(form);
-        });
-
-        List<FormData> applicationData = new ArrayList<>();
-        applicationData.addAll(prepareApplicationData(forms, formsData, files));
-
+        List<FormData> applicationData = prepareApplicationData(contest, participant, formsData, files);
         Application application = new Application(contest, participant, applicationData);
 
         applicationRepository.save(application);
@@ -103,13 +91,24 @@ public class ContestServiceImpl implements ContestService {
         }
     }
 
-    private List<FormData> prepareApplicationData(List<Form> forms, Map<String, String[]> formsData, MultipartFile[] files) {
+    private List<FormData> prepareApplicationData(Contest contest, Participant participant, Map<String, String[]> formsData, List<MultipartFile> files) {
+        List<Form> contestForms = contest.getForms();
+        List<Form> forms = new ArrayList<>();
+        List<FileForm> fileForms = new ArrayList<>();
+
+        contestForms.forEach(form -> {
+            if (form instanceof FileForm)
+                fileForms.add((FileForm) form);
+            else
+                forms.add(form);
+        });
+
         List<FormData> applicationData = new ArrayList<>();
 
         List<FormData> fieldsData = prepareFormsData(forms, formsData);
         applicationData.addAll(fieldsData);
 
-        List<FormData> filesData = prepareFileFormsData(forms, files);
+        List<FormData> filesData = prepareFileFormsData(contest, participant, fileForms, files);
         applicationData.addAll(fieldsData);
 
         return applicationData;
