@@ -35,11 +35,11 @@ public class SelectForm extends Form implements Cloneable {
         boolean isSingleChoiceList = this.getType() != SelectFormType.MULTIPLE_SELECT_LIST.toFormType();
 
         if (isSingleChoiceList && values.size() != 1)
-            throw new InvalidParameterException("Form №" + this.getId() + " has only one parameter.");
+            throw new InvalidParameterException("Form #" + this.getId() + " has only one parameter.");
 
         for (String value : values) {
             if (!fields.contains(value))
-                throw new InvalidParameterException("Form №" + this.getId() + " hasn't '" + value + "'.");
+                throw new InvalidParameterException("Form #" + this.getId() + " hasn't '" + value + "'.");
         }
     }
 

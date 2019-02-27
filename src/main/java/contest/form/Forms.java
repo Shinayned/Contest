@@ -23,7 +23,9 @@ public class Forms implements Serializable {
     }
 
     public Forms(List<Form> forms) {
-        setForms(forms);
+        this();
+
+        addForms(forms);
     }
 
     public void addForm(Form form) {
@@ -45,9 +47,9 @@ public class Forms implements Serializable {
     }
 
     public void setForms(List<Form> forms) {
-        sortedForms = new ArrayList<>();
-        fileForms = new ArrayList<>();
-        forms = new ArrayList<>();
+        this.sortedForms = new ArrayList<>();
+        this.fileForms = new ArrayList<>();
+        this.forms = new ArrayList<>();
 
         addForms(forms);
     }
@@ -142,8 +144,10 @@ public class Forms implements Serializable {
         formsData = new HashMap<>(formsData);
 
         for (Form form : forms) {
-            int formId = form.getId();
-            List<String> values = Arrays.asList(formsData.get(formId));
+            String formId = Integer.toString(form.getId());
+            String[] formData = formsData.getOrDefault(formId , new String[0]);
+            List<String> values = Arrays.asList(formData);
+
             form.validate(values);
 
             formsData.remove(formId);
