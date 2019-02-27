@@ -1,8 +1,10 @@
 package contest.form;
 
 import contest.form.enums.FormType;
+import exception.BadRequestException;
 
 import java.io.Serializable;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public abstract class Form implements Serializable, Cloneable {
@@ -52,18 +54,18 @@ public abstract class Form implements Serializable, Cloneable {
         return isObligatory;
     }
 
-    public boolean validate(String[] values) {
-        boolean noValues = values == null || values.length == 0;
+    public void validate(List<String> values) throws InvalidParameterException {
+        boolean noValues = (values == null || values.isEmpty());
+
         if (noValues) {
             if (this.isObligatory())
-                return false;
-            return true;
+                throw new InvalidParameterException("Form №" + this.id + " is required");
         }
 
-        return specialValidate(values);
+        specialValidate(values);
     }
 
-    protected abstract boolean specialValidate(String[] values);
+    protected abstract void specialValidate(List<String> values) throws InvalidParameterException;
 
     @Override
     public boolean equals(Object o) {

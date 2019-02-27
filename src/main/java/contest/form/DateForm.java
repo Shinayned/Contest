@@ -3,6 +3,7 @@ package contest.form;
 import contest.form.enums.FormType;
 import org.joda.time.DateTime;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,13 +18,15 @@ public class DateForm extends Form {
     }
 
     @Override
-    protected boolean specialValidate(String[] values) {
+    protected void specialValidate(List<String> values) throws InvalidParameterException {
+        if(values.size() != 1)
+            throw new InvalidParameterException("Form №" + this.getId() + " is single form.");
+
         try {
-            String date = values[0];
+            String date = values.get(0);
             DateTime.parse(date);
-            return true;
         } catch (Exception exception) {
-            return false;
+            throw new InvalidParameterException("Form №" + this.getId() + " is date form.");
         }
     }
 }

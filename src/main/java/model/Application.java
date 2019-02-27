@@ -41,6 +41,8 @@ public class Application {
         this.fillingDate = new DateTime();
     }
 
+
+
     public Contest getContest() {
         return contest;
     }

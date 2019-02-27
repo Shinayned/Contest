@@ -2,12 +2,15 @@ package contest.form;
 
 import contest.form.enums.FormType;
 
+import java.security.InvalidParameterException;
+import java.util.List;
+
 public class StringForm extends Form implements Cloneable {
     private String placeHolder;
     private int minLength;
     private int maxLength;
 
-    public StringForm( ) {
+    public StringForm() {
         super(FormType.STRING);
     }
 
@@ -40,13 +43,17 @@ public class StringForm extends Form implements Cloneable {
     }
 
     @Override
-    protected boolean specialValidate(String[] values) {
-        String value = values[0];
+    protected void specialValidate(List<String> values) throws InvalidParameterException {
+        if(values.size() != 1)
+            throw new InvalidParameterException("Form №" + this.getId() + " is single form.");
 
-        if(value.length() >= minLength && value.length() <= maxLength)
-            return true;
+        String value = values.get(0);
 
-        return false;
+        if (value.length() < minLength)
+            throw new InvalidParameterException("Form №" + this.getId() + " has min length " + minLength + ".");
+
+        if (value.length() > maxLength)
+            throw new InvalidParameterException("Form №" + this.getId() + " has max length" + maxLength + ".");
     }
 
     @Override

@@ -69,6 +69,8 @@ public class DriveController {
     @GetMapping("/drive/remove")
     @ResponseBody
     public void onRemove(@RequestParam(value = "id") String fileId, Principal principal) {
-        driveService.deleteFile(fileId);
+        String participantEmail = principal.getName();
+
+        driveService.deleteFile(participantEmail, fileId);
     }
 }

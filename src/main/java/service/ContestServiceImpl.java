@@ -3,6 +3,7 @@ package service;
 import contest.form.FileForm;
 import contest.form.Form;
 import contest.form.FormData;
+import contest.form.Forms;
 import exception.BadRequestException;
 import exception.DuplicateException;
 import exception.ResourceNotFoundException;
@@ -16,10 +17,7 @@ import repository.ContestRepository;
 
 import javax.transaction.Transactional;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ContestServiceImpl implements ContestService {
@@ -58,7 +56,16 @@ public class ContestServiceImpl implements ContestService {
 
         checkForDuplicateSubmit(participant, contestId);
 
-        List<FormData> applicationData = prepareApplicationData(contest, participant, formsData, files);
+        try {
+            contest.validateData(formsData, files);
+        } catch (InvalidParameterException exception) {
+            throw new BadRequestException(exception.getMessage());
+        }
+
+        List<FormData> applicationData = new ArrayList<>();
+        applicationData.addAll(createFormDataList(formsData));
+        applicationData.addAll(uploadFiles(contest, participant, files));
+
         Application application = new Application(contest, participant, applicationData);
 
         applicationRepository.save(application);
@@ -73,7 +80,7 @@ public class ContestServiceImpl implements ContestService {
     public Contest getContest(long contestId) throws ResourceNotFoundException {
         Contest contest = contestRepository.findById(contestId).get();
         if (contest == null) {
-            throw new ResourceNotFoundException("Contest #" + contestId + " is not exist.");
+            throw new ResourceNotFoundException("Contest №" + contestId + " is not exist.");
         }
 
         return contest;
@@ -91,80 +98,18 @@ public class ContestServiceImpl implements ContestService {
         }
     }
 
-    private List<FormData> prepareApplicationData(Contest contest, Participant participant, Map<String, String[]> formsData, List<MultipartFile> files) {
-        List<Form> contestForms = contest.getForms();
-        List<Form> forms = new ArrayList<>();
-        List<FileForm> fileForms = new ArrayList<>();
+    private List<FormData> createFormDataList(Map<String, String[]> formsData) {
+        List<FormData> formDataList = new ArrayList<>();
 
-        contestForms.forEach(form -> {
-            if (form instanceof FileForm)
-                fileForms.add((FileForm) form);
-            else
-                forms.add(form);
+        formsData.forEach((key, data) -> {
+            FormData formData = new FormData(Integer.parseInt(key), data);
+            formDataList.add(formData);
         });
 
-        List<FormData> applicationData = new ArrayList<>();
-
-        List<FormData> fieldsData = prepareFormsData(forms, formsData);
-        applicationData.addAll(fieldsData);
-
-        List<FormData> filesData = prepareFileFormsData(contest, participant, fileForms, files);
-        applicationData.addAll(fieldsData);
-
-        return applicationData;
-    }
-
-    private List<FormData> prepareFormsData(List<Form> forms, Map<String, String[]> formsData) {
-        List<FormData> applicationData = new ArrayList<>();
-
-        forms.forEach(form -> {
-            int formId = form.getId();
-            String[] values = formsData.get(formId);
-
-            if (form.validate(values))
-                throw new BadRequestException("Form №" + formId + " invalid data");
-
-            FormData formData = new FormData(formId, values);
-            applicationData.add(formData);
-        });
-
-        return applicationData;
-    }
-
-    private List<FormData> prepareFileFormsData(Contest contest, Participant participant, List<FileForm> fileForms, List<MultipartFile> files) throws BadRequestException{
-        List<FormData> fileData = new ArrayList<>();
-
-        for (FileForm form : fileForms) {
-            List<MultipartFile> formFiles = new ArrayList<>();
-
-            for (int index = 0; index < files.size(); index++) {
-                MultipartFile file = files.get(index);
-
-                String fileId = file.getName();
-                String formId = Integer.toString(form.getId());
-
-                if (fileId.equals(formId)) {
-                    formFiles.add(file);
-                    files.remove(index);
-                }
-            }
-
-            try {
-                form.filesValidation(formFiles);
-            } catch (InvalidParameterException exception) {
-                throw new BadRequestException(exception.getMessage());
-            }
-
-        }
-
-        if(!files.isEmpty())
-            throw new BadRequestException("Request has excess files");
-
-        return uploadFiles(contest, participant, files);
+        return formDataList;
     }
 
     private List<FormData> uploadFiles(Contest contest, Participant participant, List<MultipartFile> files) {
-        List<String> fileIds = driveService.uploadApplicationFiles(contest, participant, files);
-
+        return driveService.uploadApplicationFiles(contest, participant, files);
     }
 }

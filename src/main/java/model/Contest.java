@@ -1,13 +1,14 @@
 package model;
 
 import contest.form.Form;
+import contest.form.FormData;
 import converter.DateTimeConverter;
 import contest.form.Forms;
 import org.joda.time.DateTime;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Contests")
@@ -46,6 +47,11 @@ public class Contest {
 
         this.isActive = false;
         this.creatingTime = new DateTime();
+    }
+
+    public void validateData(Map<String, String[]> formsData, List<MultipartFile> files) {
+        forms.validateForms(formsData);
+        forms.validateFileForms(files);
     }
 
     public long getId() {

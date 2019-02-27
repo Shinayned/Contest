@@ -1,8 +1,10 @@
 package service;
 
 import com.google.api.services.drive.model.File;
+import contest.form.FormData;
 import google.FileInfo;
 import google.GoogleDrive;
+import model.Contest;
 import model.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +41,7 @@ public class GoogleDriveService implements DriveService {
         return uploadedFiles;
     }
 
-    private String getParticipantFolderId(Participant participant) {
+    private String getOrCreateFolder(Participant participant) {
         String folderId;
 
         if (participant.getFilesFolderId() == null) {
@@ -68,7 +70,15 @@ public class GoogleDriveService implements DriveService {
     }
 
     @Override
-    public void deleteFile(String fileId) {
+    public void deleteFile(String participantEmail, String fileId) {
         googleDrive.deleteFile(fileId);
+        Participant participant = participantService.getParticipantByEmail(participantEmail);
+        participant.removeUploadedFile(fileId);
+        participantService.updateAccount(participant);
+    }
+
+    @Override
+    public List<FormData> uploadApplicationFiles(Contest contest, Participant participant, List<MultipartFile> uploadingFiles) {
+        return
     }
 }

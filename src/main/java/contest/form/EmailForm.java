@@ -2,6 +2,7 @@ package contest.form;
 
 import contest.form.enums.FormType;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,14 +20,14 @@ public class EmailForm extends Form {
     }
 
     @Override
-    protected boolean specialValidate(String[] values) {
-        String email = values[0];
+    protected void specialValidate(List<String> values) throws InvalidParameterException {
+        if(values.size() != 1)
+            throw new InvalidParameterException("Form №" + this.getId() + " is single form.");
 
+        String email = values.get(0);
         Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()) {
-            return true;
-        }
 
-        return false;
+        if (!matcher.matches())
+            throw new InvalidParameterException("Form №" + this.getId() + " is email form.");
     }
 }

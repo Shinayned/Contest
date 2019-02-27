@@ -45,7 +45,12 @@ public class FileForm extends Form implements Cloneable {
         this.maxTotalSize = maxTotalSize;
     }
 
-    public void filesValidation(List<MultipartFile> files) {
+    public void filesValidation(List<MultipartFile> files) throws InvalidParameterException{
+        boolean noFiles = (files == null && files.isEmpty());
+        if (noFiles && this.isObligatory())
+            throw new InvalidParameterException(
+                    "Form №" + this.getId() + " is required.");
+
         if (files.size() > maxQuantity)
             throw new InvalidParameterException(
                     "Form №" + this.getId() + " max files quantity is " + this.maxQuantity);
@@ -70,9 +75,7 @@ public class FileForm extends Form implements Cloneable {
     }
 
     @Override
-    protected boolean specialValidate(String[] values) {
-        return true;
-    }
+    protected void specialValidate(List<String> values) throws InvalidParameterException {}
 
     @Override
     protected Object clone() {

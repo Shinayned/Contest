@@ -2,6 +2,7 @@ package contest.form;
 
 import contest.form.enums.SelectFormType;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,20 +31,24 @@ public class SelectForm extends Form implements Cloneable {
     }
 
     @Override
-    protected boolean specialValidate(String[] values) {
+    protected void specialValidate(List<String> values) throws InvalidParameterException {
         if(this.getType() == SelectFormType.MULTIPLE_SELECT_LIST.toFormType()) {
             for(String value : values) {
                 if (!fields.contains(value))
-                    return false;
+                    throw new InvalidParameterException(
+                            "Form №" + this.getId() + " hasn't '" + value + "'.");
             }
         } else {
-            String value = values[0];
+            if (values.size() != 1)
+                throw new InvalidParameterException(
+                        "Form №" + this.getId() + " has only one parameter.");
+
+            String value = values.get(0);
 
             if(!fields.contains(value))
-                return false;
+                throw new InvalidParameterException(
+                        "Form №" + this.getId() + " hasn't '" + value + "'.");
         }
-
-        return true;
     }
 
     @Override
