@@ -2,6 +2,7 @@ package controller;
 
 import contest.form.Form;
 import contest.form.Forms;
+import exception.BadRequestException;
 import exception.DuplicateException;
 import model.Contest;
 import model.ContestPage;
@@ -9,14 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartRequest;
 import service.ContestService;
 
+import javax.mail.Multipart;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -40,17 +45,19 @@ public class ContestController {
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void submitApplication(@PathVariable("contestId") long contestId,
-                                  @RequestParam(required = false) MultipartFile[] files,
+                                  MultipartRequest multipartRequest,
                                   Principal principal,
                                   HttpServletRequest request,
                                   Model model) {
         String participantEmail = principal.getName();
         Map<String, String[]> formsData = request.getParameterMap();
 
-        if (files == null)
-            contestService.submitApplication(contestId, participantEmail, formsData, new ArrayList<>());
-        else
-            contestService.submitApplication(contestId, participantEmail, formsData, Arrays.asList(files));
+        List<MultipartFile> files = new ArrayList<>();
+        for (List<MultipartFile> list : multipartRequest.getMultiFileMap().values()) {
+            files.addAll(list);
+        }
+
+        contestService.submitApplication(contestId, participantEmail, formsData, files);
     }
 
     @GetMapping("/contest/{contestId}/application")
@@ -66,5 +73,11 @@ public class ContestController {
     @ResponseBody
     public void onDuplicateException(HttpServletResponse response, Exception exception) throws IOException {
         response.sendError(406, "You have already submitted application for the contest.");
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseBody
+    public void onBadRequestException(HttpServletResponse response, Exception exception) throws IOException {
+        response.sendError(400, exception.getMessage());
     }
 }

@@ -1,6 +1,7 @@
 package config;
 
 import contest.form.EmailForm;
+import contest.form.FileForm;
 import contest.form.Form;
 import contest.form.SelectForm;
 import contest.form.enums.SelectFormType;
@@ -57,6 +58,15 @@ public class Application {
         Form form2 = new SelectForm("Are you gey?", SelectFormType.SINGLE_SELECT_LIST, variants);
         forms.add(form);
         forms.add(form2);
+
+        FileForm fileForm = new FileForm("Some PDF");
+        fileForm.setContentType("application/pdf");
+        forms.add(fileForm);
+        fileForm = new FileForm("AMAZING file");
+        forms.add(fileForm);
+        fileForm = new FileForm("Something else :)");
+        forms.add(fileForm);
+
 
         Contest contest = new Contest("Avionica", forms, "Avionica");
 

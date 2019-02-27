@@ -13,7 +13,7 @@ public class FileForm extends Form implements Cloneable {
     public FileForm(String name) {
         super(name, FormType.FILE);
 
-        this.maxSize = 100; // MB
+        setMaxSize(100); // MB
     }
 
     public FileForm(String name, String contentType) {
@@ -26,8 +26,8 @@ public class FileForm extends Form implements Cloneable {
         return maxSize;
     }
 
-    public void setMaxSize(long maxSize) {
-        this.maxSize = maxSize;
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize * 1024 * 1024;
     }
 
     public String getContentType() {

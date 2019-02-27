@@ -66,7 +66,8 @@ public class ContestServiceImpl implements ContestService {
 
         List<FormData> applicationData = new ArrayList<>();
         applicationData.addAll(createFormDataList(formsData));
-        applicationData.addAll(uploadFiles(contest, participant, files));
+        if (files != null && !files.isEmpty())
+            applicationData.addAll(uploadFiles(contest, participant, files));
 
         Application application = new Application(contest, participant, applicationData);
 
