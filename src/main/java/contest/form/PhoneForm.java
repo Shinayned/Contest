@@ -6,12 +6,12 @@ import java.security.InvalidParameterException;
 import java.util.List;
 
 public class PhoneForm extends Form {
-    public PhoneForm() {
-        super(FormType.PHONE_NUMBER);
+    public PhoneForm(String name) {
+        super(name, FormType.PHONE_NUMBER);
     }
 
-    public PhoneForm(String title) {
-        super(FormType.PHONE_NUMBER, title);
+    public PhoneForm(String name, String title) {
+        super(name, FormType.PHONE_NUMBER, title);
     }
 
     @Override

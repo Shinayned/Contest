@@ -1,9 +1,9 @@
 package config;
 
+import contest.form.EmailForm;
 import contest.form.Form;
 import contest.form.SelectForm;
 import contest.form.enums.SelectFormType;
-import contest.form.enums.SimpleFormType;
 import google.GoogleDrive;
 import model.Contest;
 import model.ContestPage;
@@ -50,12 +50,11 @@ public class Application {
     public void contestTest() {
         List<Form> forms = new ArrayList<>();
 
-        Form form = new Form(SimpleFormType.EMAIL, "Enter your email");
+        Form form = new EmailForm("Email");
         List<String> variants = new ArrayList<>();
         variants.add("True");
         variants.add("False");
-        Form form2 = new SelectForm(SelectFormType.SINGLE_SELECT_LIST, variants);
-
+        Form form2 = new SelectForm("Are you gey?", SelectFormType.SINGLE_SELECT_LIST, variants);
         forms.add(form);
         forms.add(form2);
 

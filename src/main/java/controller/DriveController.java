@@ -17,6 +17,7 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -37,7 +38,7 @@ public class DriveController {
     @ResponseBody
     public List<FileInfo> onUpload(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, HttpServletRequest request, Principal principal) throws Exception{
         String participantEmail = principal.getName();
-        List<FileInfo> uploadedFiles = driveService.uploadFiles(participantEmail, uploadingFiles);
+        List<FileInfo> uploadedFiles = driveService.uploadFiles(participantEmail, Arrays.asList(uploadingFiles));
         for(FileInfo file : uploadedFiles) {
             System.out.println(file);
         }

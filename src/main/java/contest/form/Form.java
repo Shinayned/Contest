@@ -9,21 +9,31 @@ import java.util.List;
 
 public abstract class Form implements Serializable, Cloneable {
     private int id;
+    private String name;
     private FormType type;
     private String title;
     private String description;
     private boolean isObligatory;
 
-    protected Form(FormType type) {
+    protected Form(String name, FormType type) {
+        this.name = name;
         this.type = type;
+
         this.isObligatory = false;
     }
 
-    protected Form(FormType type, String title) {
-        this.type = type;
-        this.title = title;
+    protected Form(String name, FormType type, String title) {
+        this(name, type);
 
-        this.isObligatory = false;
+        this.title = title;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getId() {
@@ -60,6 +70,7 @@ public abstract class Form implements Serializable, Cloneable {
         if (noValues) {
             if (this.isObligatory())
                 throw new InvalidParameterException("Form №" + this.id + " is required");
+            return;
         }
 
         specialValidate(values);

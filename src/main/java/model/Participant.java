@@ -120,6 +120,7 @@ public class Participant {
         for(FileInfo file : uploadedFiles) {
             if(file.getId().equals(fileId)) {
                 uploadedFiles.remove(file);
+                return;
             }
         }
     }

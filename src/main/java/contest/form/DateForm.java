@@ -9,12 +9,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DateForm extends Form {
-    public DateForm() {
-        super(FormType.DATE);
+    public DateForm(String name) {
+        super(name, FormType.DATE);
     }
 
-    public DateForm(String title) {
-        super(FormType.DATE, title);
+    public DateForm(String name, String title) {
+        super(name, FormType.DATE, title);
     }
 
     @Override

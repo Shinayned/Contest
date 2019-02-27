@@ -1,5 +1,6 @@
 package model;
 
+import contest.form.FileForm;
 import contest.form.Form;
 import contest.form.FormData;
 import converter.DateTimeConverter;
@@ -106,7 +107,19 @@ public class Contest {
         this.applications = new ArrayList<>(applications);
     }
 
+    public Form getForm(int id) {
+        return forms.getForm(id);
+    }
+
     public List<Form> getForms() {
+        return forms.getForms();
+    }
+
+    public List<FileForm> getFileForms() {
+        return forms.getFileForms();
+    }
+
+    public List<Form> getAllForms() {
         return forms.getAllForms();
     }
 

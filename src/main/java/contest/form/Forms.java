@@ -61,6 +61,24 @@ public class Forms implements Serializable {
         return null;
     }
 
+    public List<Form> getForms() {
+        ArrayList<Form> formList = new ArrayList<>();
+        forms.forEach(form -> {
+            formList.add((Form) form.clone());
+        });
+
+        return formList;
+    }
+
+    public List<FileForm> getFileForms() {
+        ArrayList<FileForm> formList = new ArrayList<>();
+        fileForms.forEach(form -> {
+            formList.add((FileForm) form.clone());
+        });
+
+        return formList;
+    }
+
     public List<Form> getAllForms() {
         ArrayList<Form> formList = new ArrayList<>();
         sortedForms.forEach(form -> {
@@ -139,20 +157,26 @@ public class Forms implements Serializable {
         files = new ArrayList<>(files);
 
         for (FileForm form : fileForms) {
-            List<MultipartFile> formFiles = new ArrayList<>();
+            MultipartFile requiredFile = null;
+            boolean isAlreadyFound = false;
 
             for (int index = 0; index < files.size(); index++) {
-                MultipartFile file = files.get(index);
+                 MultipartFile file = files.get(index);
 
                 String fileId = file.getName();
                 String formId = Integer.toString(form.getId());
 
                 if (fileId.equals(formId)) {
-                    formFiles.add(file);
+                    if (isAlreadyFound)
+                        throw new InvalidParameterException("File form accept only one file.");
+
+                    requiredFile = file;
                     files.remove(index);
+                    isAlreadyFound = true;
                 }
             }
-            form.filesValidation(formFiles);
+
+            form.fileValidation(requiredFile);
         }
 
         if (!files.isEmpty())

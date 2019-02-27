@@ -10,12 +10,12 @@ public class StringForm extends Form implements Cloneable {
     private int minLength;
     private int maxLength;
 
-    public StringForm() {
-        super(FormType.STRING);
+    public StringForm(String name) {
+        super(name, FormType.STRING);
     }
 
-    public StringForm(String title) {
-        super(FormType.STRING, title);
+    public StringForm(String name, String title) {
+        super(name, FormType.STRING, title);
     }
 
     public String getPlaceHolder() {

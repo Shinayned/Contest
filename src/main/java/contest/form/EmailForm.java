@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 public class EmailForm extends Form {
     private Pattern pattern;
 
-    public EmailForm() {
-        super(FormType.EMAIL);
+    public EmailForm(String name) {
+        super(name, FormType.EMAIL);
         setPattern();
     }
 

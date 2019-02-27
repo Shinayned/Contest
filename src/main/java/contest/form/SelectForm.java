@@ -10,14 +10,14 @@ import java.util.List;
 public class SelectForm extends Form implements Cloneable {
     private List<String> fields;
 
-    public SelectForm(SelectFormType type, List<String> fields) {
-        super(type.toFormType());
+    public SelectForm(String name, SelectFormType type, List<String> fields) {
+        super(name, type.toFormType());
 
         this.fields = new ArrayList<>(fields);
     }
 
-    public SelectForm(SelectFormType type, String title, List<String> fields) {
-        super(type.toFormType(), title);
+    public SelectForm(String name, SelectFormType type, String title, List<String> fields) {
+        super(name, type.toFormType(), title);
 
         this.fields = new ArrayList<>(fields);
     }
@@ -32,22 +32,14 @@ public class SelectForm extends Form implements Cloneable {
 
     @Override
     protected void specialValidate(List<String> values) throws InvalidParameterException {
-        if(this.getType() == SelectFormType.MULTIPLE_SELECT_LIST.toFormType()) {
-            for(String value : values) {
-                if (!fields.contains(value))
-                    throw new InvalidParameterException(
-                            "Form №" + this.getId() + " hasn't '" + value + "'.");
-            }
-        } else {
-            if (values.size() != 1)
-                throw new InvalidParameterException(
-                        "Form №" + this.getId() + " has only one parameter.");
+        boolean isSingleChoiceList = this.getType() != SelectFormType.MULTIPLE_SELECT_LIST.toFormType();
 
-            String value = values.get(0);
+        if (isSingleChoiceList && values.size() != 1)
+            throw new InvalidParameterException("Form №" + this.getId() + " has only one parameter.");
 
-            if(!fields.contains(value))
-                throw new InvalidParameterException(
-                        "Form №" + this.getId() + " hasn't '" + value + "'.");
+        for (String value : values) {
+            if (!fields.contains(value))
+                throw new InvalidParameterException("Form №" + this.getId() + " hasn't '" + value + "'.");
         }
     }
 

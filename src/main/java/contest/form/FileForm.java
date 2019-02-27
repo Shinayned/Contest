@@ -7,75 +7,60 @@ import java.security.InvalidParameterException;
 import java.util.List;
 
 public class FileForm extends Form implements Cloneable {
-    private int maxQuantity;
-    private long maxFileSize;
-    private long maxTotalSize;
+    private long maxSize;
+    private String contentType;
 
-    public FileForm() {
-        super(FormType.FILE);
-        this.maxTotalSize = 100; // MB
+    public FileForm(String name) {
+        super(name, FormType.FILE);
+
+        this.maxSize = 100; // MB
     }
 
-    public FileForm(String title) {
-        super(FormType.FILE, title);
-        this.maxTotalSize = 100; // MB
+    public FileForm(String name, String contentType) {
+        this(name);
+
+        this.contentType = contentType;
     }
 
-    public int getMaxQuantity() {
-        return maxQuantity;
+    public long getMaxSize() {
+        return maxSize;
     }
 
-    public void setMaxQuantity(int maxQuantity) {
-        this.maxQuantity = maxQuantity;
+    public void setMaxSize(long maxSize) {
+        this.maxSize = maxSize;
     }
 
-    public long getMaxFileSize() {
-        return maxFileSize;
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setMaxFileSize(int maxFileSize) {
-        this.maxFileSize = maxFileSize;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
-    public long getMaxTotalSize() {
-        return maxTotalSize;
-    }
+    public void fileValidation(MultipartFile file) throws InvalidParameterException {
+        if (file == null) {
+            if (this.isObligatory())
+                throw new InvalidParameterException(
+                        "Form №" + this.getId() + " is required.");
 
-    public void setMaxTotalSize(int maxTotalSize) {
-        this.maxTotalSize = maxTotalSize;
-    }
-
-    public void filesValidation(List<MultipartFile> files) throws InvalidParameterException{
-        boolean noFiles = (files == null && files.isEmpty());
-        if (noFiles && this.isObligatory())
-            throw new InvalidParameterException(
-                    "Form №" + this.getId() + " is required.");
-
-        if (files.size() > maxQuantity)
-            throw new InvalidParameterException(
-                    "Form №" + this.getId() + " max files quantity is " + this.maxQuantity);
-
-        long maxFileSize = 0;
-        long maxTotalSize = 0;
-
-        for(MultipartFile file : files) {
-            long fileSize = file.getSize();
-            maxTotalSize += fileSize;
-
-            if(maxFileSize < fileSize)
-                maxFileSize = fileSize;
+            return;
         }
 
-        if(maxFileSize > this.maxFileSize)
+        if (contentType != null) {
+            if (!file.getContentType().equals(contentType))
+                throw new InvalidParameterException(
+                        "Form №" + this.getId() + " has '" + this.contentType + "' content type.");
+        }
+
+        if (file.getSize() > this.maxSize)
             throw new InvalidParameterException(
-                    "Form №" + this.getId() + " max file size is " + this.maxFileSize);
-        if(maxTotalSize > this.maxTotalSize)
-            throw new InvalidParameterException(
-                    "Form №" + this.getId() + " max size of all files is " + this.maxTotalSize);
+                    "Form №" + this.getId() + " max file size is " + this.maxSize);
     }
 
     @Override
-    protected void specialValidate(List<String> values) throws InvalidParameterException {}
+    protected void specialValidate(List<String> values) throws InvalidParameterException {
+    }
 
     @Override
     protected Object clone() {

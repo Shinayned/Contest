@@ -44,7 +44,11 @@ public class ContestController {
                                   Model model) {
         String participantEmail = principal.getName();
         Map<String, String[]> formsData = request.getParameterMap();
-        contestService.submitApplication(contestId, participantEmail, formsData, Arrays.asList(files));
+
+        if(files == null)
+            contestService.submitApplication(contestId, participantEmail, formsData, new ArrayList<>());
+        else
+            contestService.submitApplication(contestId, participantEmail, formsData, Arrays.asList(files));
     }
 
     @GetMapping("/contest/{contestId}/application")
