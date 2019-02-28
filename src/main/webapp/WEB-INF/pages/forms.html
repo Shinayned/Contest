@@ -16,7 +16,7 @@
       enctype="multipart/form-data"
       th:action="${submitUrl}">
     <span class="heading">Зміна інформації</span>
-    <div th:each="form : ${forms}" th:switch="${form.type}">
+    <div th:each="form : ${forms}" th:switch="${form.type}" th:remove="tag">
         <label class="control-label"
                th:text="${form.title}"></label>
 

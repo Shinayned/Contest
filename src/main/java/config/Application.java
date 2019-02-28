@@ -61,6 +61,7 @@ public class Application {
 
         Form date = new DateForm("Date");
         date.setTitle("Enter best date.");
+        date.setDescription("Some description.");
 
         Form phone = new PhoneForm("Phone");
         phone.setTitle("Enter your second phone number.");

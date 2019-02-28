@@ -22,7 +22,12 @@ public class MainController {
     private ParticipantService participantService;
 
     @RequestMapping("/")
-    public String onIndex() throws JsonProcessingException {
+    public String onIndex(Principal principal, Model model) {
+        if (principal == null)
+            model.addAttribute("isAuthenticated", false);
+        else
+            model.addAttribute("isAuthenticated", true);
+
         return "index";
     }
 
