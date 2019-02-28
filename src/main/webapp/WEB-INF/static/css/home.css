@@ -232,3 +232,12 @@ a:hover
   margin: 10px;
   padding:10px;
 }
+@media(min-width:1620px) {
+p{font-size: 24px;}
+h3{font-size: 32px;}
+.btn-active
+{
+  width: 200px;
+  height: 60px;
+}
+}
