@@ -1,8 +1,11 @@
 package service;
 
 import com.google.api.services.drive.model.File;
+import contest.form.FileForm;
+import contest.form.FormData;
 import google.FileInfo;
 import google.GoogleDrive;
+import model.Contest;
 import model.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +26,7 @@ public class GoogleDriveService implements DriveService {
     private GoogleDrive googleDrive;
 
     @Override
-    public List<FileInfo> uploadFiles(String participantEmail, MultipartFile[] uploadingFiles) {
+    public List<FileInfo> uploadFiles(String participantEmail, List<MultipartFile> uploadingFiles) {
         Participant participant = participantService.getParticipantByEmail(participantEmail);
 
         String participantFolder = getParticipantFolderId(participant);
@@ -43,7 +47,8 @@ public class GoogleDriveService implements DriveService {
         String folderId;
 
         if (participant.getFilesFolderId() == null) {
-            folderId = googleDrive.createFolder(participant.getFullName());
+            File folder = googleDrive.createFolder(participant.getFullName());
+            folderId = folder.getId();
 
             participant.setFilesFolderId(folderId);
             participantService.updateAccount(participant);
@@ -68,7 +73,25 @@ public class GoogleDriveService implements DriveService {
     }
 
     @Override
-    public void deleteFile(String fileId) {
+    public void deleteFile(String participantEmail, String fileId) {
         googleDrive.deleteFile(fileId);
+        Participant participant = participantService.getParticipantByEmail(participantEmail);
+        participant.removeUploadedFile(fileId);
+        participantService.updateAccount(participant);
+    }
+
+    @Override
+    public FileInfo uploadFile(String name, String folderId, MultipartFile file) {
+        return googleDrive.uploadFile(name, folderId, file);
+    }
+
+    @Override
+    public File createFolder(String name) {
+        return googleDrive.createFolder(name);
+    }
+
+    @Override
+    public File createFolder(String parentFolderId, String name) {
+        return googleDrive.createFolder(parentFolderId, name);
     }
 }

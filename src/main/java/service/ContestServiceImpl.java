@@ -1,20 +1,28 @@
 package service;
 
+import com.google.api.services.drive.model.File;
+import contest.form.FileForm;
+import contest.form.Form;
+import contest.form.FormData;
+import contest.form.Forms;
+import exception.BadRequestException;
 import exception.DuplicateException;
 import exception.ResourceNotFoundException;
+import google.FileInfo;
 import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.web.multipart.MultipartFile;
 import repository.ApplicationRepository;
 import repository.ContestRepository;
-import repository.ParticipantRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
+import java.security.InvalidParameterException;
+import java.util.*;
 
 @Service
-public class ContestServiceImpl implements ContestService{
+public class ContestServiceImpl implements ContestService {
     @Autowired
     private ContestRepository contestRepository;
 
@@ -24,64 +32,121 @@ public class ContestServiceImpl implements ContestService{
     @Autowired
     private ParticipantService participantService;
 
-    @Override
-    public ContestPage getPageData(String contestName) throws ResourceNotFoundException {
-        Contest contest = getContest(contestName);
+    @Autowired
+    private DriveService driveService;
 
-        return contest.getPageData();
+    @Override
+    public String getPage(long contestId) throws ResourceNotFoundException {
+        Contest contest = getContest(contestId);
+
+        return contest.getPage();
     }
 
     @Override
-    public List<ContestField> getContestFields(String contestName) throws ResourceNotFoundException {
-        Contest contest = getContest(contestName);
+    public List<Form> getForms(long contestId) throws ResourceNotFoundException {
+        Contest contest = getContest(contestId);
 
-        return contest.getFields();
+        return contest.getForms();
     }
 
     @Override
     @Transactional
-    public void submitApplication(String contestName, String participantEmail, Map<String, String[]> filledForms) throws ResourceNotFoundException {
-        Contest contest = getContest(contestName);
-        checkForDuplicate(contest, participantEmail);
-
+    public void submitApplication(long contestId, String participantEmail, Map<String, String[]> formsData, List<MultipartFile> files)
+            throws ResourceNotFoundException, DuplicateException, BadRequestException{
+        Contest contest = getContest(contestId);
         Participant participant = participantService.getParticipantByEmail(participantEmail);
-        Application application = new Application(contest, participant, filledForms);
+
+        checkForDuplicateSubmit(participant, contestId);
+
+        try {
+            contest.validateData(formsData, files);
+        } catch (InvalidParameterException exception) {
+            throw new BadRequestException(exception.getMessage());
+        }
+
+        List<FormData> applicationData = new ArrayList<>();
+        applicationData.addAll(createFormDataList(formsData));
+        if (files != null && !files.isEmpty())
+            applicationData.addAll(uploadFiles(contest, participant, files));
+
+        Application application = new Application(contest, participant, applicationData);
+
         applicationRepository.save(application);
     }
 
     @Override
     public void createContest(Contest contest) throws DuplicateException {
-        boolean isExists = contestRepository.existsByContestName(contest.getName());
-        if(isExists) {
-            throw new DuplicateException("Contest '" + contest.getName() + "' is already exists.");
-        }
-
         contestRepository.save(contest);
     }
 
     @Override
-    public Contest getContest(Contest contest) throws ResourceNotFoundException {
-        return getContest(contest.getName());
-    }
-
-    private Contest getContest(String contestName) throws ResourceNotFoundException{
-        Contest contest = contestRepository.findById(contestName).get();
-        if(contest == null) {
-            throw new ResourceNotFoundException("Contest '" + contestName + "' is not exist.");
+    public Contest getContest(long contestId) throws ResourceNotFoundException {
+        Contest contest = contestRepository.findById(contestId).get();
+        if (contest == null) {
+            throw new ResourceNotFoundException("Contest №" + contestId + " is not exist.");
         }
 
         return contest;
     }
 
-    private void checkForDuplicate(Contest contest, String participantEmail) {
-        List<Application> applications = contest.getApplications();
+    private void checkForDuplicateSubmit(Participant participant, long contestId) throws DuplicateException{
+        List<Application> applications = participant.getApplications();
 
-        for(Application application : applications) {
-            Participant participant = application.getParticipant();
+        for (Application application : applications) {
+            Contest contest = application.getContest();
 
-            if(participant.getEmail().equals(participantEmail)) {
+            if (contest.getId() == contestId) {
                 throw new DuplicateException(participant.getEmail() + " has already submitted application for " + contest.getName());
             }
         }
+    }
+
+    private List<FormData> createFormDataList(Map<String, String[]> formsData) {
+        List<FormData> formDataList = new ArrayList<>();
+
+        formsData.forEach((key, data) -> {
+            FormData formData = new FormData(Integer.parseInt(key), data);
+            formDataList.add(formData);
+        });
+
+        return formDataList;
+    }
+
+    private List<FormData> uploadFiles(Contest contest, Participant participant, List<MultipartFile> files) {
+        String fileFolder = getApplicationFileFolder(contest, participant);
+        List<FileForm> fileForms = contest.getFileForms();
+
+        List<FormData> fileLinks = new ArrayList<>();
+
+        for(FileForm form : fileForms) {
+            String name = form.getName();
+            String formId = Integer.toString(form.getId());
+            String fileId;
+
+            for(MultipartFile file : files) {
+                fileId = file.getName();
+
+                if (formId.equals(fileId)) {
+                    FileInfo fileInfo = driveService.uploadFile(name, fileFolder, file);
+                    List<String> fileLink = Collections.singletonList(fileInfo.getId());
+
+                    FormData fileData = new FormData(form.getId(), fileLink);
+                    fileLinks.add(fileData);
+                }
+            }
+        }
+        return fileLinks;
+    }
+
+    private String getApplicationFileFolder(Contest contest, Participant participant) {
+        String contestFolder = contest.getFilesFolderId();
+
+        if (contestFolder == null) {
+            File folder = driveService.createFolder(contest.getName());
+            contestFolder = folder.getId();
+        }
+        File folder = driveService.createFolder(contestFolder, participant.getFullName());
+
+        return folder.getId();
     }
 }

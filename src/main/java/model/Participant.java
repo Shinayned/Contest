@@ -116,7 +116,20 @@ public class Participant {
         uploadedFiles.add(fileInfo);
     }
 
+    public void removeUploadedFile(String fileId) {
+        for(FileInfo file : uploadedFiles) {
+            if(file.getId().equals(fileId)) {
+                uploadedFiles.remove(file);
+                return;
+            }
+        }
+    }
+
     public void setUploadedFiles(ArrayList<FileInfo> uploadedFiles) {
         this.uploadedFiles = uploadedFiles;
+    }
+
+    public List<Application> getApplications() {
+        return applications;
     }
 }

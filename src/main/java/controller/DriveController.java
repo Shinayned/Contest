@@ -11,11 +11,13 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import service.DriveService;
 import service.ParticipantService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -34,9 +36,9 @@ public class DriveController {
 
     @PostMapping("/drive/upload")
     @ResponseBody
-    public List<FileInfo> onUpload(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, Principal principal) throws Exception{
+    public List<FileInfo> onUpload(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, HttpServletRequest request, Principal principal) throws Exception{
         String participantEmail = principal.getName();
-        List<FileInfo> uploadedFiles = driveService.uploadFiles(participantEmail, uploadingFiles);
+        List<FileInfo> uploadedFiles = driveService.uploadFiles(participantEmail, Arrays.asList(uploadingFiles));
         for(FileInfo file : uploadedFiles) {
             System.out.println(file);
         }
@@ -68,6 +70,8 @@ public class DriveController {
     @GetMapping("/drive/remove")
     @ResponseBody
     public void onRemove(@RequestParam(value = "id") String fileId, Principal principal) {
-        driveService.deleteFile(fileId);
+        String participantEmail = principal.getName();
+
+        driveService.deleteFile(participantEmail, fileId);
     }
 }

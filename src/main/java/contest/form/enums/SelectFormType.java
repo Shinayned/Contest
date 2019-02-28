@@ -1,4 +1,4 @@
-package enums;
+package contest.form.enums;
 
 public enum SelectFormType {
     SINGLE_SELECT_LIST, MULTIPLE_SELECT_LIST, DROPDOWN_LIST;

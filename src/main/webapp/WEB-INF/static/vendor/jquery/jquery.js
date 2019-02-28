@@ -5338,7 +5338,7 @@ jQuery.event = {
 			postDispatch: function( event ) {
 
 				// Support: Firefox 20+
-				// Firefox doesn't alert if the returnValue field is not set.
+				// Firefox doesn't alert if the returnValue contest.field is not set.
 				if ( event.result !== undefined && event.originalEvent ) {
 					event.originalEvent.returnValue = event.result;
 				}
@@ -9879,7 +9879,7 @@ jQuery.fn.load = function( url, params, callback ) {
 			url: url,
 
 			// If "type" variable is undefined, then "GET" method will be used.
-			// Make value of this field explicit since
+			// Make value of this contest.field explicit since
 			// user can override it through ajaxSetup method
 			type: type || "GET",
 			dataType: "html",

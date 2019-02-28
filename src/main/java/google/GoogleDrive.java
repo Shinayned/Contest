@@ -21,6 +21,7 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Folder;
 import java.io.*;
 import java.security.GeneralSecurityException;
 import java.util.*;
@@ -75,37 +76,56 @@ public class GoogleDrive {
                 .setApplicationName(APPLICATION_NAME).build();
     }
 
-    public List<FileInfo> uploadFiles(String parentFolderId, MultipartFile[] files) {
+    public List<FileInfo> uploadFiles(String parentFolderId, List<MultipartFile> files) {
         List<FileInfo> uploadedFiles = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            File metaData = new File()
-                    .setName(file.getOriginalFilename())
-                    .setParents(Collections.singletonList(parentFolderId));
-
-            try {
-                File uploadedFile = service.files().create(metaData, new ByteArrayContent(file.getContentType(), file.getBytes()))
-                        .execute();
-
-                FileInfo uploadedFileInfo = new FileInfo(uploadedFile.getName(), uploadedFile.getId(), file.getSize());
-                System.out.println(file.getSize());
-                uploadedFiles.add(uploadedFileInfo);
-
-            } catch (IOException e) {
-                System.out.println("An error occurred: " + e);
-            }
+            FileInfo fileInfo = uploadFile(parentFolderId, file);
+            uploadedFiles.add(fileInfo);
         }
 
         return uploadedFiles;
     }
 
-    public String createFolder(String name){
+    public FileInfo uploadFile(String name, String parentFolderId, MultipartFile file) {
+            File metaData = new File();
+
+            if (name != null)
+                metaData.setName(name);
+            else
+                metaData.setName(file.getOriginalFilename());
+
+            metaData.setParents(Collections.singletonList(parentFolderId));
+
+            try {
+                File uploadedFile = service.files().create(metaData, new ByteArrayContent(file.getContentType(), file.getBytes()))
+                        .execute();
+                FileInfo uploadedFileInfo = new FileInfo(uploadedFile.getName(), uploadedFile.getId(), file.getSize());
+
+                return uploadedFileInfo;
+            } catch (IOException e) {
+                System.out.println("An error occurred: " + e);
+            }
+            return null;
+    }
+
+    public FileInfo uploadFile(String parentFolderId, MultipartFile file) {
+        return uploadFile(null, parentFolderId, file);
+    }
+
+    public File createFolder(String name){
+        return createFolder(null, name);
+    }
+
+    public File createFolder(String parentFolderId, String name) {
         File folder = null;
 
         try {
             folder = new File()
                     .setName(name)
                     .setMimeType("application/vnd.google-apps.folder");
+            if (parentFolderId != null)
+                    folder.setParents(Collections.singletonList(parentFolderId));
 
             folder = service.files().create(folder)
                     .execute();
@@ -113,7 +133,7 @@ public class GoogleDrive {
             System.out.println("An error occurred: " + e);
         }
 
-        return folder.getId();
+        return folder;
     }
 
     public File downloadFile(String fileId) {
