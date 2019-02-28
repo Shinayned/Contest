@@ -50,6 +50,13 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    public List<Form> getAllForms(long contestId) throws ResourceNotFoundException {
+        Contest contest = getContest(contestId);
+
+        return contest.getAllForms();
+    }
+
+    @Override
     @Transactional
     public void submitApplication(long contestId, String participantEmail, Map<String, String[]> formsData, List<MultipartFile> files)
             throws ResourceNotFoundException, DuplicateException, BadRequestException{

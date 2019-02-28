@@ -63,16 +63,16 @@ public class ContestController {
     @GetMapping("/contest/{contestId}/application")
     public String onApplicationPage(@PathVariable("contestId") long contestId,
                                     Model model) {
-        List<Form> forms = contestService.getForms(contestId);
+        List<Form> forms = contestService.getAllForms(contestId);
         model.addAttribute("forms", forms);
-
-        return "application";
+        model.addAttribute("submitUrl", "/contest/" + contestId + "/submit/application");
+        return "forms";
     }
 
     @ExceptionHandler(DuplicateException.class)
     @ResponseBody
     public void onDuplicateException(HttpServletResponse response, Exception exception) throws IOException {
-        response.sendError(406, "You have already submitted application for the contest.");
+        response.sendError(406, exception.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)

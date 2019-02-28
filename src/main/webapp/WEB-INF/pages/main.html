@@ -36,7 +36,7 @@
 <div id="wrapper">
 
         <!-- Sidebar -->
-        <nav  class="fixed-top">
+        <nav  class="fixed-top" th:if="${isAuthenticated}">
            <ul class="sidebar-nav" id="sidebar-wrapper">
                 <a href="#">
                      <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
@@ -83,12 +83,12 @@
         <div id="page-content-wrapper" class="py-0 px-0">
            
         <div class="row">
-        <div class="col-md-3" ><!-- Sidebar --></div>
+        <div class="col-md-3" th:if="${isAuthenticated}"><!-- Sidebar --></div>
         <div class=" col-12 col-md-9 px-0 mx-0 " id="edit">
             <div class="row contents">
               <h1>Про сайт</h1>
               <p>Сайт «Конкурси для молодих вчених» створений з метою локалізації наукових конкурсів, інформації про них  та полегшення процедури подачі заявок на участь у конкурсах. Для подальшого ознайомлення з конкурсами, необхідно зареєструватися на сайті, натиснувши клавішу «Створити профіль».</p>
-              <div class="button">
+              <div class="button" th:if="${!isAuthenticated}">
                 <a href="login.html">
                   <button class="btn btn-primary btn-big">Увійти</button>
                 </a>

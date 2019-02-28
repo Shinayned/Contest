@@ -27,7 +27,12 @@ public class MainController {
     }
 
     @RequestMapping("/main")
-    public String onMain() {
+    public String onMain(Principal principal, Model model) {
+        if (principal == null)
+            model.addAttribute("isAuthenticated", false);
+        else
+            model.addAttribute("isAuthenticated", true);
+
         return "main";
     }
 
