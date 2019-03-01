@@ -42,6 +42,7 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/admin/**")
                     .authorizeRequests()
+                    .antMatchers("/admin/login").permitAll()
                     .antMatchers("/admin*", "/admin/**")
                     .hasRole("ADMIN")
 
@@ -59,10 +60,6 @@ public class SecurityConfig {
                     .logoutUrl("/admin_logout")
                     .logoutSuccessUrl("/admin/login")
                     .deleteCookies("JSESSIONID")
-
-                    .and()
-                    .exceptionHandling()
-                    .accessDeniedPage("/403")
 
                     .and()
                     .csrf().disable();
