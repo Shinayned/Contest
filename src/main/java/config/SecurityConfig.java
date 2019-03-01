@@ -4,56 +4,126 @@ import component.CustomAuthFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+public class SecurityConfig {
+    @Bean
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-    @Autowired
-    private CustomAuthFailureHandler customAuthFailureHandler;
+    @Configuration
+    @Order(1)
+    public static class AdminConfig extends WebSecurityConfigurerAdapter {
+        @Bean
+        protected UserDetailsService userDetailsService() {
+            InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+            manager.createUser(User
+                    .withUsername("admin")
+                    .password(passwordEncoder().encode("adminPass"))
+                    .roles("ADMIN")
+                    .build());
+            return manager;
+        }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers("/static/**").permitAll()
-                .and()
+        @Bean(name = "Other")
+        protected DaoAuthenticationProvider authenticationProvider() {
+            DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+            authProvider.setUserDetailsService(userDetailsService());
+            authProvider.setPasswordEncoder(passwordEncoder());
+            return authProvider;
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/admin*")
+                    .authorizeRequests()
+                    .anyRequest()
+                    .hasRole("ADMIN")
+
+                    .and()
                     .formLogin()
-                    .permitAll()
+                    .loginPage("/loginAdmin")
+                    .loginProcessingUrl("/loginAdmin")
+                    .failureUrl("/loginAdmin?error=loginError")
+                    .defaultSuccessUrl("/adminPage")
+                    .usernameParameter("login")
+                    .passwordParameter("password")
+
+                    .and()
+                    .logout()
+                    .logoutUrl("/admin_logout")
+                    .logoutSuccessUrl("/protectedLinks")
+                    .deleteCookies("JSESSIONID")
+
+                    .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/403")
+
+                    .and()
+                    .csrf().disable();
+        }
+    }
+
+    @Configuration
+    @Order(2)
+    public class ParticipantConfig extends WebSecurityConfigurerAdapter {
+        @Autowired
+        private UserDetailsServiceImpl userDetailsService;
+
+        @Autowired
+        private CustomAuthFailureHandler customAuthFailureHandler;
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .authorizeRequests()
+                    .antMatchers("/")
+                    .hasRole("PARTICIPANT")
+
+                    .and()
+                    .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/login")
                     .defaultSuccessUrl("/home", false)
                     .failureHandler(customAuthFailureHandler)
                     .usernameParameter("email")
                     .passwordParameter("password")
-                .and()
+
+                    .and()
                     .logout()
-                    .logoutSuccessUrl("/main")
-                .and()
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("JSESSIONID")
+
+                    .and()
                     .rememberMe()
-                    .userDetailsService(userDetailsService);
-    }
+                    .userDetailsService(userDetailsService)
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
+                    .and()
+                    .csrf().disable();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        @Bean
+        protected DaoAuthenticationProvider authenticationProvider() {
+            DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+            authProvider.setUserDetailsService(userDetailsService);
+            authProvider.setPasswordEncoder(passwordEncoder());
+            return authProvider;
+        }
     }
 }

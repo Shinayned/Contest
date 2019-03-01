@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Participant participant = participantService.getParticipantByEmail(email);
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("participant"));
+        authorities.add(new SimpleGrantedAuthority("PARTICIPANT"));
         if (participant == null) {
             throw new UsernameNotFoundException(email + " is not found");
         }

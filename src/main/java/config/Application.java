@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import service.ContestService;
 import service.ParticipantService;
 
@@ -61,7 +62,6 @@ public class Application {
 
         Form date = new DateForm("Date");
         date.setTitle("Enter best date.");
-        date.setDescription("Some description.");
 
         Form phone = new PhoneForm("Phone");
         phone.setTitle("Enter your second phone number.");
