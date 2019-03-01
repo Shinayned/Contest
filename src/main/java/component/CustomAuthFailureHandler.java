@@ -25,10 +25,11 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
         } else if(exception instanceof DisabledException) {
             errorUrl.append("disabled");
         } else {
+            System.out.println(exception);
             errorUrl.append("true");
         }
 
-        if(!email.isEmpty()) {
+        if(email != null &&!email.isEmpty()) {
             errorUrl.append("&email=" + email);
         }
 

@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AdminController {
-    @GetMapping("/loginAdmin")
+    @GetMapping("/admin/login")
     public String onAdminLogin() {
         return "adminLogin";
     }
 
-    @GetMapping("/adminPage")
+    @GetMapping("/admin/adminPage")
     public String onAdminPage(){
         return "main";
     }

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,46 +30,34 @@ public class SecurityConfig {
     @Configuration
     @Order(1)
     public static class AdminConfig extends WebSecurityConfigurerAdapter {
-        @Bean
-        protected UserDetailsService userDetailsService() {
-            InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-            manager.createUser(User
-                    .withUsername("admin")
-                    .password(passwordEncoder().encode("adminPass"))
-                    .roles("ADMIN")
-                    .build());
-            return manager;
-        }
-
-        @Bean(name = "Other")
-        protected DaoAuthenticationProvider authenticationProvider() {
-            DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-            authProvider.setUserDetailsService(userDetailsService());
-            authProvider.setPasswordEncoder(passwordEncoder());
-            return authProvider;
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication()
+                    .withUser("admin")
+                    .password(passwordEncoder().encode("admin"))
+                    .roles("ADMIN");
         }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .antMatcher("/admin*")
+            http.antMatcher("/admin/**")
                     .authorizeRequests()
-                    .anyRequest()
+                    .antMatchers("/admin*", "/admin/**")
                     .hasRole("ADMIN")
 
                     .and()
                     .formLogin()
-                    .loginPage("/loginAdmin")
-                    .loginProcessingUrl("/loginAdmin")
-                    .failureUrl("/loginAdmin?error=loginError")
-                    .defaultSuccessUrl("/adminPage")
+                    .loginPage("/admin/login")
+                    .loginProcessingUrl("/admin/login")
+                    .failureUrl("/admin/login?error=loginError")
+                    .defaultSuccessUrl("/admin/adminPage")
                     .usernameParameter("login")
                     .passwordParameter("password")
 
                     .and()
                     .logout()
                     .logoutUrl("/admin_logout")
-                    .logoutSuccessUrl("/protectedLinks")
+                    .logoutSuccessUrl("/admin/login")
                     .deleteCookies("JSESSIONID")
 
                     .and()
@@ -82,7 +71,7 @@ public class SecurityConfig {
 
     @Configuration
     @Order(2)
-    public class ParticipantConfig extends WebSecurityConfigurerAdapter {
+    public static class ParticipantConfig extends WebSecurityConfigurerAdapter {
         @Autowired
         private UserDetailsServiceImpl userDetailsService;
 
@@ -93,7 +82,8 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/")
+                    .antMatchers("/", "/static/**", "/registration*", "/login*").permitAll()
+                    .anyRequest()
                     .hasRole("PARTICIPANT")
 
                     .and()
@@ -116,6 +106,11 @@ public class SecurityConfig {
 
                     .and()
                     .csrf().disable();
+        }
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.authenticationProvider(authenticationProvider());
         }
 
         @Bean
