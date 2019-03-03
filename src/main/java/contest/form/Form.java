@@ -60,19 +60,35 @@ public abstract class Form implements Serializable, Cloneable {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public boolean isObligatory() {
         return isObligatory;
     }
 
-    public void validate(List<String> values) throws InvalidParameterException {
-        boolean noValues = (values == null || values.isEmpty());
+    public void setObligatory(boolean obligatory) {
+        isObligatory = obligatory;
+    }
 
-        if (noValues) {
+    public void validate(List<String> values) throws InvalidParameterException {
+        boolean nullList = values == null;
+        boolean valueIsEmpty = false;
+
+        if (!nullList) {
+            for(String value : values) {
+                if (value.isEmpty()) {
+                    valueIsEmpty = true;
+                    break;
+                }
+            }
+        }
+        if (nullList || values.isEmpty() || valueIsEmpty) {
             if (this.isObligatory())
                 throw new InvalidParameterException("Form №" + this.id + " is required");
             return;
         }
-
         specialValidate(values);
     }
 

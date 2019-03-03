@@ -46,6 +46,11 @@ public class ParticipantController {
         return new ModelAndView("redirect:registration", "participant", participantDto);
     }
 
+    @GetMapping("/edit")
+    public String editParticipantAccount() {
+        return "edit";
+    }
+
     @GetMapping(value = "/registrationConfirm")
     public String confirmRegistration(@RequestParam("token") String token) {
         VerificationToken verificationToken = participantService.getVerificationToken(token);

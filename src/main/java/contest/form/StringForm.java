@@ -52,7 +52,7 @@ public class StringForm extends Form implements Cloneable {
         if (value.length() < minLength)
             throw new InvalidParameterException("Form №" + this.getId() + " has min length " + minLength + ".");
 
-        if (value.length() > maxLength)
+        if (maxLength != 0 && value.length() > maxLength)
             throw new InvalidParameterException("Form №" + this.getId() + " has max length" + maxLength + ".");
     }
 

@@ -1,83 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>form</title>
-	    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>form</title>
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../static/css/home.css" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <script type="text/javascript" src="../static/js/telMask.js"></script>  
+    <link href="/static/css/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script type="text/javascript" src="/static/js/telMask.js"></script>
 </head>
 <body>
-<form data-toggle="validator" role="form" class="form-horizontal" id="my-form">
-                    <span class="heading">Зміна інформації</span>
-                <div class="form-group">
-                    <label for="String" class="control-label">STRING</label>
-                    <input type="text" class="form-control" id="STRING" name="string" value="" required>
-                </div>
-                <div class="form-group">
-                    <label for="Date" class="control-label">DATE</label>
-                    <input type="date" class="form-control" id="DATE" name="date">
-                </div>
-                <div class="form-group">
-                    <label for="phone_number" class="control-label">PHONE_NUMBER</label>
-                    <input type="text" id="PHONE_NUMBER" class="form-control" name="phone" onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);" value="+38(097)000-00-00" >
 
-                    <div class="help-block with-errors"></div>
-                </div>
-                <div class="form-group">
-                    <label for="Email" class="control-label">Ваш E-mail</label>
-                    <input type="email" class="form-control" id="EMAIL" name="email" value="youremail@email.com" data-error="Вы не правильно ввели Ваш E-mail">
-                </div>
-                <div class="form-group">
-                	<div class="checkbox" id="MULTIPLE_SELECT_LIST">
- 						<div>
-  							<input type="checkbox" id="one" name="1" checked>
-  							<label for="one">One</label>
-						</div>
-						<div>
-  							<input type="checkbox" id="two" name="1">
-  							<label for="two">Two</label>
-						</div>						
+<form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
+      enctype="multipart/form-data"
+      th:action="${submitUrl}">
+    <span class="heading">Зміна інформації</span>
+    <div th:each="form : ${forms}" th:switch="${form.type}" th:remove="tag">
+        <label class="control-label"
+               th:text="${form.title}"></label>
 
-				    </div>  
-                </div> 
-				<div class="form-group">
-                	<div class="radio" id="SINGLE_SELECT_LIST">
- 						<div>
-  							<input type="radio" id="one" name="1" checked>
-  							<label for="one">One</label>
-						</div>
-						<div>
-  							<input type="radio" id="two" name="1">
-  							<label for="two">Two</label>
-						</div>						
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).STRING}">
+            <input type="text" class="form-control"
+                   th:id="${form.id}"
+                   th:name="${form.id}"
+                   th:placeholder="${form.placeHolder}"
+                   th:maxlength="${form.maxLength} != 0 ? ${form.maxLength} : _"
+                   th:minlength="${form.minLength}"
+                   th:required="${form.obligatory}">
+        </div>
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).DATE}">
+            <input type="date" class="form-control"
+                   th:id="${form.id}"
+                   th:name="${form.id}"
+                   th:required="${form.obligatory}">
+        </div>
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
+            <input type="text" class="form-control"
+                   onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);" placeholder="+38(097)000-00-00"
+                   th:id="${form.id}"
+                   th:name="${form.id}"
+                   th:required="${form.obligatory}">
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).EMAIL}">
+            <input type="email" class="form-control" placeholder="youremail@email.com"
+                   data-error="Вы не правильно ввели Ваш E-mail"
+                   th:id="${form.id}"
+                   th:name="${form.id}"
+                   th:required="${form.obligatory}">
+        </div>
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).MULTIPLE_SELECT_LIST}">
+            <div class="checkbox"
+                 th:id="${form.id}"
+                 th:required="${form.obligatory}">
 
-				    </div>  
-                </div>     
-				<div class="form-group">
-					<div class="align-items-center text-align-center">
-						<select name="select"> <!--Supplement an id here instead of using 'name'-->
-                                <option value="value1">1</option> 
-                                <option value="value2" selected>2</option>
-                                <option value="value3">2</option>
-                        </select>				
-					</div>
-				</div>
-				<div class="form-group">
-					<input id="file-input" type="file" name="uploadingFiles" multiple>
-                    <!--<label for="file-input">Виберіть файл</label>-->						
-				</div> 
-								                                       
-                <div class="form-group">
-                    <button id="submit" class="btn btn-primary a_submit" href="home.html" >Submit</button>
+                <div th:each="field : ${form.fields}">
+                    <label>
+                        <input type="checkbox"
+                               th:id="${form.id}"
+                               th:name="${form.id}"
+                               th:value="${field}">
+                        <span th:text="${field}" th:remove="tag">title</span>
+                    </label>
                 </div>
-                </form> 
-                <script src="../static/js/jsonParse.js"></script>	
+            </div>
+        </div>
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).SINGLE_SELECT_LIST}">
+            <div class="radio"
+                 th:id="${form.id}">
 
-  <script src="../static/vendor/jquery/jquery.min.js"></script>
-    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>                
+                <div th:each="field : ${form.fields}">
+                    <label>
+                        <input type="radio"
+                               th:id="${form.id}"
+                               th:name="${form.id}"
+                               th:value="${field}"
+                               th:required="${form.obligatory}">
+                        <span th:text="${field}" th:remove="tag">title</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).DROPDOWN_LIST}">
+            <select th:name="${form.id}"
+                    th:required="${form.obligatory}">
+                <option disabled selected style="display:none">...</option>
+                <div th:each="field : ${form.fields}">
+                    <option
+                            th:value="${field}"
+                            th:text="${field}"></option>
+                </div>
+            </select>
+        </div>
+        <div class="form-group" th:case="${T(contest.form.enums.FormType).FILE}">
+            <input type="file"
+                   th:id="${form.id}"
+                   th:name="${form.id}"
+                   th:required="${form.obligatory}"
+                   th:accept="${form.contentType}">
+            <!--<label for="file-input">Виберіть файл</label>-->
+        </div>
+    </div>
+    <div class="form-group">
+        <button id="submit" class="btn btn-primary a_submit">Submit</button>
+    </div>
+
+</form>
+<script src="/static/js/jsonParse.js"></script>
+
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
