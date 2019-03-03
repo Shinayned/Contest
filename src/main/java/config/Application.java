@@ -6,6 +6,7 @@ import google.GoogleDrive;
 import model.Contest;
 import model.ContestPage;
 import model.Participant;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,12 +36,17 @@ public class Application {
     @Bean
     public CommandLineRunner demo(ParticipantService participantService) {
         return (args) -> {
-            // save a couple of customers
-
-            Participant participant = new Participant("my.email@gmail.com", "qwerty");
-            participant.setFullName("Vas Vas");
+            Participant participant = new Participant(
+                    "my.email@gmail.com",
+                    "qwerty",
+                    "Vas Vas",
+                    new DateTime());
             participant.setEnabled(true);
-
+            participant.setOrganization("organization");
+            participant.setWorkAddress("NAUaddress");
+            participant.setPhoneNumber("+38(063)374-51-46");
+            participant.setPosition("докторант");
+            participant.setScienceWorks("no works");
             participantService.registerNewAccount(participant);
 
             contestTest();

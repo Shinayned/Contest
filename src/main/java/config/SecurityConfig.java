@@ -57,7 +57,7 @@ public class SecurityConfig {
 
                     .and()
                     .logout()
-                    .logoutUrl("/admin_logout")
+                    .logoutUrl("/admin/logout")
                     .logoutSuccessUrl("/admin/login")
                     .deleteCookies("JSESSIONID")
 
@@ -79,7 +79,7 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/", "/static/**", "/registration*", "/login*").permitAll()
+                    .antMatchers("/", "/static/**", "/registration*", "/login*", "/restoration").permitAll()
                     .anyRequest()
                     .hasRole("PARTICIPANT")
 

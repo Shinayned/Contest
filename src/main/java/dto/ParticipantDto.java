@@ -2,34 +2,31 @@ package dto;
 
 import org.joda.time.DateTime;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class ParticipantDto {
+    @NotBlank
     private String fullName;
-    private DateTime date;
-    private String email;
-    private String message;
-    private String phone;
-    private String password;
-
+    @NotNull
     private DateTime birthdate;
+    @NotBlank
+    @Email
+    private String email;
+    @NotBlank
+    private String phone;
+    @NotBlank
+    private String organization;
+    @NotBlank
+    private String position;
+    @NotBlank
+    private String workAddress;
+    @NotNull
+    @NotBlank
+    private String scienceWorks;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private String password;
 
     public String getFullName() {
         return fullName;
@@ -47,20 +44,12 @@ public class ParticipantDto {
         this.birthdate = birthdate;
     }
 
-    public DateTime getDate() {
-        return date;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDate(DateTime date) {
-        this.date = date;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhone() {
@@ -69,5 +58,45 @@ public class ParticipantDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(String workAddress) {
+        this.workAddress = workAddress;
+    }
+
+    public String getScienceWorks() {
+        return scienceWorks;
+    }
+
+    public void setScienceWorks(String scienceWorks) {
+        this.scienceWorks = scienceWorks;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -8,6 +8,7 @@ import model.Contest;
 import model.ContestPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -75,7 +76,7 @@ public class ContestController {
         response.sendError(406, exception.getMessage());
     }
 
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler({BadRequestException.class, DisabledException.class})
     @ResponseBody
     public void onBadRequestException(HttpServletResponse response, Exception exception) throws IOException {
         response.sendError(400, exception.getMessage());

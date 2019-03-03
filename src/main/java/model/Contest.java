@@ -23,7 +23,7 @@ public class Contest {
     @Convert(converter = DateTimeConverter.class)
     private DateTime expirationTime;
 
-    @OneToMany(mappedBy = "contest")
+    @OneToMany(mappedBy = "contest", fetch = FetchType.EAGER)
     private List<Application> applications;
 
     @Lob

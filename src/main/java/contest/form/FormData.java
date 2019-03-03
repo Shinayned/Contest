@@ -10,15 +10,17 @@ import java.util.List;
 
 public class FormData implements Serializable {
     private int formId;
+    private FormType type;
     private List<String> data;
 
-    public FormData(int formId, List<String> data) {
+    public FormData(int formId, FormType type, List<String> data) {
         this.formId = formId;
+        this.type = type;
         this.data = new ArrayList<>(data);
     }
 
-    public FormData(int formId, String[] data){
-        this(formId, Arrays.asList(data));
+    public FormData(int formId, FormType type, String[] data){
+        this(formId, type, Arrays.asList(data));
     }
 
     public int getFormId() {
@@ -29,10 +31,14 @@ public class FormData implements Serializable {
         return new ArrayList<>(data);
     }
 
+    public FormType getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         if(data.size() == 1) {
-            return data.get(1);
+            return data.get(0);
         } else {
             StringBuilder dataAsString = new StringBuilder();
 

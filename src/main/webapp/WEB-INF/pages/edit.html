@@ -14,147 +14,179 @@
     <!-- Custom styles for this template -->
     <link href="../static/css/home.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css">
-    <script type="text/javascript" src="../static/js/telMask.js"></script>  
+    <script type="text/javascript" src="../static/js/telMask.js"></script>
 
 </head>
 
 <body>
-     <nav class="navbar navbar-expand fixed-top nav-hor">
- <div class="conteiner-fluid">
-    <div class="row">
-        <div class="col-12">
-           
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <a href="#menu-toggle" class="d-md-none" id="menu-toggle">
-                    <img src="../static/img/hamburger.png" id="hamb" width="35" height="28">
-                </a>
-              </div>
-       
+<nav class="navbar navbar-expand fixed-top nav-hor">
+    <div class="conteiner-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <a href="#menu-toggle" class="d-md-none" id="menu-toggle">
+                        <img src="../static/img/hamburger.png" id="hamb" width="35" height="28">
+                    </a>
+                </div>
+
+            </div>
         </div>
     </div>
-    </div>
-         </nav>
+</nav>
 <div id="wrapper">
 
-        <!-- Sidebar -->
-        <nav  class="fixed-top">
-           <ul class="sidebar-nav" id="sidebar-wrapper">
-                <a href="#">
-                     <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
-                     <span class="head-menu" id="name">Ім'я Прізвище</span>
-                 </a>
-                <div class="info" id="date">
-                        Дата народження: 00.00.00
-                </div>
-                <div class="info" id="phone"> 
-                        Телефон: 0978974820
-                </div>
-                <div class="info" id="email" th:text="${participant} ? |Email: ${participant.email}| : _">
-                        Email: oleh.melnechyk@gmail.com
-                </div>
-                <li>
-                    <a href="edit.html" class="text-center" style="margin-left: -25px;" id="edit-data">
-                        Редагувати
-                    </a>
-                </li>
-                <hr size="5" width="250" align="center" color="#1f1f1f">
-                <li>
-                    <a href="main.html">Головна</a>
-                </li>
-                <li>
-          <a href="drive.html">Мій диск</a>
-        </li>
-                 <li class="dropdown">
-            <a href="home.html" >Конкурси</a>
-            
-        </li>
-        <li>
-          <a href="main.html">Про сайт</a>
-        </li>
-        <div class="conteiner nav-icon" >
-                    <a href="#" class="bottom-panel mx-2"><img src="../static/img/YSA.png" alt="" width="30" height="30"></a>
-                    <a href="#" class="bottom-panel"><img src="../static/img/facebook.png" alt="" width="30" height="30"></a>
-                    <a href="/logout" class="bottom-panel" style="margin-right: 10px; position: absolute; right: 0px;"><img src="../static/img/exit.png" alt="" width="30" height="30"></a>
+    <!-- Sidebar -->
+    <nav class="fixed-top">
+        <ul class="sidebar-nav" id="sidebar-wrapper">
+            <a href="#">
+                <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
+                <span class="head-menu" id="name" th:text="${participant.fullName}">Ім'я Прізвище</span>
+            </a>
+            <div class="info" id="date">
+                Дата народження: <span th:text="${participant.birthdate.toString('dd.MM.yyyy')}" th:remove="tag"></span>
             </div>
-            </ul>
-        </nav>
-        <!-- /#sidebar-wrapper -->
+            <div class="info" id="phone">
+                Телефон: <span th:text="${participant.phoneNumber}" th:remove="tag"></span>
+            </div>
+            <div class="info" id="email">
+                Email: <span th:text="${participant.email}" th:remove="tag"></span>
+            </div>
+            <li>
+                <a href="edit.html" class="text-center" style="margin-left: -25px;" id="edit-data">
+                    Редагувати
+                </a>
+            </li>
+            <hr size="5" width="250" align="center" color="#1f1f1f">
+            <li>
+                <a href="main.html">Головна</a>
+            </li>
+            <li>
+                <a href="drive.html">Мій диск</a>
+            </li>
+            <li class="dropdown">
+                <a href="home.html">Конкурси</a>
 
-        <!-- Page Content -->
-        <div id="page-content-wrapper" class="py-0 px-0">
-           
+            </li>
+            <li>
+                <a href="main.html">Про сайт</a>
+            </li>
+            <div class="conteiner nav-icon">
+                <a href="#" class="bottom-panel mx-2"><img src="../static/img/YSA.png" alt="" width="30"
+                                                           height="30"></a>
+                <a href="#" class="bottom-panel"><img src="../static/img/facebook.png" alt="" width="30"
+                                                      height="30"></a>
+                <a href="/logout" class="bottom-panel" style="margin-right: 10px; position: absolute; right: 0px;"><img
+                        src="../static/img/exit.png" alt="" width="30" height="30"></a>
+            </div>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper" class="py-0 px-0">
+
         <div class="row">
-        <div class="col-md-3" >
-            <!-- Sidebar -->
-                
-        </div>
-        <div class=" col-12 col-md-5 px-0 text-align-center" id="edit">
-            <form data-toggle="validator" role="form" class="form-horizontal" id="my-form">
-                    <span class="heading">Зміна інформації</span>
-                <div class="form-group">
-                    <label for="inputName" class="control-label">Ваш ПІБ:</label>
-                    <input type="text" class="form-control" id="inputName" name="FullName" value="Введите Ваше имя" required>
-                </div>
-                <div class="form-group">
-                    <label for="inputDate" class="control-label">Дата народження:</label>
-                    <input type="date" class="form-control" id="inputDate" name="date">
-                </div>
-                <div class="form-group">
-                    <label for="inputTel" class="control-label">Ваш телефон:</label>
-                    <input type="text" id="zipCode" class="form-control" name="phone" onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);" value="+38(097)000-00-00" >
+            <div class="col-md-3">
+                <!-- Sidebar -->
 
-                    <div class="help-block with-errors"></div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail" class="control-label">Ваш E-mail</label>
-                    <input type="email" class="form-control" id="inputEmail" name="email" value="youremail@email.com" data-error="Вы не правильно ввели Ваш E-mail">
-                </div>
-                <div class="form-group">
-          <label for="inputOrg" class="control-label">Назва організації:</label>
-          <input type="text" class="form-control" id="inputOrg" name="organization" placeholder="Введіть повну назву організації де працюєте/навчаєтесь" required>
-        </div> 
-        <div class="form-group">
-            <label for="inputOrg" class="control-label">Посада</label>
-            <select name="select"> <!--Supplement an id here instead of using 'name'-->
-               <option value="Науковий працівник">науковий працівник</option> 
-               <option value="науково-педагогічний працівник">науково-педагогічний працівник</option>
-               <option value="аспірант">аспірант</option>
-               <option value="ад’юнкт">ад’юнкт</option>
-               <option value="докторант">докторант</option>
-               <option value="інженерно-технічний працівник">інженерно-технічний працівник</option>
-            </select>       
-          </div>
-          <div class="form-group">
-          <label for="inputAdress" class="control-label">Службова адреса</label>
-          <input type="text" class="form-control" id="inputAdress" name="adress" placeholder="Введіть повну службову адресу" required>
-        </div>                         
-                <div class="form-group" style="margin-right: auto;margin-left: auto;">
-                    <label for="inputMessage" class="control-label text-align-center">Перелік наукових праць</label>
-                    <textarea name="FullInfo" id="message" class="form-control" rows="9" cols="25" style="min-height: 90px;" required="required" placeholder="Введіть перелік робіт"></textarea>
-                    <div class="help-block with-errors"></div>
-                </div>
-                <div class="form-group">
-                    <button id="submit" class="btn btn-primary a_submit" href="home.html" >Змінити</button>
-                </div>
-                </form> 
+            </div>
+            <div class=" col-12 col-md-5 px-0 text-align-center" id="edit">
+                <form data-toggle="validator" role="form" class="form-horizontal" id="my-form">
+                    <span class="heading">Зміна інформації</span>
+                    <div class="form-group">
+                        <label for="inputName" class="control-label">Ваш ПІБ:</label>
+                        <input type="text" class="form-control" id="inputName" name="fullName" required
+                               th:value="${participant.fullName}">
+                    </div>
+                    <div class="form-group">
+                        <label for="date" class="control-label">Дата народження:</label>
+                        <input type="date" class="form-control" id="birthdate" name="date"
+                               th:value="${participant.birthdate}">
+                    </div>
+                    <div class="form-group">
+                        <label for="zipCode" class="control-label">Ваш телефон:</label>
+                        <input type="text" id="zipCode" class="form-control" name="phone"
+                               onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);"
+                               th:value="${participant.phoneNumber}">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail" class="control-label">Ваш E-mail</label>
+                        <input type="email" class="form-control" id="inputEmail" name="email"
+                               data-error="Вы не правильно ввели Ваш E-mail"
+                               th:value="${participant.email}">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputOrg" class="control-label">Назва організації:</label>
+                        <input type="text" class="form-control" id="inputOrg" name="organization"
+                               placeholder="Введіть повну назву організації де працюєте/навчаєтесь" required
+                               th:value="${participant.organization}">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputOrg" class="control-label">Посада</label>
+                        <select name="position"> <!--Supplement an id here instead of using 'name'-->
+                            <option value="Науковий працівник"
+                                    th:selected="${participant.position} == 'Науковий працівник' ? 'required' : _">
+                                науковий працівник
+                            </option>
+                            <option value="науково-педагогічний працівник"
+                                    th:selected="${participant.position} == 'науково-педагогічний працівник' ? 'required' : _">
+                                науково-педагогічний працівник
+                            </option>
+                            <option value="аспірант"
+                                    th:selected="${participant.position} == 'аспірант' ? 'required' : _">
+                                аспірант
+                            </option>
+                            <option value="ад’юнкт"
+                                    th:selected="${participant.position} == 'ад’юнкт' ? 'required' : _">
+                                ад’юнкт
+                            </option>
+                            <option value="докторант"
+                                    th:selected="${participant.position} == 'докторант' ? 'required' : _">
+                                докторант
+                            </option>
+                            <option value="інженерно-технічний працівник"
+                                    th:selected="${participant.position} == 'інженерно-технічний працівник' ? 'required' : _">
+                                інженерно-технічний працівник
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAdress" class="control-label">Службова адреса</label>
+                        <input type="text" class="form-control" id="inputAdress" name="workAddress"
+                               placeholder="Введіть повну службову адресу" required
+                               th:value="${participant.workAddress}">
+                    </div>
+                    <div class="form-group" style="margin-right: auto;margin-left: auto;">
+                        <label for="message" class="control-label text-align-center">Перелік наукових праць</label>
+                        <textarea name="scienceWorks" id="message" class="form-control" rows="9" cols="25"
+                                  style="min-height: 90px;" required="required" placeholder="Введіть перелік робіт"
+                                  th:text="${participant.scienceWorks}"></textarea>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="form-group">
+                        <button id="submit" class="btn btn-primary a_submit" href="home.html">Змінити</button>
+                    </div>
+                </form>
                 <script src="../static/js/jsonParse.js"></script>
 
+            </div>
         </div>
     </div>
 </div>
-</div>
-        <!-- /#page-content-wrapper -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="../static/vendor/jquery/jquery.min.js"></script>
-    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- /#page-content-wrapper -->
+<!-- Bootstrap core JavaScript -->
+<script src="../static/vendor/jquery/jquery.min.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Menu Toggle Script -->
+<!-- Menu Toggle Script -->
 <script>
-    $("#menu-toggle").click(function(e) {
+    $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
-    </script>
+</script>
 </body>
 
 </html>

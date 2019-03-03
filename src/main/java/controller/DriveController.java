@@ -5,6 +5,7 @@ import google.GoogleDrive;
 import model.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -30,7 +31,9 @@ public class DriveController {
 
 
     @RequestMapping("/drive")
-    public String onDrive() {
+    public String onDrive(Principal principal, Model model) {
+        Participant participant = participantService.getParticipantByEmail(principal.getName());
+        model.addAttribute("participant", participant);
         return "drive";
     }
 

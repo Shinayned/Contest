@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import model.Participant;
 import org.hibernate.boot.jaxb.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -23,7 +27,7 @@ public class MainController {
 
     @RequestMapping("/")
     public String onIndex(Principal principal, Model model) {
-        if (principal == null)
+        if (principal == null || principal.getName().equals("admin"))
             model.addAttribute("isAuthenticated", false);
         else
             model.addAttribute("isAuthenticated", true);
@@ -33,22 +37,15 @@ public class MainController {
 
     @RequestMapping("/main")
     public String onMain(Principal principal, Model model) {
-        if (principal == null)
-            model.addAttribute("isAuthenticated", false);
-        else
-            model.addAttribute("isAuthenticated", true);
-
+        Participant participant = participantService.getParticipantByEmail(principal.getName());
+        model.addAttribute("participant", participant);
         return "main";
     }
 
     @RequestMapping("/home")
     public String onHome(Principal principal, Model model) {
-        if(principal != null) {
-            Participant participant = participantService.getParticipantByEmail(principal.getName());
-            if(participant != null) {
-                model.addAttribute("participant", participant);
-            }
-        }
+        Participant participant = participantService.getParticipantByEmail(principal.getName());
+        model.addAttribute("participant", participant);
         return "home";
     }
 }

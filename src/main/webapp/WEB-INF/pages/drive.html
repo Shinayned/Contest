@@ -38,49 +38,52 @@
          </nav>
 <div id="wrapper">
 
-        <!-- Sidebar -->
-        <nav  class="fixed-top">
-           <ul class="sidebar-nav" id="sidebar-wrapper">
-                <a href="#">
-                     <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
-                     <span class="head-menu" id="name">Ім'я Прізвище</span>
-                 </a>
-                <div class="info" id="date">
-                        Дата народження: 00.00.00
-                </div>
-                <div class="info" id="phone"> 
-                        Телефон: 0978974820
-                </div>
-                <div class="info" id="email" th:text="${participant} ? |Email: ${participant.email}| : _">
-                        Email: oleh.melnechyk@gmail.com
-                </div>
-                <li>
-                    <a href="edit.html" class="text-center" style="margin-left: -25px;" id="edit-data">
-                        Редагувати
-                    </a>
-                </li>
-                <hr size="5" width="250" align="center" color="#1f1f1f">
-                <li>
-                    <a href="main.html">Головна</a>
-                </li>
-                <li>
-          <a href="drive.html">Мій диск</a>
-        </li>
-                 <li class="dropdown">
-         <a href="home.html" >Конкурси</a>
-            
-        </li>
-        <li>
-          <a href="main.html">Про сайт</a>
-        </li>
-        <div class="conteiner nav-icon" >
-                    <a href="#" class="bottom-panel mx-2"><img src="../static/img/YSA.png" alt="" width="30" height="30"></a>
-                    <a href="#" class="bottom-panel"><img src="../static/img/facebook.png" alt="" width="30" height="30"></a>
-                    <a href="/logout" class="bottom-panel" style="margin-right: 10px; position: absolute; right: 0px;"><img src="../static/img/exit.png" alt="" width="30" height="30"></a>
+    <!-- Sidebar -->
+    <nav class="fixed-top">
+        <ul class="sidebar-nav" id="sidebar-wrapper">
+            <a href="#">
+                <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
+                <span class="head-menu" id="name" th:text="${participant.fullName}">Ім'я Прізвище</span>
+            </a>
+            <div class="info" id="date">
+                Дата народження: <span th:text="${participant.birthdate.toString('dd.MM.yyyy')}" th:remove="tag"></span>
             </div>
-            </ul>
-        </nav>
-        <!-- /#sidebar-wrapper -->
+            <div class="info" id="phone">
+                Телефон: <span th:text="${participant.phoneNumber}" th:remove="tag"></span>
+            </div>
+            <div class="info" id="email">
+                Email: <span th:text="${participant.email}" th:remove="tag"></span>
+            </div>
+            <li>
+                <a href="edit.html" class="text-center" style="margin-left: -25px;" id="edit-data">
+                    Редагувати
+                </a>
+            </li>
+            <hr size="5" width="250" align="center" color="#1f1f1f">
+            <li>
+                <a href="main.html">Головна</a>
+            </li>
+            <li>
+                <a href="drive.html">Мій диск</a>
+            </li>
+            <li class="dropdown">
+                <a href="home.html">Конкурси</a>
+
+            </li>
+            <li>
+                <a href="main.html">Про сайт</a>
+            </li>
+            <div class="conteiner nav-icon">
+                <a href="#" class="bottom-panel mx-2"><img src="../static/img/YSA.png" alt="" width="30"
+                                                           height="30"></a>
+                <a href="#" class="bottom-panel"><img src="../static/img/facebook.png" alt="" width="30"
+                                                      height="30"></a>
+                <a href="/logout" class="bottom-panel" style="margin-right: 10px; position: absolute; right: 0px;"><img
+                        src="../static/img/exit.png" alt="" width="30" height="30"></a>
+            </div>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
         <div id="page-content-wrapper" class="py-0 px-0">
