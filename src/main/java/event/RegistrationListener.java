@@ -1,5 +1,6 @@
 package event;
 
+import email.EmailService;
 import model.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -17,7 +18,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     private ParticipantService service;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private EmailService emailService;
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
@@ -32,10 +33,9 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         String confirmationUrl = event.getAppUrl() + "/registrationConfirm?token=" + token;
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(participant.getEmail());
-        email.setSubject("Registration Confirmation");
-        email.setText("Please, follow the link to confirm your registration:\n" + confirmationUrl);
-        mailSender.send(email);
+        emailService.sendSimpleMessage(
+                participant.getEmail(),
+                "Registration Confirmation",
+                "Please, follow the link to confirm your registration:\n" + confirmationUrl);
     }
 }

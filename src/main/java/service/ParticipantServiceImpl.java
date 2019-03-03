@@ -3,6 +3,7 @@ package service;
 import dto.ParticipantDto;
 import model.Participant;
 import model.VerificationToken;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,10 +37,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public Participant registerNewAccount(ParticipantDto participantDto) {
-        if(existsByEmail(participantDto.getEmail())) {
+        if(existsByEmail(participantDto.getEmail()))
             throw new EmailExistsException(
                     "There is an account with that email adress:" + participantDto.getEmail());
-        }
 
         participantDto.setPassword(encoder.encode(participantDto.getPassword()));
         Participant participant = new Participant(participantDto);
@@ -49,10 +49,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public Participant registerNewAccount(Participant participant) {
-        if(existsByEmail(participant.getEmail())) {
+        if(existsByEmail(participant.getEmail()))
             throw new EmailExistsException(
                     "There is an account with that email adress:" + participant.getEmail());
-        }
 
         participant.setPassword(encoder.encode(participant.getPassword()));
 
@@ -60,8 +59,16 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public void updateAccount(Participant user) {
-        participantRepository.save(user);
+    public void updateAccount(Participant participant) {
+        participantRepository.save(participant);
+    }
+
+    @Override
+    @Transactional
+    public void updateAccount(String email, ParticipantDto participantDto) {
+        Participant participant = participantRepository.findByEmail(email);
+        participant.updateInfo(participantDto);
+        participantRepository.save(participant);
     }
 
     @Override
