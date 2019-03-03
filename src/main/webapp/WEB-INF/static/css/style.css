@@ -111,7 +111,7 @@ body
  padding-top: 5px;
  text-transform: capitalize;
 }
-.form-horizontal select{
+ select{
 	padding: 5px;
  border-radius: 15px;
  background-color: #f0f0f0;
@@ -168,10 +168,6 @@ p
 	color: red;
 	font-size: 12px;
 
-}
-.btn 
-{
-	background-color: #11a3fc;
 }
 .contents
 {
@@ -231,4 +227,8 @@ p{font-size: 20px;}
 h3{font-size: 24px;}
 }
 
+/*=====Admin======*/
+.showList .name
+{
+}
 

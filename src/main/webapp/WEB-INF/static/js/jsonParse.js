@@ -1,9 +1,10 @@
-$("#submit").click(function () {
-    var data = $("#my-form").serializeObject();//parse in JSON
+$("#submit").click(function (e) {
+    var data = $("#my-form").serializeObject();
+    var url = this.name;//parse in JSON
     //POST to server
     $.ajax({
         type: "POST",
-        url: "registration",
+        url: url,
         data: JSON.stringify(data),
         contentType: "application/json"
     });
