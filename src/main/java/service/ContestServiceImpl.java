@@ -127,7 +127,11 @@ public class ContestServiceImpl implements ContestService {
         DataSource excelData = new ByteArrayDataSource(byteOut.toByteArray(), "application/vnd.ms-excel");
         String excelFileName = contest.getName() + "(" + new DateTime() + ")" + ".xlsx";
 
-        emailService.sendMessageWithAttachment(sendToEmail, contest.getName(), "", excelFileName, excelData);
+        String contestFolder = contest.getFilesFolderId();
+        String filesUrl = driveService.getLinkFor(contestFolder);
+        String messageText = "Файли учасників: " + filesUrl;
+
+        emailService.sendMessageWithAttachment(sendToEmail, contest.getName(), messageText, excelFileName, excelData);
     }
 
     private Workbook parseApplicationsToExcel(Contest contest) {
@@ -262,6 +266,8 @@ public class ContestServiceImpl implements ContestService {
 
         if (contestFolder == null) {
             File folder = driveService.createFolder(contest.getName());
+            contest.setFilesFolderId(folder.getId());
+            contestRepository.save(contest);
             contestFolder = folder.getId();
         }
         File folder = driveService.createFolder(contestFolder, participant.getFullName());

@@ -79,7 +79,14 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
-                    .antMatchers("/", "/static/**", "/registration*", "/login*", "/restoration").permitAll()
+                    .antMatchers(
+                            "/",
+                            "/static/**",
+                            "/registration*",
+                            "/registrationConfirm",
+                            "/login*",
+                            "/participant/resetPassword*",
+                            "/error").permitAll()
                     .anyRequest()
                     .hasRole("PARTICIPANT")
 

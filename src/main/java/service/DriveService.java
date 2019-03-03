@@ -19,4 +19,6 @@ public interface DriveService {
     FileInfo uploadFile(String name, String folderId, MultipartFile file);
     File createFolder(String name);
     File createFolder(String parentFolderId, String name);
+    String getLinkFor(String fileId);
+    void closeAccessTo(String fileId);
 }

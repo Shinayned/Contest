@@ -12,5 +12,8 @@ public interface ParticipantService {
     void updateAccount(Participant participant);
     void updateAccount(String email, ParticipantDto participantDto);
     void createVerificationToken(Participant participant, String token);
-    VerificationToken getVerificationToken(String VerificationToken);
+    void changePassword(String email, String newPassword);
+    void changePassword(Participant participant, String newPassword);
+    VerificationToken getToken(String token);
+    void sendResetPasswordUrl(Participant participant, String url);
 }

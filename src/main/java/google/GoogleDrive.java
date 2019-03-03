@@ -16,6 +16,8 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.Permission;
+import com.google.api.services.drive.model.PermissionList;
 import model.Participant;
 import org.hibernate.boot.jaxb.SourceType;
 import org.springframework.context.annotation.Bean;
@@ -88,32 +90,32 @@ public class GoogleDrive {
     }
 
     public FileInfo uploadFile(String name, String parentFolderId, MultipartFile file) {
-            File metaData = new File();
+        File metaData = new File();
 
-            if (name != null)
-                metaData.setName(name);
-            else
-                metaData.setName(file.getOriginalFilename());
+        if (name != null)
+            metaData.setName(name);
+        else
+            metaData.setName(file.getOriginalFilename());
 
-            metaData.setParents(Collections.singletonList(parentFolderId));
+        metaData.setParents(Collections.singletonList(parentFolderId));
 
-            try {
-                File uploadedFile = service.files().create(metaData, new ByteArrayContent(file.getContentType(), file.getBytes()))
-                        .execute();
-                FileInfo uploadedFileInfo = new FileInfo(uploadedFile.getName(), uploadedFile.getId(), file.getSize());
+        try {
+            File uploadedFile = service.files().create(metaData, new ByteArrayContent(file.getContentType(), file.getBytes()))
+                    .execute();
+            FileInfo uploadedFileInfo = new FileInfo(uploadedFile.getName(), uploadedFile.getId(), file.getSize());
 
-                return uploadedFileInfo;
-            } catch (IOException e) {
-                System.out.println("An error occurred: " + e);
-            }
-            return null;
+            return uploadedFileInfo;
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
+        return null;
     }
 
     public FileInfo uploadFile(String parentFolderId, MultipartFile file) {
         return uploadFile(null, parentFolderId, file);
     }
 
-    public File createFolder(String name){
+    public File createFolder(String name) {
         return createFolder(null, name);
     }
 
@@ -125,7 +127,7 @@ public class GoogleDrive {
                     .setName(name)
                     .setMimeType("application/vnd.google-apps.folder");
             if (parentFolderId != null)
-                    folder.setParents(Collections.singletonList(parentFolderId));
+                folder.setParents(Collections.singletonList(parentFolderId));
 
             folder = service.files().create(folder)
                     .execute();
@@ -194,5 +196,34 @@ public class GoogleDrive {
         }
 
         return fileList;
+    }
+
+    public String createLink(String folderId)   {
+        String link = "";
+        try {
+            Permission permission = new Permission();
+            permission.setType("anyone");
+            permission.setRole("reader");
+            service.permissions().create(folderId, permission).execute();
+
+            File file = service.files().get(folderId).setFields("webViewLink").execute();
+            link = file.getWebViewLink();
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
+        return link;
+    }
+
+    public void closeAccess(String folderId) {
+        try {
+            PermissionList permissionList = service.permissions().list(folderId).execute();
+            List<Permission> permissions = permissionList.getPermissions();
+
+            for (Permission permission : permissions) {
+                service.permissions().delete(folderId, permission.getId()).execute();
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
     }
 }

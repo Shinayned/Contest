@@ -56,7 +56,7 @@ public class Application {
     public void contestTest() {
         List<Form> forms = testForms();
         Contest contest = new Contest("Avionica", forms, "Avionica");
-
+        contest.setActive(true);
         contestService.createContest(contest);
     }
 

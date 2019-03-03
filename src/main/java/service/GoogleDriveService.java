@@ -94,4 +94,14 @@ public class GoogleDriveService implements DriveService {
     public File createFolder(String parentFolderId, String name) {
         return googleDrive.createFolder(parentFolderId, name);
     }
+
+    @Override
+    public String getLinkFor(String fileId) {
+        return googleDrive.createLink(fileId);
+    }
+
+    @Override
+    public void closeAccessTo(String fileId) {
+        googleDrive.closeAccess(fileId);
+    }
 }
