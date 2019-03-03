@@ -49,9 +49,28 @@
  					<input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" data-error="Вы не правильно ввели Ваш E-mail">
  					<div class="help-block with-errors"></div>
  				</div>
- 				<div class="form-group">
- 					<label for="inputMessage" class="control-label text-center">Детальніша інформація(Місце роботи/навчання(курс,спеціальність,факультет))</label>
-					<textarea name="FullInfo" id="message" class="form-control" rows="9" cols="25" style="min-height: 150px;" required="required" placeholder="Введіть текст"></textarea>
+        <div class="form-group">
+          <label for="inputOrg" class="control-label">Назва організації:</label>
+          <input type="text" class="form-control" id="inputOrg" name="organization" placeholder="Введіть повну назву організації де працюєте/навчаєтесь" required>
+        </div> 
+        <div class="form-group">
+            <label for="inputOrg" class="control-label">Посада</label>
+            <select name="select"> <!--Supplement an id here instead of using 'name'-->
+               <option value="Науковий працівник">науковий працівник</option> 
+               <option value="науково-педагогічний працівник">науково-педагогічний працівник</option>
+               <option value="аспірант">аспірант</option>
+               <option value="ад’юнкт">ад’юнкт</option>
+               <option value="докторант">докторант</option>
+               <option value="інженерно-технічний працівник">інженерно-технічний працівник</option>
+            </select>       
+          </div>
+          <div class="form-group">
+          <label for="inputAdress" class="control-label">Службова адреса</label>
+          <input type="text" class="form-control" id="inputAdress" name="adress" placeholder="Введіть повну службову адресу" required>
+        </div>                         
+ 				<div class="form-group" style="margin-right: auto;margin-left: auto;">
+ 					<label for="inputMessage" class="control-label text-align-center">Перелік наукових праць</label>
+					<textarea name="FullInfo" id="message" class="form-control" rows="9" cols="25" style="min-height: 90px;" required="required" placeholder="Введіть перелік робіт"></textarea>
  					<div class="help-block with-errors"></div>
  				</div>
  				<div class="form-group">
@@ -60,10 +79,10 @@
  					</div>
  						<div class="form-group">
  							<div class="row justify-content-around">
- 								<div class="col-6">
+ 								<div class="col-5">
  								<input type="password" name="password" data-toggle="validator" data-minlength="6" class="form-control" id="inputPassword" placeholder="Пароль"  required>
  							</div>
- 							<div class="col-6">
+ 							<div class="col-5">
  								<input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Ошибка! Пароли не совпадают!" placeholder="Повторіть" required>
  							</div>
  							<div class="help-block with-errors"></div>
@@ -71,13 +90,8 @@
 
  						</div>
  				</div>
- 				<!--<div class="form-group">
- 					<div class="checkbox">
-						<div class="help-block with-errors"></div>
- 					</div>
- 				</div>-->
  				<div class="form-group">
- 					<a id="submit" class="btn btn-primary a_submit" href="home.html">Реєстрація</a>
+ 					<a id="submit" class="btn btn-primary a_submit align-content-center" href="home.html">Реєстрація</a>
  				</div>
  				</form>
         <script src="../static/js/jsonParse.js"></script>
