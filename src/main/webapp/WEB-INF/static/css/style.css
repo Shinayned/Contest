@@ -228,6 +228,11 @@ p{font-size: 20px;}
 h3{font-size: 24px;}
 }
 
+.good{
+	color: #000;
+	font-size: 12px;
+}
+
 /*=====Admin======*/
 .showList .name
 {

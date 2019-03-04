@@ -2,19 +2,26 @@ $(document).ready(function(){
 var url = "/participant/changePassword?token=123lkjgfdsasb234987asdfhk";
 var token = url.split('token=',2);
 token = token[1];
-console.log(token);
 
 $('#change').click(function(e) {
- 
-    var data = $('#password').serialize();
-    if(token) { data += "&token="+token}
-    console.log(data);
+    var valid = $(".form-horizontal").serializeArray();
+    if(valid[0].value == valid[1].value && valid[0].value.length >= 6){
+        var data = $("#password").serialize();
+        if(token) { data += "&token="+token}
+            
+        $.ajax({
+            type: "POST",
+            url: "/participant/changePassword",
+            data: data
+        });
+    }    
+    else if(valid[0].value.length >= 6)
+        $("#errortext").text("Паролі не збігаються");
+    else
+        $("#errortext").text("Пароль короткий");
 
- $.ajax({
-        type: "POST",
-        url: "/participant/changePassword",
-        data: data
-    });
+    
+ return false;
     
 })
 });

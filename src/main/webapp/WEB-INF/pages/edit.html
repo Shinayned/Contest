@@ -27,7 +27,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand fixed-top nav-hor" style="position: fixed;">
+<nav class="navbar navbar-expand fixed-top nav-hor" style="position: fixed; border-radius: 0;">
     <div class="conteiner-fluid">
         <div class="row">
             <div class="col-12">
@@ -46,7 +46,7 @@
 
     <!-- Sidebar -->
     <nav class="fixed-top">
-        <ul class="sidebar-nav" id="sidebar-wrapper">
+        <ul class="sidebar-nav" id="sidebar-wrapper" style="top:1.5vh;">
             <a href="#">
                 <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
                 <span class="head-menu" id="name" th:text="${participant.fullName}">Ім'я Прізвище</span>
