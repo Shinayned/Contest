@@ -8,8 +8,16 @@ import model.Participant;
 import model.VerificationToken;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,7 +33,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.UUID;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Controller
 public class ParticipantController {
@@ -91,11 +102,26 @@ public class ParticipantController {
     }
 
     @PostMapping("/participant/edit")
-    public String onUploadEditInformation(@Valid @RequestBody ParticipantDto participantDto, Principal principal, Model model) {
+    public String onUploadEditInformation(@Valid @RequestBody ParticipantDto participantDto,
+                                          Principal principal,
+                                          HttpServletRequest request,
+                                          Model model) {
         Participant participant = participantService.getParticipantByEmail(principal.getName());
         model.addAttribute("participant", participant);
-
         participantService.updateAccount(principal.getName(), participantDto);
+
+        String newEmail = participantDto.getEmail();
+        boolean hasChangedEmail = !participant.getEmail().equals(newEmail);
+        if (hasChangedEmail) {
+            Collection<SimpleGrantedAuthority> nowAuthorities =(Collection<SimpleGrantedAuthority>)SecurityContextHolder
+                    .getContext().getAuthentication().getAuthorities();
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    newEmail,
+                    participant.getPassword(),
+                    nowAuthorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+
         return "edit";
     }
 
@@ -124,7 +150,7 @@ public class ParticipantController {
     public String onChangePasswordPage(@RequestParam(name = "token",required = false)String token,
                                      Principal principal,
                                      HttpServletResponse response) throws IOException{
-        boolean isAuthorized = principal == null;
+        boolean isAuthorized = principal != null;
         boolean isResetPasswordProcess = token != null;
         if (isAuthorized)
             return "changePassword";
@@ -140,11 +166,11 @@ public class ParticipantController {
 
     @PostMapping("/participant/changePassword")
     public String changePassword(@RequestParam(name = "token", required = false)String token,
-                                 @RequestParam("newPassword")String newPassword,
+                                 @RequestParam("password")String newPassword,
                                  Principal principal,
                                  HttpServletResponse response) {
-        boolean isAuthorized = principal == null;
-        if (isAuthorized) {
+        boolean isAuthorized = principal != null;
+        if (isAuthorized && !principal.getName().equals("admin")) {
             participantService.changePassword(principal.getName(), newPassword);
             return "redirect:/login";
         }

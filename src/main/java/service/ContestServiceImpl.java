@@ -13,6 +13,7 @@ import exception.DuplicateException;
 import exception.ResourceNotFoundException;
 import google.FileInfo;
 import model.*;
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -52,10 +53,10 @@ public class ContestServiceImpl implements ContestService {
     private EmailService emailService;
 
     @Override
-    public String getPage(long contestId) throws ResourceNotFoundException {
+    public String getPageUrl(long contestId) throws ResourceNotFoundException {
         Contest contest = getContest(contestId);
 
-        return contest.getPage();
+        return contest.getPageUrl();
     }
 
     @Override
@@ -132,6 +133,12 @@ public class ContestServiceImpl implements ContestService {
         String messageText = "Файли учасників: " + filesUrl;
 
         emailService.sendMessageWithAttachment(sendToEmail, contest.getName(), messageText, excelFileName, excelData);
+    }
+
+    @Override
+    public List<Contest> getAllContests() {
+        Iterable<Contest> iterable = contestRepository.findAll();
+        return IteratorUtils.toList(iterable.iterator());
     }
 
     private Workbook parseApplicationsToExcel(Contest contest) {

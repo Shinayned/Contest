@@ -37,7 +37,7 @@ public class Application {
     public CommandLineRunner demo(ParticipantService participantService) {
         return (args) -> {
             Participant participant = new Participant(
-                    "my.email@gmail.com",
+                    "rim.maxim@gmail.com",
                     "qwerty",
                     "Vas Vas",
                     new DateTime());
@@ -55,8 +55,11 @@ public class Application {
 
     public void contestTest() {
         List<Form> forms = testForms();
-        Contest contest = new Contest("Avionica", forms, "Avionica");
+        Contest contest = new Contest("Avionica", forms, "/", "/avionica");
         contest.setActive(true);
+        contestService.createContest(contest);
+
+        contest = new Contest("IEEE", forms, null, "/ieee");
         contestService.createContest(contest);
     }
 

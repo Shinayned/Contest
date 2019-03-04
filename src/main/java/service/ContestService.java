@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface ContestService {
-    String getPage(long contestId) throws ResourceNotFoundException;
+    String getPageUrl(long contestId) throws ResourceNotFoundException;
     List<Form> getForms(long contestId) throws ResourceNotFoundException;
     List<Form> getAllForms(long contestId) throws ResourceNotFoundException;
     void submitApplication(long contestId, String participantEmail, Map<String, String[]> formsData, List<MultipartFile> files) throws ResourceNotFoundException;
     void createContest(Contest contest) throws DuplicateException;
     Contest getContest(long id) throws ResourceNotFoundException;
     void sendContestApplications(long contestId, String sendToEmail) throws ResourceNotFoundException, IOException;
+    List<Contest> getAllContests();
 }

@@ -31,8 +31,8 @@ public class Contest {
 
     // ************ IS NOT USING. DEVELOPING IS FROZEN ************
     //private ContestPage pageData;
-
-    private String page;
+    private String imgUrl;
+    private String pageUrl;
 
     @Convert(converter = DateTimeConverter.class)
     private DateTime creatingTime;
@@ -41,10 +41,11 @@ public class Contest {
 
     protected Contest(){}
 
-    public Contest(String name, List<Form> forms, String pageName) {
+    public Contest(String name, List<Form> forms, String imgUrl, String pageUrl) {
         this.name = name;
         this.forms = new Forms(forms);
-        this.page = pageName;
+        this.imgUrl = imgUrl;
+        this.pageUrl = pageUrl;
 
         this.isActive = false;
         this.creatingTime = new DateTime();
@@ -131,12 +132,20 @@ public class Contest {
         this.forms.addForms(forms);
     }
 
-    public String getPage() {
-        return page;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setPage(String page) {
-        this.page = page;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public String getPageUrl() {
+        return pageUrl;
+    }
+
+    public void setPageUrl(String pageUrl) {
+        this.pageUrl = pageUrl;
     }
 
     public String getFilesFolderId() {

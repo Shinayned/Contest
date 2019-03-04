@@ -145,7 +145,7 @@ public class Forms implements Serializable {
 
         for (Form form : forms) {
             String formId = Integer.toString(form.getId());
-            String[] formData = formsData.getOrDefault(formId , new String[0]);
+            String[] formData = formsData.getOrDefault(formId, new String[0]);
             List<String> values = Arrays.asList(formData);
 
             form.validate(values);

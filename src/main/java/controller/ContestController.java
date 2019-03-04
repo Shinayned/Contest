@@ -40,7 +40,7 @@ public class ContestController {
     public String onContestPage(@PathVariable("contestId") long contestId, Model model) {
         Contest contest = contestService.getContest(contestId);
         model.addAttribute("url", "/contest/" + contest.getId() + "/submit/application");
-        return "contests/" + contest.getPage();
+        return "contests/" + contest.getId();
     }
 
     @PostMapping("/contest/{contestId}/submit/application")
