@@ -4,6 +4,7 @@
    }
 body
 {
+	overflow: auto;
 	font-family: Century Gothic;
 }
 

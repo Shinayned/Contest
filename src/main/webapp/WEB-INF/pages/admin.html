@@ -21,9 +21,12 @@
      <nav class="navbar navbar-expand fixed-top nav-hor">
  <div class="conteiner-fluid">
     <div class="row">
-        <div class="col-3 align-self-end">
-          <button class="btn btn-primary">Вийти</button>
-         </div>          
+        <div class="col-3 px-4 mx-4">
+          <button class="btn btn-ligth">Вийти</button>
+         </div>
+          <div class="col-3 px-4 mx-4 py-0">
+          <h5>Адмінка!</h5>
+         </div>                   
         </div>
    
     </div>
@@ -48,7 +51,7 @@
            </div>
            <hr>
             <div class="row showList py-2 justify-content-center">
-             <div class="col-3 element px-4 mx-4 ">
+             <div class="col col-md-3 element py-4 px-4 mx-4 ">
                  <a href="">
                   <div class="row justify-content-center">
                     <img src="http://dummyimage.com/800x600/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" height="200" width="300">
@@ -61,7 +64,7 @@
                   <button class="btn btn-danger closed">Зупинити</button>
                 </div>
               </div>
-              <div class="col-3 element px-4 mx-4 ">
+              <div class="col col-md-3 element py-4 px-4 mx-4 ">
                  <a href="">
                   <div class="row justify-content-center">
                     <img src="http://dummyimage.com/800x600/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" height="200" width="300">
@@ -74,7 +77,7 @@
                   <button class="btn btn-danger closed">Зупинити</button>
                 </div>
               </div>               
-              <div class="col-3 element px-4 mx-4 ">
+              <div class="col col-md-3 element py-4 px-4 mx-4 ">
                  <a href="">
                   <div class="row justify-content-center">
                     <img src="http://dummyimage.com/800x600/4d494d/686a82.gif&text=placeholder+image" alt="placeholder+image" height="200" width="300">
@@ -93,7 +96,26 @@
                </div>                             
              </div>
              <hr>
-             <div>Тут напишу функціонал конкурсів</div>
+             <div class="row infoForConcurs">
+               <div class="col mx-4">
+                 <div class="row">Назва конкурсу:</div>
+                 <div class="row">Короткий опис:</div>
+                 <div class="row">Кількість заявок:</div>
+                 <div class="row">Термін дії:</div>
+               </div>
+              <div class="col mx-4">
+                 <div class="row">
+                    <form><div class="form-group">
+                        <input type="email" class="form-control" id="inputAdress" name="SpamEmail"
+                               placeholder="Введіть пошту куди відіслати заявки"
+                               th:value="${participant.SpamEmail}">
+                    </div>                  
+                  <button class="btn btn-primary">Відправити заявки</button>
+                  <button class="btn btn-danger">Зупинити конкурс</button>
+                </form>
+                 </div>
+               </div>               
+             </div>
            </div>           
           
       </div>
