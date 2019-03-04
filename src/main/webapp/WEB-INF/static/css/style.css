@@ -232,7 +232,12 @@ h3{font-size: 24px;}
 	color: #000;
 	font-size: 12px;
 }
-
+.with-errors
+{
+	color: red;
+	padding-top: 3px;
+	height: 10px;
+}
 /*=====Admin======*/
 .showList .name
 {

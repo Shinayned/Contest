@@ -1,13 +1,71 @@
+function valideForm(input) {
+var email  = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+var error = false;
+for (var i = input.length - 1; i >= 0; i--) {
+    if(input[i].name == "email")
+    {
+        if(!(email.test(input[i].value)))
+        {
+            $("."+input[i].name).text("Некоректний email");
+            error = true;
+        }        
+    }
+    else if(input[i].name == "phone")
+    {
+        if(!(input[i].value.length == 17 && (input[i].value.indexOf("_"))))
+        {
+            $("."+input[i].name).text("Неправильний телефон");
+            error = true;               
+        }
+    }
+    else if(input[i].name == "password")
+    {
+        if(input[i].value.length < 6)
+        {
+            $("."+input[i].name).text("Короткий пароль!");
+            error = true;
+        }        
+    }
+    else
+    {
+        if(input[i].value == "")
+        {
+            $("."+input[i].name).text("Поле пусте!");
+            error = true;
+        }
+    }}
+    return error;
+}
 $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
-    var url = this.name;//parse in JSON
+    var input = $("#my-form").serializeArray();
+    var url = this.name;
+    /*if ( !(valideForm(input) )) {
+        console.log("error");
+    }
+//parse in JSON
     //POST to server
     $.ajax({
         type: "POST",
         url: url,
         data: JSON.stringify(data),
         contentType: "application/json"
-    });
+    });*/
+
+    if(this.name == "registration")
+    {
+       var c_alert = alert;
+
+        window.alert = function (str) { //override default alert
+            c_alert(str);
+            location.href = "../../pages/login.html";
+        }
+        alert("На ваш email відправлений лист");
+    }
+    else if(this.name == "edit")
+        location.reload();
+
+        location.href="../../pages/error.html";
 
     return false;
 });
