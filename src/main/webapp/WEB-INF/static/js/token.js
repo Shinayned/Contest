@@ -1,5 +1,5 @@
 $(document).ready(function(){
-var url = "/participant/changePassword?token=123lkjgfdsasb234987asdfhk";
+var url = location.href;
 var token = url.split('token=',2);
 token = token[1];
 

@@ -135,15 +135,16 @@ public class ParticipantController {
     @ResponseBody
     public void resetPassword(@RequestParam("email")String email,
                                       HttpServletRequest request,
-                                      HttpServletResponse response) {
+                                      HttpServletResponse response) throws IOException {
         Participant participant = participantService.getParticipantByEmail(email);
-        if (participant == null)
-            response.setStatus(400);
+
+        if (participant == null) {
+            response.sendError(400);
+            return;
+        }
 
         String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         participantService.sendResetPasswordUrl(participant, appUrl);
-
-        response.setStatus(200);
     }
 
     @GetMapping("/participant/changePassword")
