@@ -40,8 +40,8 @@ $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
     var input = $("#my-form").serializeArray();
     var url = this.name;
-    if ( !(valideForm(input) )) {
-        console.log("error");
+    if ( (valideForm(input) )) {
+        return false;
     }
 //parse in JSON
     //POST to server

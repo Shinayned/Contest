@@ -19,7 +19,9 @@ function validateEmail(email) {
 }
 
 $("#post-btn").click(function (e) {
+	console.log(true);
     var data = $("#inputEmail").serializeArray();
+    console.log(data);
     if (validateEmail(data[0].value)) {
         $.ajax({
             type: "POST",
