@@ -6,17 +6,14 @@ $(".closed").click(function (e) {
 	{
 		var contestId = $(this).closest(".element").attr("id");
 	}
-	console.log(contestId);
 	$.ajax({
             type: "POST",
             url: "/admin/contest/changeStatus",
-            data: "contestId="+contestId,
-            success: function (data) {
-                 $(this).hasClass("btn-danger") ?
-                 $(this).addClass("btn-success").removeClass("btn-danger").text("Запустити"):
-                 $(this).removeClass("btn-success").addClass("btn-danger").text("Зупинити");
-            }
+            data: "contestId="+contestId
         });
+         $(this).hasClass("btn-danger") ?
+         $(this).addClass("btn-success").removeClass("btn-danger").text("Запустити"):
+         $(this).removeClass("btn-success").addClass("btn-danger").text("Зупинити");    
 	return false;
 });
 

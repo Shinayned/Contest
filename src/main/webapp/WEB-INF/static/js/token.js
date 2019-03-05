@@ -9,18 +9,19 @@ $('#change').click(function(e) {
         var data = $("#password").serialize();
         if(token) { data += "&token="+token}
             
-        $.ajax({
+        var result = $.ajax({
             type: "POST",
             url: "/participant/changePassword",
-            data: data,
-            success: function () {
-                location.href="../../pages/login.html";
-            },
-            error: function () {
-                location.href="../../pages/error.html";
-            }            
-
+            data: data
         });
+        result.done(function (e) {
+                alert("Пароль успішно змінено")
+                location.href="../../pages/login.html";
+            });
+  
+        result.error(function (e) {
+                location.href="../../pages/error.html";
+            });
     }    
     else if(valid[0].value.length >= 6)
         $("#errortext").text("Паролі не збігаються");
