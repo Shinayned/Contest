@@ -20,6 +20,7 @@ import com.google.api.services.drive.model.Permission;
 import com.google.api.services.drive.model.PermissionList;
 import model.Participant;
 import org.hibernate.boot.jaxb.SourceType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +35,9 @@ public class GoogleDrive {
     private final java.io.File CREDENTIALS_FOLDER;
     private final String CLIENT_FILE_NAME;
     private final List<String> SCOPES;
+
+    @Value("${google.folder.root.id}")
+    private String rootFolderId;
 
     private Drive service;
 
@@ -122,12 +126,17 @@ public class GoogleDrive {
     public File createFolder(String parentFolderId, String name) {
         File folder = null;
 
+        List<String> parentFolders = new ArrayList<>();
+        parentFolders.add(rootFolderId);
+
         try {
             folder = new File()
                     .setName(name)
                     .setMimeType("application/vnd.google-apps.folder");
             if (parentFolderId != null)
                 folder.setParents(Collections.singletonList(parentFolderId));
+            else
+                folder.setParents(Collections.singletonList(rootFolderId));
 
             folder = service.files().create(folder)
                     .execute();
@@ -198,7 +207,7 @@ public class GoogleDrive {
         return fileList;
     }
 
-    public String createLink(String folderId)   {
+    public String createLink(String folderId) {
         String link = "";
         try {
             Permission permission = new Permission();

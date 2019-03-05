@@ -78,7 +78,7 @@ public class ParticipantController {
     }
 
     @GetMapping(value = "/registrationConfirm")
-    public String confirmRegistration(@RequestParam("token") String token, HttpServletResponse response) throws IOException{
+    public String confirmRegistration(@RequestParam("token") String token, HttpServletResponse response) throws IOException {
         VerificationToken verificationToken = participantService.getToken(token);
 
         if (verificationToken == null)
@@ -102,7 +102,9 @@ public class ParticipantController {
     }
 
     @PostMapping("/participant/edit")
-    public String onUploadEditInformation(@Valid @RequestBody ParticipantDto participantDto,
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void onUploadEditInformation(@Valid @RequestBody ParticipantDto participantDto,
                                           Principal principal,
                                           HttpServletRequest request,
                                           Model model) {
@@ -113,7 +115,7 @@ public class ParticipantController {
         String newEmail = participantDto.getEmail();
         boolean hasChangedEmail = !participant.getEmail().equals(newEmail);
         if (hasChangedEmail) {
-            Collection<SimpleGrantedAuthority> nowAuthorities =(Collection<SimpleGrantedAuthority>)SecurityContextHolder
+            Collection<SimpleGrantedAuthority> nowAuthorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder
                     .getContext().getAuthentication().getAuthorities();
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     newEmail,
@@ -121,8 +123,6 @@ public class ParticipantController {
                     nowAuthorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
-        return "edit";
     }
 
     @GetMapping("/participant/resetPassword")
@@ -133,9 +133,9 @@ public class ParticipantController {
     @PostMapping("/participant/resetPassword")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void resetPassword(@RequestParam("email")String email,
-                                      HttpServletRequest request,
-                                      HttpServletResponse response) throws IOException {
+    public void resetPassword(@RequestParam("email") String email,
+                              HttpServletRequest request,
+                              HttpServletResponse response) throws IOException {
         Participant participant = participantService.getParticipantByEmail(email);
 
         if (participant == null) {
@@ -148,9 +148,9 @@ public class ParticipantController {
     }
 
     @GetMapping("/participant/changePassword")
-    public String onChangePasswordPage(@RequestParam(name = "token",required = false)String token,
-                                     Principal principal,
-                                     HttpServletResponse response) throws IOException{
+    public String onChangePasswordPage(@RequestParam(name = "token", required = false) String token,
+                                       Principal principal,
+                                       HttpServletResponse response) throws IOException {
         boolean isAuthorized = principal != null;
         boolean isResetPasswordProcess = token != null;
         if (isAuthorized)
@@ -166,28 +166,33 @@ public class ParticipantController {
     }
 
     @PostMapping("/participant/changePassword")
-    public String changePassword(@RequestParam(name = "token", required = false)String token,
-                                 @RequestParam("password")String newPassword,
-                                 Principal principal,
-                                 HttpServletResponse response) {
+    @ResponseBody
+    public void changePassword(@RequestParam(name = "token", required = false) String token,
+                               @RequestParam("password") String newPassword,
+                               Principal principal,
+                               HttpServletResponse response) throws IOException {
         boolean isAuthorized = principal != null;
         if (isAuthorized && !principal.getName().equals("admin")) {
             participantService.changePassword(principal.getName(), newPassword);
-            return "redirect:/login";
+            response.setStatus(200);
+            return;
         }
 
         boolean isResetPasswordProcess = token != null;
-        if (!isResetPasswordProcess)
-            return "redirect:/error";
+        if (!isResetPasswordProcess) {
+            response.sendError(400);
+            return;
+        }
 
         VerificationToken passwordToken = participantService.getToken(token);
 
-        if (passwordToken == null)
-            return "redirect:/error";
-
-        Participant participant= passwordToken.getParticipant();
+        if (passwordToken == null) {
+            response.sendError(400);
+            return;
+        }
+        Participant participant = passwordToken.getParticipant();
         participantService.changePassword(participant, newPassword);
-        return "redirect:/login";
+        response.setStatus(200);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, IllegalArgumentException.class})

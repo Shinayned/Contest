@@ -25,4 +25,5 @@ public interface ContestService {
     Contest getContest(long id) throws ResourceNotFoundException;
     void sendContestApplications(long contestId, String sendToEmail) throws ResourceNotFoundException, IOException;
     List<Contest> getAllContests();
+    boolean closeOpenContest(long contestId);
 }

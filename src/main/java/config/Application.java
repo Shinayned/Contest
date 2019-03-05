@@ -55,11 +55,11 @@ public class Application {
 
     public void contestTest() {
         List<Form> forms = testForms();
-        Contest contest = new Contest("Avionica", forms, "/", "/avionica");
+        Contest contest = new Contest("Avionica", forms, "/", "something", "/avionica");
         contest.setActive(true);
         contestService.createContest(contest);
 
-        contest = new Contest("IEEE", forms, null, "/ieee");
+        contest = new Contest("IEEE", forms, null, "description", "/ieee");
         contestService.createContest(contest);
     }
 

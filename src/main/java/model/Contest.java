@@ -29,9 +29,8 @@ public class Contest {
     @Lob
     private Forms forms;
 
-    // ************ IS NOT USING. DEVELOPING IS FROZEN ************
-    //private ContestPage pageData;
     private String imgUrl;
+    private String description;
     private String pageUrl;
 
     @Convert(converter = DateTimeConverter.class)
@@ -41,10 +40,11 @@ public class Contest {
 
     protected Contest(){}
 
-    public Contest(String name, List<Form> forms, String imgUrl, String pageUrl) {
+    public Contest(String name, List<Form> forms, String imgUrl, String description, String pageUrl) {
         this.name = name;
         this.forms = new Forms(forms);
         this.imgUrl = imgUrl;
+        this.description = description;
         this.pageUrl = pageUrl;
 
         this.isActive = false;
@@ -138,6 +138,14 @@ public class Contest {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPageUrl() {

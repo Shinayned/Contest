@@ -141,6 +141,17 @@ public class ContestServiceImpl implements ContestService {
         return IteratorUtils.toList(iterable.iterator());
     }
 
+    @Override
+    public boolean closeOpenContest(long contestId) {
+        Contest contest = contestRepository.findById(contestId).get();
+
+        if(contest == null)
+            return false;
+
+        contest.setActive(!contest.isActive());
+        return true;
+    }
+
     private Workbook parseApplicationsToExcel(Contest contest) {
         List<Application> applications = contest.getApplications();
         List<Form> forms = contest.getForms();
