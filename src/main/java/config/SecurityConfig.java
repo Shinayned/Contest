@@ -52,7 +52,7 @@ public class SecurityConfig {
                     .loginPage("/admin/login")
                     .loginProcessingUrl("/admin/login")
                     .failureUrl("/admin/login?error=loginError")
-                    .defaultSuccessUrl("/admin/adminPage")
+                    .defaultSuccessUrl("/admin/adminPage", true)
                     .usernameParameter("login")
                     .passwordParameter("password")
 
@@ -96,7 +96,7 @@ public class SecurityConfig {
                     .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/home", false)
+                    .defaultSuccessUrl("/home", true)
                     .failureHandler(customAuthFailureHandler)
                     .usernameParameter("email")
                     .passwordParameter("password")
