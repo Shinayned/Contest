@@ -15,7 +15,7 @@ $(".getInfo").click(function (e) {
 		$.ajax({
             type: "POST",
             url: "/admin/contest/getInfo",
-            data: contestId,
+            data: "contestId=" + contestId,
             success: function () {
                 alert("В цей час будуть оброблятись дані)");
             }

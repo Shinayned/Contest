@@ -29,8 +29,9 @@ public class Contest {
     @Lob
     private Forms forms;
 
-    private String imgUrl;
+    private String title;
     private String description;
+    private String imgUrl;
     private String pageUrl;
 
     @Convert(converter = DateTimeConverter.class)
@@ -40,11 +41,12 @@ public class Contest {
 
     protected Contest(){}
 
-    public Contest(String name, List<Form> forms, String imgUrl, String description, String pageUrl) {
+    public Contest(String name, List<Form> forms, String title, String description, String imgUrl, String pageUrl) {
         this.name = name;
         this.forms = new Forms(forms);
-        this.imgUrl = imgUrl;
+        this.title = title;
         this.description = description;
+        this.imgUrl = imgUrl;
         this.pageUrl = pageUrl;
 
         this.isActive = false;
@@ -130,6 +132,14 @@ public class Contest {
 
     public void addForms(List<Form> forms) {
         this.forms.addForms(forms);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getImgUrl() {
