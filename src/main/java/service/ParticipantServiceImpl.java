@@ -79,7 +79,12 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public void createVerificationToken(Participant participant, String token) {
-        VerificationToken verificationToken = new VerificationToken(participant, token);
+        VerificationToken verificationToken = tokenRepository.findByToken(token);
+
+        if (verificationToken != null)
+            tokenRepository.delete(verificationToken);
+
+        verificationToken = new VerificationToken(participant, token);
         tokenRepository.save(verificationToken);
     }
 
