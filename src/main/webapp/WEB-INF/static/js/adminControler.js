@@ -32,6 +32,7 @@ $(document).ready(function () {
             data: "contestId=" + contestId,
             success: function (data) {
                 var obj = data;
+                contestId = obj.id;
                 $("#name").text("Назва конкурсу: " + obj.name);
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);

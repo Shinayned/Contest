@@ -2,38 +2,42 @@ function valideForm(input) {
 var email  = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 var error = false;
 for (var i = input.length - 1; i >= 0; i--) {
-    if(input[i].name == "email")
-    {
+    switch(input[i].name){
+
+    case "email":
         if(!(email.test(input[i].value)))
         {
             $("."+input[i].name).text("Некоректний email");
             error = true;
-        }        
-    }
-    else if(input[i].name == "phone")
-    {
+        }
+        break;        
+    case "phone":
         if(!(input[i].value.length == 17 && (input[i].value.indexOf("_"))))
         {
             $("."+input[i].name).text("Неправильний телефон");
             error = true;               
         }
-    }
-    else if(input[i].name == "password")
-    {
+        break;
+    case "password":
         if(input[i].value.length < 6)
         {
             $("."+input[i].name).text("Короткий пароль!");
             error = true;
-        }        
-    }
-    else
-    {
+        }
+        if(input[i].value == input[i+1].value)
+        {
+            $("."+input[i].name).text("Паролі не збігаються!");
+            error = true;            
+        }
+        break;        
+    default:
         if(input[i].value == "")
         {
             $("."+input[i].name).text("Поле пусте!");
             error = true;
         }
-    }}
+    }
+}
     return error;
 }
 $("#submit").click(function (e) {
@@ -43,15 +47,13 @@ $("#submit").click(function (e) {
     if ( (valideForm(input) )) {
         return false;
     }
-//parse in JSON
-    //POST to server
     $.ajax({
         type: "POST",
         url: url,
         data: JSON.stringify(data),
         contentType: "application/json",
             success: function () {
-                if(this.name == "registration")
+                if(url == "registration")
                  {
                     var c_alert = alert;
 
@@ -61,7 +63,7 @@ $("#submit").click(function (e) {
                 }
                     alert("На ваш email відправлений лист");
                 }
-                else if(this.name == "edit")
+                else if(url == "edit")
                     location.reload();
                 },
             error: function () {

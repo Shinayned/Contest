@@ -33,6 +33,7 @@
  				<div class="form-group">
  					<label for="inputDate" class="control-label">Дата народження:</label>
  					<input type="date" class="form-control" id="inputDate" name="date" required = "required">
+          <div class="date with-errors"></div>
  				</div>
  				<div class="form-group">
  					<label for="inputTel" class="control-label">Ваш телефон:</label>
@@ -51,14 +52,15 @@
         </div> 
         <div class="form-group">
             <label for="inputOrg" class="control-label">Посада</label>
-            <select name="select" required = "required"> <!--Supplement an id here instead of using 'name'-->
+            <select name="select" required = "required"> <!--Supplement an id here instead of using 'name'--><option value="">оберіть посаду</option> 
                <option value="Науковий працівник">науковий працівник</option> 
                <option value="науково-педагогічний працівник">науково-педагогічний працівник</option>
                <option value="аспірант">аспірант</option>
                <option value="ад’юнкт">ад’юнкт</option>
                <option value="докторант">докторант</option>
                <option value="інженерно-технічний працівник">інженерно-технічний працівник</option>
-            </select>       
+            </select>
+            <div class="select with-errors"></div>       
           </div>
           <div class="form-group">
           <label for="inputAdress" class="control-label">Службова адреса</label>
@@ -76,11 +78,11 @@
  					</div>
  						<div class="form-group">
  							<div class="row justify-content-around">
- 								<div class="col-5">
+ 								<div class="col-6">
  								<input type="password" name="password" data-toggle="validator" data-minlength="6" class="form-control" id="inputPassword" placeholder="Пароль"  required = "required">
  							</div>
- 							<div class="col-5">
- 								<input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Ошибка! Пароли не совпадают!" placeholder="Повторіть" required = "required">
+ 							<div class="col-6">
+ 								<input type="password" name="passwordConfirm" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Ошибка! Пароли не совпадают!" placeholder="Повторіть" required = "required">
  							</div>
  							</div>
               <div class="password with-errors"></div>
