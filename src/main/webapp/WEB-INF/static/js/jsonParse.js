@@ -24,8 +24,9 @@ for (var i = input.length - 1; i >= 0; i--) {
             $("."+input[i].name).text("Короткий пароль!");
             error = true;
         }
-        if(input[i].value == input[i+1].value)
+        if(input[i].value != input[i+1].value)
         {
+            console.log(input[i].value + " === "+ input[i+1].value);
             $("."+input[i].name).text("Паролі не збігаються!");
             error = true;            
         }
@@ -44,32 +45,29 @@ $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
     var input = $("#my-form").serializeArray();
     var url = this.name;
-    if ( (valideForm(input) )) {
+    if ( !(valideForm(input) )) {
         return false;
     }
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: JSON.stringify(data),
-        contentType: "application/json",
-            success: function () {
-                if(url == "registration")
-                 {
-                    var c_alert = alert;
-
+        var c_alert = alert;
                     window.alert = function (str) { //override default alert
                     c_alert(str);
                     location.href = "../../pages/login.html";
-                }
+                }   
+    var result = $.ajax({
+        type: "POST",
+        url: url,
+        data: JSON.stringify(data),
+        contentType: "application/json"
+    });
+    result.done(function () {
+                if(url == "registration")
+                 {
                     alert("На ваш email відправлений лист");
                 }
                 else if(url == "edit")
                     location.reload();
-                },
-            error: function () {
-                location.href="../../pages/error.html";
-            }
-    });
+                });
+    result.error(function(){location.href = "../../pages/error.html";})    
 
     return false;
 });
