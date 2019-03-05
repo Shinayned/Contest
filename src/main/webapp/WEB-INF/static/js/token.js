@@ -12,7 +12,14 @@ $('#change').click(function(e) {
         $.ajax({
             type: "POST",
             url: "/participant/changePassword",
-            data: data
+            data: data,
+            success: function () {
+                location.href="../../pages/login.html";
+            },
+            error: function () {
+                location.href="../../pages/error.html";
+            }            
+
         });
     }    
     else if(valid[0].value.length >= 6)

@@ -49,23 +49,25 @@ $("#submit").click(function (e) {
         type: "POST",
         url: url,
         data: JSON.stringify(data),
-        contentType: "application/json"
+        contentType: "application/json",
+            success: function () {
+                if(this.name == "registration")
+                 {
+                    var c_alert = alert;
+
+                    window.alert = function (str) { //override default alert
+                    c_alert(str);
+                    location.href = "../../pages/login.html";
+                }
+                    alert("На ваш email відправлений лист");
+                }
+                else if(this.name == "edit")
+                    location.reload();
+                },
+            error: function () {
+                location.href="../../pages/error.html";
+            }
     });
-
-    if(this.name == "registration")
-    {
-       var c_alert = alert;
-
-        window.alert = function (str) { //override default alert
-            c_alert(str);
-            location.href = "../../pages/login.html";
-        }
-        alert("На ваш email відправлений лист");
-    }
-    else if(this.name == "edit")
-        location.reload();
-
-        location.href="../../pages/error.html";
 
     return false;
 });

@@ -1,3 +1,5 @@
+$(document).ready(function(){
+	$(".infoForConcurs").hide();
 var contestId;
 $(".closed").click(function (e) {
 	if($(this).hasClass("unknowID"))
@@ -5,19 +7,33 @@ $(".closed").click(function (e) {
 		var contestId = $(this).closest(".element").attr("id");
 	}
 	console.log(contestId);
-	$.post("/admin/contest/changeStatus", ("contestId="+contestId));
+	$.ajax({
+            type: "POST",
+            url: "/admin/contest/changeStatus",
+            data: "contestId="+contestId,
+            success: function (data) {
+                 $(this).hasClass("btn-danger") ?
+                 $(this).addClass("btn-success").removeClass("btn-danger").text("Запустити"):
+                 $(this).removeClass("btn-success").addClass("btn-danger").text("Зупинити");
+            }
+        });
 	return false;
 });
 
 $(".getInfo").click(function (e) {
 	contestId = $(this).parent().attr("id");
-	console.log(contestId);
+		//var obj = $.parseJSON( '{ "name": "Avionica", "id" : 1 , "description" : "something" , "amountOfApplication" : 0 , "expirationTime" : "2019-12-12" }' );							
 		$.ajax({
             type: "POST",
             url: "/admin/contest/getInfo",
-            data: contestId,
-            success: function () {
-                alert("В цей час будуть оброблятись дані)");
+            data: "contestId="+contestId,
+            success: function (data) {
+            	var obj = $.parseJSON(data);
+                $("#name").text("Назва конкурсу: " + obj.name);
+    			$("#description").text("Короткий опис: " + obj.description);
+    			$("#amouth").text("К-ть заявок: "+ obj.amountOfApplication);
+    			$("#expirationTime").val(obj.expirationTime);	
+				$(".infoForConcurs").show();
             }
         });	
 	return false;
@@ -46,4 +62,5 @@ $("#excelOnEmail").click(function (e) {
         $(".with-errors").text("Неправильний email");
     }	
     return false;
+});
 });
