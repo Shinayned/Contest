@@ -103,6 +103,11 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public void createContest(Contest contest) throws DuplicateException {
+        if (contest.hasFileForms()) {
+            File contestFolder = driveService.createFolder(contest.getName());
+            String folderId = contestFolder.getId();
+            contest.setFilesFolderId(folderId);
+        }
         contestRepository.save(contest);
     }
 
@@ -149,6 +154,7 @@ public class ContestServiceImpl implements ContestService {
             return false;
 
         contest.setActive(!contest.isActive());
+        contestRepository.save(contest);
         return true;
     }
 
@@ -254,7 +260,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     private List<FormData> uploadFiles(Contest contest, Participant participant, List<MultipartFile> files) {
-        String fileFolder = getApplicationFileFolder(contest, participant);
+        String fileFolder = contest.getFilesFolderId();
         List<FileForm> fileForms = contest.getFileForms();
 
         List<FormData> fileLinks = new ArrayList<>();
@@ -277,19 +283,5 @@ public class ContestServiceImpl implements ContestService {
             }
         }
         return fileLinks;
-    }
-
-    private String getApplicationFileFolder(Contest contest, Participant participant) {
-        String contestFolder = contest.getFilesFolderId();
-
-        if (contestFolder == null) {
-            File folder = driveService.createFolder(contest.getName());
-            contest.setFilesFolderId(folder.getId());
-            contestRepository.save(contest);
-            contestFolder = folder.getId();
-        }
-        File folder = driveService.createFolder(contestFolder, participant.getFullName());
-
-        return folder.getId();
     }
 }

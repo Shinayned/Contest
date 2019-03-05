@@ -90,6 +90,13 @@ public class Forms implements Serializable {
         return formList;
     }
 
+    public boolean hasFileForms() {
+        if (fileForms.isEmpty())
+            return false;
+        else
+            return true;
+    }
+
     public boolean changeForm(Form form) {
         for (int index = 0; index < sortedForms.size(); index++) {
             Form formFromList = sortedForms.get(index);

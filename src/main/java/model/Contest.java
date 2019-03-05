@@ -126,6 +126,10 @@ public class Contest {
         return forms.getAllForms();
     }
 
+    public boolean hasFileForms() {
+        return forms.hasFileForms();
+    }
+
     public void setForms(List<Form> forms) {
         this.forms.setForms(forms);
     }
