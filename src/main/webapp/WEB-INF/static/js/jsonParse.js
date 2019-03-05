@@ -40,7 +40,7 @@ $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
     var input = $("#my-form").serializeArray();
     var url = this.name;
-    /*if ( !(valideForm(input) )) {
+    if ( !(valideForm(input) )) {
         console.log("error");
     }
 //parse in JSON
@@ -50,7 +50,7 @@ $("#submit").click(function (e) {
         url: url,
         data: JSON.stringify(data),
         contentType: "application/json"
-    });*/
+    });
 
     if(this.name == "registration")
     {
