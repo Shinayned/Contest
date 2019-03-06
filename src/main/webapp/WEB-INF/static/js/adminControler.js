@@ -38,7 +38,7 @@ $(document).ready(function () {
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);
                 $("#expirationTime").val(obj.expirationTime);
-                button.hasClass("btn-success") ? $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс");
+                button.hasClass("btn-success") ? $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")
                 $(".infoForConcurs").show();
             },
             error: function () {
