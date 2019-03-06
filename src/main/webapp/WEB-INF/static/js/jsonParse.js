@@ -62,7 +62,7 @@ $("#submit").click(function (e) {
             else if(url == "edit"){
                 location.reload();
             }
-            else if(url == "konkurs")
+            else if(url == "forms")
             {
                 alert("Заявка прийнята");
                 location.href = "../../pages/html.html";

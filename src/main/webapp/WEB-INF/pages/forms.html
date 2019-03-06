@@ -3,21 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>form</title>
-    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="http://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css"/>    
-    <!-- Custom styles for this template -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <link href="/static/css/home.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
     <script type="text/javascript" src="/static/js/telMask.js"></script>
 </head>
 <body>
-<div class="row text-align-center">
-<div class="col col-md-6 col-md-offset-3">
-<form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
+<div class="container">
+    <div class="row text-align-center">
+      <div class="col col-md-6 col-md-offset-3">
+    <form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
       enctype="multipart/form-data"
       th:action="${submitUrl}">
     <span class="heading">Зміна інформації</span>
@@ -26,7 +22,6 @@
                th:text="${form.title}"></label>
 
         <div class="form-group" th:case="${T(contest.form.enums.FormType).STRING}">
-            <div class="row justify-content-center">
             <input type="text" class="form-control"
                    th:id="${form.id}"
                    th:name="${form.id}"
@@ -34,37 +29,32 @@
                    th:maxlength="${form.maxLength} != 0 ? ${form.maxLength} : _"
                    th:minlength="${form.minLength}"
                    th:required="${form.obligatory}">
-            </div>
+                   <div class="Вставити ім'я inputa with-errors"></div>
         </div>
         <div class="form-group" th:case="${T(contest.form.enums.FormType).DATE}">
-            <div class="row justify-content-center">
             <input type="date" class="form-control"
                    th:id="${form.id}"
                    th:name="${form.id}"
                    th:required="${form.obligatory}">
-        </div>
+                   <div class="help-block inputa with-errors"></div>
       </div>
         <div class="form-group" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
-          <div class="row justify-content-center">
             <input type="text" class="form-control"
                    onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);" placeholder="+38(097)000-00-00"
                    th:id="${form.id}"
                    th:name="${form.id}"
                    th:required="${form.obligatory}">
             <div class="help-block with-errors"></div>
-          </div>
         </div>
         <div class="form-group" th:case="${T(contest.form.enums.FormType).EMAIL}">
-           <div class="row justify-content-center">
             <input type="email" class="form-control" placeholder="youremail@email.com"
                    data-error="Вы не правильно ввели Ваш E-mail"
                    th:id="${form.id}"
                    th:name="${form.id}"
                    th:required="${form.obligatory}">
-                 </div>
+                   <div class="help-block with-errors"></div>
         </div>
         <div class="form-group" th:case="${T(contest.form.enums.FormType).MULTIPLE_SELECT_LIST}">
-            <div class="row justify-content-center">
               <div class="checkbox"
                  th:id="${form.id}"
                  th:required="${form.obligatory}">
@@ -78,11 +68,10 @@
                         <span th:text="${field}" th:remove="tag">title</span>
                     </label>
                 </div>
-            </div>
+                <div class="help-block with-errors"></div>
           </div>
         </div>
         <div class="form-group" th:case="${T(contest.form.enums.FormType).SINGLE_SELECT_LIST}">
-            <div class="row justify-content-center">
               <div class="radio"
                  th:id="${form.id}">
 
@@ -96,11 +85,10 @@
                         <span th:text="${field}" th:remove="tag">title</span>
                     </label>
                 </div>
+                <div class="help-block with-errors"></div>
             </div>
-          </div>
         </div>
         <div class="form-group" th:case="${T(contest.form.enums.FormType).DROPDOWN_LIST}">
-            <div class="row justify-content-center">
               <select th:name="${form.id}"
                     th:required="${form.obligatory}">
                 <option disabled selected style="display:none">...</option>
@@ -110,30 +98,25 @@
                             th:text="${field}"></option>
                 </div>
             </select>
-          </div>
+            <div class="help-block with-errors"></div>
         </div>
         <div class="form-group" th:case="${T(contest.form.enums.FormType).FILE}">
-           <div class="row justify-content-center">
             <input type="file"
                    th:id="${form.id}"
                    th:name="${form.id}"
                    th:required="${form.obligatory}"
                    th:accept="${form.contentType}">
+                   <div class="help-block with-errors"></div>
             <!--<label for="file-input">Виберіть файл</label>-->
-        </div></div>
+      </div>
     </div>
     <div class="form-group">
-      <div class="row justify-content-center">
         <button id="submit" class="btn btn-primary a_submit">Submit</button>
-      </div>
     </div>
 
 </form>
 </div>
 </div>
 <script src="/static/js/jsonParse.js"></script>
-
-<script src="/static/vendor/jquery/jquery.min.js"></script>
-<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
