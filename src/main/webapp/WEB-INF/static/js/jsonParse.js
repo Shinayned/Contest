@@ -1,80 +1,78 @@
 function valideForm(input) {
-var email  = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-var error = false;
-for (var i = input.length - 1; i >= 0; i--) {
-    switch(input[i].name){
+    var email = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    var error = false;
+    for (var i = input.length - 1; i >= 0; i--) {
+        switch (input[i].name) {
 
-    case "email":
-        if(!(email.test(input[i].value)))
-        {
-            $("."+input[i].name).text("Некоректний email");
-            $("#"+input[i].id).focus();
-            error = true;
-        }
-        break;
-    case "phone":
-        if(!(input[i].value.length == 17 && (input[i].value.indexOf("_"))))
-        {
-            $("."+input[i].name).text("Неправильний телефон");
-            $("#"+input[i].id).focus();
-            error = true;
-        }
-        break;
-    case "password":
-        if(input[i].value.length < 6)
-        {
-            $("."+input[i].name).text("Короткий пароль!");
-            $("#"+input[i].id).focus();
-            error = true;
-        }
-        if(input[i].value != $("#inputPasswordConfirm").val())
-        {
-            console.log(input[i].value + " === "+ $("#inputPasswordConfirm").value);
-            $("#"+input[i].id).focus();
-            $("."+input[i].name).text("Паролі не збігаються!");
-            error = true;
-        }
-        break;
-    default:
-        if(input[i].value == "")
-        {
-            $("."+input[i].name).text("Поле пусте!");
-            $("#"+input[i].id).focus();
-            error = true;
+            case "email":
+                if (!(email.test(input[i].value))) {
+                    $("." + input[i].name).text("Некоректний email");
+                    $("#" + input[i].id).focus();
+                    error = true;
+                }
+                break;
+            case "phone":
+                if (!(input[i].value.length == 17 && (input[i].value.indexOf("_")))) {
+                    $("." + input[i].name).text("Неправильний телефон");
+                    $("#" + input[i].id).focus();
+                    error = true;
+                }
+                break;
+            case "password":
+                if (input[i].value.length < 6) {
+                    $("." + input[i].name).text("Короткий пароль!");
+                    $("#" + input[i].id).focus();
+                    error = true;
+                }
+                if (input[i].value != $("#inputPasswordConfirm").val()) {
+                    console.log(input[i].value + " === " + $("#inputPasswordConfirm").value);
+                    $("#" + input[i].id).focus();
+                    $("." + input[i].name).text("Паролі не збігаються!");
+                    error = true;
+                }
+                break;
+            default:
+                if (input[i].value == "") {
+                    $("." + input[i].name).text("Поле пусте!");
+                    $("#" + input[i].id).focus();
+                    error = true;
+                }
         }
     }
-}
     return error;
 }
 $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
     var input = $("#my-form").serializeArray();
     var url = this.name;
-    if ( (valideForm(input))) {
+    if ((valideForm(input))) {
         return false;
-    } 
+    }
     var result = $.ajax({
         type: "POST",
         url: url,
         data: JSON.stringify(data),
         contentType: "application/json",
-            error: function () {
-                    location.href = "../../pages/error.html";
-                }        
+        success: function () {
+            if(url == "registration")
+            {
+                alert("На ваш email відправлений лист");
+                location.href = "../../pages/login.html";
+            }
+            else if(url == "edit"){
+                location.reload();
+            }
+            else if(url == "konkurs")
+            {
+                alert("Заявка прийнята");
+                location.href = "../../pages/html.html";
+            }
+        },
+        error: function () {
+            location.href = "../../pages/error.html";
+        }
     });
-                if(url == "registration")
-                 {
-                    alert("На ваш email відправлений лист");
-                    location.href = "../../pages/login.html";
-                }
-                else if(url == "edit"){
-                    location.reload();
-                }
-                else if(url == "konkurs")
-                {
-                    alert("Заявка прийнята");
-                    location.href = "../../pages/html.html";                    
-                }
+
 
     return false;
 });
