@@ -24,7 +24,7 @@ for (var i = input.length - 1; i >= 0; i--) {
             $("."+input[i].name).text("Короткий пароль!");
             error = true;
         }
-        if(input[i].value != $("#inputPasswordConfirm").value)
+        if(input[i].value != $("#inputPasswordConfirm").val())
         {
             console.log(input[i].value + " === "+ $("#inputPasswordConfirm").value);
             $("."+input[i].name).text("Паролі не збігаються!");
