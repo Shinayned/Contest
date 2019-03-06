@@ -15,8 +15,9 @@
 }
 
 #name{
-  font-size: 36px;
-  margin-left: 60px;
+  font-size: 30px;
+  margin-left: 20px;
+  overflow: hidden;
 
 }
 body {
