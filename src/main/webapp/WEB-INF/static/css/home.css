@@ -14,7 +14,11 @@
   font-size: 18px;
 }
 
+#name{
+  font-size: 36px;
+  margin-left: 60px;
 
+}
 body {
   overflow-x: hidden;
 }

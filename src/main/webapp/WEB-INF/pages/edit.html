@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Home</title>
+    <title>Управління конкурсамио</title>
 
     <!-- Bootstrap core CSS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -47,10 +47,9 @@
     <!-- Sidebar -->
     <nav class="fixed-top">
         <ul class="sidebar-nav" id="sidebar-wrapper" style="top:1.5vh;">
-            <a href="#">
-                <img src="../static/img/iconphoto.png" alt="avatar" width="90" height="90" style="margin: 15px; background-color: #555555; border-radius: 50px;" id="avatar">
+            <hr>
                 <span class="head-menu" id="name" th:text="${participant.fullName}">Ім'я Прізвище</span>
-            </a>
+                <hr>
             <div class="info" id="birthdate">
                 Дата народження: <span th:text="${participant.birthdate.toString('dd.MM.yyyy')}" th:remove="tag"></span>
             </div>
