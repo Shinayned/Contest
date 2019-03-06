@@ -40,6 +40,8 @@ $(document).ready(function () {
                 $("#expirationTime").val(obj.expirationTime);
                 if(button.hasClass("btn-success"))
                  $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс");
+                else
+                 $(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс");
                 $(".infoForConcurs").show();
             },
             error: function () {
