@@ -12,9 +12,11 @@ $(document).ready(function () {
             url: "/admin/contest/changeStatus",
             data: "contestId=" + contestId,
             success: function (data) {
-                $(button).hasClass("btn-danger") ?
-                    $(button).addClass("btn-success").removeClass("btn-danger").text("Запустити") :
-                    $(button).removeClass("btn-success").addClass("btn-danger").text("Зупинити");
+                    $(button).hasClass("btn-danger") ? 
+                    ($(button).addClass("btn-success").removeClass("btn-danger").text("Запустити"),
+                    $("close").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
+                    ($(button).removeClass("btn-success").addClass("btn-danger").text("Зупинити"),
+                     $("close").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
             },
             error: function () {
                 location.href = "/error";
