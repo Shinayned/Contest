@@ -1,42 +1,26 @@
 package controller;
 
-import com.google.api.client.http.HttpResponse;
 import dto.ParticipantDto;
 import email.EmailService;
+import event.OnParticipantInfoEditEvent;
 import event.OnRegistrationCompleteEvent;
 import model.Participant;
-import model.VerificationToken;
-import org.joda.time.DateTime;
+import model.Token;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import service.ParticipantService;
 import exception.EmailExistsException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.UUID;
-
-import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Controller
 public class ParticipantController {
@@ -79,16 +63,14 @@ public class ParticipantController {
 
     @GetMapping(value = "/registrationConfirm")
     public String confirmRegistration(@RequestParam("token") String token, HttpServletResponse response) throws IOException {
-        VerificationToken verificationToken = participantService.getToken(token);
+        Token verificationToken = participantService.getToken(token);
 
-        if (verificationToken == null)
-            return "redirect:/error";
-
-        if (verificationToken.getExpiryDate().isBefore(DateTime.now()))
+        if (verificationToken == null || verificationToken.isExpired())
             return "redirect:/error";
 
         Participant participant = verificationToken.getParticipant();
         participant.setEnabled(true);
+        participantService.removeToken(verificationToken);
         participantService.updateAccount(participant);
 
         return "redirect:/login";
@@ -110,19 +92,9 @@ public class ParticipantController {
                                           Model model) {
         Participant participant = participantService.getParticipantByEmail(principal.getName());
         model.addAttribute("participant", participant);
-        participantService.updateAccount(principal.getName(), participantDto);
 
-        String newEmail = participantDto.getEmail();
-        boolean hasChangedEmail = !participant.getEmail().equals(newEmail);
-        if (hasChangedEmail) {
-            Collection<SimpleGrantedAuthority> nowAuthorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder
-                    .getContext().getAuthentication().getAuthorities();
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    newEmail,
-                    participant.getPassword(),
-                    nowAuthorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        eventPublisher.publishEvent(new OnParticipantInfoEditEvent(participant, participantDto));
+        participantService.updateAccount(principal.getName(), participantDto);
     }
 
     @GetMapping("/participant/resetPassword")
@@ -138,7 +110,7 @@ public class ParticipantController {
                               HttpServletResponse response) throws IOException {
         Participant participant = participantService.getParticipantByEmail(email);
 
-        if (participant == null) {
+        if (participant == null || !participant.isEnabled()) {
             response.sendError(400);
             return;
         }
@@ -158,7 +130,7 @@ public class ParticipantController {
         if (!isResetPasswordProcess)
             return "redirect:/login";
 
-        VerificationToken passwordToken = participantService.getToken(token);
+        Token passwordToken = participantService.getToken(token);
         if (passwordToken == null)
             return "redirect:/error";
 
@@ -184,14 +156,16 @@ public class ParticipantController {
             return;
         }
 
-        VerificationToken passwordToken = participantService.getToken(token);
+        Token passwordToken = participantService.getToken(token);
 
-        if (passwordToken == null) {
+        if (passwordToken == null || passwordToken.isExpired()) {
             response.sendError(400);
             return;
         }
+
         Participant participant = passwordToken.getParticipant();
         participantService.changePassword(participant, newPassword);
+        participantService.removeToken(passwordToken);
         response.setStatus(200);
     }
 

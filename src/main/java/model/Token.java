@@ -1,20 +1,22 @@
 package model;
 
 import converter.DateTimeConverter;
+import enums.TokenType;
 import org.joda.time.DateTime;
 import javax.persistence.Id;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "VerificationTokens")
-public class VerificationToken {
+@Table(name = "Tokens")
+public class Token {
     private static final int EXPIRATION = 24;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String token;
+    private TokenType type;
 
     @OneToOne(targetEntity = Participant.class)
     @JoinColumn(nullable = false, name = "participant_id")
@@ -23,11 +25,12 @@ public class VerificationToken {
     @Convert(converter = DateTimeConverter.class)
     private DateTime expiryDate;
 
-    protected VerificationToken() {
+    protected Token() {
     }
 
-    public VerificationToken(Participant participant, String token) {
+    public Token(Participant participant, TokenType type, String token) {
         this.participant = participant;
+        this.type = type;
         this.token = token;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
@@ -50,6 +53,14 @@ public class VerificationToken {
         return token;
     }
 
+    public TokenType getType() {
+        return type;
+    }
+
+    public void setType(TokenType type) {
+        this.type = type;
+    }
+
     public void setToken(String token) {
         this.token = token;
     }
@@ -64,6 +75,10 @@ public class VerificationToken {
 
     public DateTime getExpiryDate() {
         return expiryDate;
+    }
+
+    public boolean isExpired() {
+        return expiryDate.isBefore(DateTime.now());
     }
 
     public void setExpiryDate(DateTime expiryDate) {

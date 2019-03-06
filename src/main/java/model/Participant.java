@@ -3,6 +3,7 @@ package model;
 import converter.DateTimeConverter;
 import google.FileInfo;
 import dto.ParticipantDto;
+import org.hibernate.annotations.Fetch;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -31,7 +32,7 @@ public class Participant {
     private String scienceWorks;
     private String position;
 
-    @OneToMany(mappedBy = "participant")
+    @OneToMany(mappedBy = "participant", fetch = FetchType.EAGER)
     private List<Application> applications;
 
     private boolean enabled;

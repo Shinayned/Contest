@@ -66,6 +66,11 @@ public class GoogleDriveService implements DriveService {
     }
 
     @Override
+    public void changeFileName(String fileId, String newName) {
+        googleDrive.changeFileName(fileId, newName);
+    }
+
+    @Override
     public List<FileInfo> getFileList(String participantEmail) {
         Participant participant = participantService.getParticipantByEmail(participantEmail);
 

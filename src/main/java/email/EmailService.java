@@ -1,8 +1,5 @@
 package email;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Component;
-
 import javax.activation.DataSource;
 
 public interface EmailService {

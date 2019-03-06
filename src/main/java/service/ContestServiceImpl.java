@@ -87,13 +87,15 @@ public class ContestServiceImpl implements ContestService {
             throw new BadRequestException(exception.getMessage());
         }
 
+        Application application = new Application(contest, participant);
+
         List<FormData> applicationData = new ArrayList<>();
         applicationData.addAll(createFormDataList(contest, formsData));
+
         if (files != null && !files.isEmpty())
-            applicationData.addAll(uploadFiles(contest, participant, files));
+            applicationData.addAll(uploadFiles(application, contest, participant, files));
 
-        Application application = new Application(contest, participant, applicationData);
-
+        application.setData(applicationData);
         applicationRepository.save(application);
     }
 
@@ -259,11 +261,12 @@ public class ContestServiceImpl implements ContestService {
         return formDataList;
     }
 
-    private List<FormData> uploadFiles(Contest contest, Participant participant, List<MultipartFile> files) {
+    private List<FormData> uploadFiles(Application application, Contest contest, Participant participant, List<MultipartFile> files) {
         String contestFolder = contest.getFilesFolderId();
         File fileFolder = driveService.createFolder(contestFolder, participant.getFullName());
-        List<FileForm> fileForms = contest.getFileForms();
+        application.setFilesFolderId(fileFolder.getId());
 
+        List<FileForm> fileForms = contest.getFileForms();
         List<FormData> fileLinks = new ArrayList<>();
 
         for(FileForm form : fileForms) {

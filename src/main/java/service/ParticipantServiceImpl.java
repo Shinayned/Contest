@@ -2,9 +2,9 @@ package service;
 
 import dto.ParticipantDto;
 import email.EmailService;
+import enums.TokenType;
 import model.Participant;
-import model.VerificationToken;
-import org.joda.time.DateTime;
+import model.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -79,24 +79,29 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public void createVerificationToken(Participant participant, String token) {
-        VerificationToken verificationToken = tokenRepository.findByToken(token);
+        Token verificationToken = tokenRepository.findByToken(token);
 
         if (verificationToken != null)
             tokenRepository.delete(verificationToken);
 
-        verificationToken = new VerificationToken(participant, token);
+        verificationToken = new Token(participant, TokenType.ACCOUNT_ACTIVATION, token);
         tokenRepository.save(verificationToken);
     }
 
     @Override
-    public VerificationToken getToken(String verificationToken) {
+    public void removeToken(Token token) {
+        tokenRepository.delete(token);
+    }
+
+    @Override
+    public Token getToken(String verificationToken) {
         return tokenRepository.findByToken(verificationToken);
     }
 
     @Override
     public void sendResetPasswordUrl(Participant participant, String url) {
         String token = UUID.randomUUID().toString();
-        VerificationToken restoreToken = new VerificationToken(participant, token);
+        Token restoreToken = new Token(participant, TokenType.PASSWORD_RESTORE, token);
         tokenRepository.save(restoreToken);
 
         String resetPasswordUrl = url + "/participant/changePassword?token=" + token;
@@ -123,7 +128,7 @@ public class ParticipantServiceImpl implements ParticipantService {
         participant.setPassword(newPassword);
         participantRepository.save(participant);
 
-        VerificationToken passwordToken = tokenRepository.findByParticipant(participant);
+        Token passwordToken = tokenRepository.findByParticipant(participant);
         if (passwordToken != null) {
             tokenRepository.delete(passwordToken);
         }

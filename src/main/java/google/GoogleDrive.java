@@ -147,6 +147,18 @@ public class GoogleDrive {
         return folder;
     }
 
+    public void changeFileName(String fileId, String newName) {
+        try {
+            File newMetaData = new File()
+                    .setName(newName);
+
+            service.files().update(fileId, newMetaData).execute();
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e);
+        }
+
+    }
+
     public File downloadFile(String fileId) {
         File file = null;
 

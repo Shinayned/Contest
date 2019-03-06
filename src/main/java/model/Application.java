@@ -28,20 +28,24 @@ public class Application {
 
     @Convert(converter = DateTimeConverter.class)
     private DateTime fillingDate;
+
+    private String filesFolderId;
     private boolean isVerified;
 
     protected Application() {}
+
+    public Application(Contest contest, Participant participant) {
+        this(contest, participant, null);
+    }
 
     public Application(Contest contest, Participant participant, List<FormData> data) {
         this.contest = contest;
         this.participant = participant;
         this.isVerified = false;
-        this.data = new ArrayList<>(data);
+        this.data = data == null ? new ArrayList<>() : new ArrayList<>(data);
 
         this.fillingDate = new DateTime();
     }
-
-
 
     public Contest getContest() {
         return contest;
@@ -55,8 +59,16 @@ public class Application {
         return new ArrayList<>(data);
     }
 
-    public void setData(ArrayList<FormData> data) {
+    public void setData(List<FormData> data) {
         this.data = new ArrayList<>(data);
+    }
+
+    public String getFilesFolderId() {
+        return filesFolderId;
+    }
+
+    public void setFilesFolderId(String filesFolderId) {
+        this.filesFolderId = filesFolderId;
     }
 
     public DateTime getFillingDate() {
