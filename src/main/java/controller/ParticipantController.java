@@ -44,7 +44,9 @@ public class ParticipantController {
     }
 
     @PostMapping("/registration")
-    public String createParticipantAccount(@Valid @RequestBody ParticipantDto participantDto, HttpServletRequest request) {
+    @ResponseStatus(HttpStatus.OK)j
+    @ResponseBody
+    public void createParticipantAccount(@Valid @RequestBody ParticipantDto participantDto, HttpServletRequest request) {
         String password = participantDto.getPassword();
 
         if (password == null || password.isEmpty())
@@ -56,9 +58,8 @@ public class ParticipantController {
             String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(participant, appUrl));
         } catch (EmailExistsException exception) {
-            return null;
+            throw new IllegalArgumentException("Email " + participantDto.getEmail() + " is already exist.");
         }
-        return "SUCCESS";
     }
 
     @GetMapping(value = "/registrationConfirm")
@@ -170,8 +171,8 @@ public class ParticipantController {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, IllegalArgumentException.class})
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
-    public void onBadRequestParameters() {
+    public void onBadRequestParameters(Exception exception, HttpServletResponse response) throws IOException{
+        response.sendError(406, exception.getMessage());
     }
 }
