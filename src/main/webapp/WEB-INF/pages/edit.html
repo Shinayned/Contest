@@ -10,8 +10,7 @@
 
     <!-- Bootstrap core CSS -->
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="../static/css/home.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/style.css">
@@ -39,7 +38,7 @@
 
     <!-- Sidebar -->
     <nav class="fixed-top">
-        <ul class="sidebar-nav" id="sidebar-wrapper" style="top:1.5vh;">
+        <ul class="sidebar-nav" id="sidebar-wrapper">
             <hr>
                 <span class="head-menu" id="name" th:text="${participant.fullName}">Ім'я Прізвище</span>
                 <hr>
@@ -187,6 +186,8 @@
 </div>
 <!-- /#page-content-wrapper -->
     <!-- Menu Toggle Script -->
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+<script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
