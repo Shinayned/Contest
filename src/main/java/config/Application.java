@@ -49,6 +49,19 @@ public class Application {
             participant.setScienceWorks("no works");
             participantService.registerNewAccount(participant);
 
+            participant = new Participant(
+                    "oleh.melnechyk@gmail.com",
+                    "qwerty",
+                    "Oleh Melnechyk",
+                    new DateTime());
+            participant.setEnabled(true);
+            participant.setOrganization("HUB team");
+            participant.setWorkAddress("Harmatna 53");
+            participant.setPhoneNumber("+38(800)555-35-35");
+            participant.setPosition("докторант");
+            participant.setScienceWorks("no works");
+            participantService.registerNewAccount(participant);
+
             contestTest();
         };
     }
