@@ -38,8 +38,8 @@ $(document).ready(function () {
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);
                 $("#expirationTime").val(obj.expirationTime);
-                $(".closed2").className = $(".close").className;
-                $(".closed2").text("textButton");
+                $(".closed2").className = $(".closed").className;
+                $(".closed2").text(textButton);
 
                 $(".infoForConcurs").show();
             },
