@@ -69,7 +69,10 @@
                         </div>
                     </a>
                     <div class="row justify-content-center">
-                        <button class="btn btn-danger closed unknowID">Зупинити</button>
+                        <button class="btn closed unknowID btn-success"
+                                th:if="${contest.active}">Запустити</button>
+                        <button class="btn closed unknowID btn-danger"
+                                th:if="!${contest.active}">Зупинити</button>
                     </div>
                 </div>
             </div>

@@ -16,11 +16,11 @@ $('#change').click(function(e) {
         });
         result.done(function (e) {
                 alert("Пароль успішно змінено")
-                location.href="../../pages/login.html";
+                location.href="/home";
             });
   
         result.error(function (e) {
-                location.href="../../pages/error.html";
+                location.href="/error";
             });
     }    
     else if(valid[0].value.length >= 6)

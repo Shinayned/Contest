@@ -10,12 +10,12 @@ for (var i = input.length - 1; i >= 0; i--) {
             $("."+input[i].name).text("Некоректний email");
             error = true;
         }
-        break;        
+        break;
     case "phone":
         if(!(input[i].value.length == 17 && (input[i].value.indexOf("_"))))
         {
             $("."+input[i].name).text("Неправильний телефон");
-            error = true;               
+            error = true;
         }
         break;
     case "password":
@@ -28,9 +28,9 @@ for (var i = input.length - 1; i >= 0; i--) {
         {
             console.log(input[i].value + " === "+ input[i+1].value);
             $("."+input[i].name).text("Паролі не збігаються!");
-            error = true;            
+            error = true;
         }
-        break;        
+        break;
     default:
         if(input[i].value == "")
         {
@@ -63,7 +63,7 @@ $("#submit").click(function (e) {
                 else if(url == "edit")
                     location.reload();
                 });
-    result.error(function(){location.href = "../../pages/error.html";})    
+    result.error(function(){location.href = "../../pages/error.html";})
 
     return false;
 });
