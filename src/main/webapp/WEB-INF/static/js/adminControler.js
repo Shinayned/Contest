@@ -25,7 +25,8 @@ $(document).ready(function () {
 
     $(".getInfo").click(function (e) {
         contestId = $(this).parent().attr("id");
-        //var obj = $.parseJSON( '{ "name": "Avionica", "id" : 1 , "description" : "something" , "amountOfApplication" : 0 , "expirationTime" : "2019-12-12" }' );
+        var button = $(this).parent().find("button");
+        //var obj = $.p$(this).parent().find("");arseJSON( '{ "name": "Avionica", "id" : 1 , "description" : "something" , "amountOfApplication" : 0 , "expirationTime" : "2019-12-12" }' );
         $.ajax({
             type: "POST",
             url: "/admin/contest/getInfo",
@@ -33,14 +34,11 @@ $(document).ready(function () {
             success: function (data) {
                 var obj = data;
                 contestId = obj.id;
-                var textButton = ($("closed").innerText || $("closed").textContent);
                 $("#name").text("Назва конкурсу: " + obj.name);
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);
                 $("#expirationTime").val(obj.expirationTime);
-                $(".closed2").className = $(".closed").className;
-                $(".closed2").text(textButton);
-
+                button.hasClass("btn-success") ? $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс");
                 $(".infoForConcurs").show();
             },
             error: function () {
