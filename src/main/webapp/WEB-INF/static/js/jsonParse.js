@@ -45,14 +45,9 @@ $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
     var input = $("#my-form").serializeArray();
     var url = this.name;
-    if ( !(valideForm(input) )) {
+    if ( (valideForm(input))) {
         return false;
-    }
-        var c_alert = alert;
-                    window.alert = function (str) { //override default alert
-                    c_alert(str);
-                    location.href = "../../pages/login.html";
-                }
+    } 
     var result = $.ajax({
         type: "POST",
         url: url,
@@ -63,6 +58,7 @@ $("#submit").click(function (e) {
                 if(url == "registration")
                  {
                     alert("На ваш email відправлений лист");
+                    location.href = "../../pages/login.html";
                 }
                 else if(url == "edit")
                     location.reload();
