@@ -52,8 +52,8 @@ $("#submit").click(function (e) {
         type: "POST",
         url: url,
         data: JSON.stringify(data),
-        contentType: "application/json"
-    });
+        contentType: "application/json",
+        success: function(){
                 if(url == "registration")
                  {
                     alert("На ваш email відправлений лист");
@@ -61,7 +61,12 @@ $("#submit").click(function (e) {
                 }
                 else if(url == "edit")
                     location.reload();
-
+        },
+            error: function () {
+                    location.href = "../../pages/error.html";
+                }        
+    });
+                
     return false;
 });
 
