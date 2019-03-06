@@ -1,11 +1,9 @@
 $(document).ready(function () {
     $(".infoForConcurs").hide();
     var contestId;
+    console.log("tetstststs");
     $(".closed").click(function (e) {
-        if ($(this).hasClass("unknowID")) {
             var contestId = $(this).closest(".element").attr("id");
-        }
-        console.log(contestId);
         var button = this;
         $.ajax({
             type: "POST",
@@ -14,20 +12,21 @@ $(document).ready(function () {
             success: function (data) {
                     $(button).hasClass("btn-danger") ? 
                     ($(button).addClass("btn-success").removeClass("btn-danger").text("Запустити"),
-                    $("closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
+                    $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
                     ($(button).removeClass("btn-success").addClass("btn-danger").text("Зупинити"),
-                     $("closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
+                     $(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
             },
             error: function () {
                 location.href = "/error";
             }
-        });
+        })
                 return false;
     });
 
     $(".getInfo").click(function (e) {
         contestId = $(this).parent().attr("id");
-        //var obj = $.parseJSON( '{ "name": "Avionica", "id" : 1 , "description" : "something" , "amountOfApplication" : 0 , "expirationTime" : "2019-12-12" }' );
+        var button = $(this).parent().find("button");
+        //var obj = $.p$(this).parent().find("");arseJSON( '{ "name": "Avionica", "id" : 1 , "description" : "something" , "amountOfApplication" : 0 , "expirationTime" : "2019-12-12" }' );
         $.ajax({
             type: "POST",
             url: "/admin/contest/getInfo",
@@ -39,6 +38,10 @@ $(document).ready(function () {
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);
                 $("#expirationTime").val(obj.expirationTime);
+                if(button.hasClass("btn-success"))
+                 $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс");
+                else
+                 $(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс");
                 $(".infoForConcurs").show();
             },
             error: function () {

@@ -24,9 +24,9 @@ for (var i = input.length - 1; i >= 0; i--) {
             $("."+input[i].name).text("Короткий пароль!");
             error = true;
         }
-        if(input[i].value != input[i+1].value)
+        if(input[i].value != $("#inputPasswordConfirm").val())
         {
-            console.log(input[i].value + " === "+ input[i+1].value);
+            console.log(input[i].value + " === "+ $("#inputPasswordConfirm").value);
             $("."+input[i].name).text("Паролі не збігаються!");
             error = true;
         }
@@ -53,8 +53,10 @@ $("#submit").click(function (e) {
         url: url,
         data: JSON.stringify(data),
         contentType: "application/json"
+            error: function () {
+                    location.href = "../../pages/error.html";
+                }        
     });
-    result.done(function () {
                 if(url == "registration")
                  {
                     alert("На ваш email відправлений лист");
@@ -62,8 +64,6 @@ $("#submit").click(function (e) {
                 }
                 else if(url == "edit")
                     location.reload();
-                });
-    result.error(function(){location.href = "../../pages/error.html";})
 
     return false;
 });
