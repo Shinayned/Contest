@@ -52,7 +52,7 @@ $("#submit").click(function (e) {
         type: "POST",
         url: url,
         data: JSON.stringify(data),
-        contentType: "application/json"
+        contentType: "application/json",
             error: function () {
                     location.href = "../../pages/error.html";
                 }        
