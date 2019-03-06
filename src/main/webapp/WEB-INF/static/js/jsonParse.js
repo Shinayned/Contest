@@ -67,8 +67,14 @@ $("#submit").click(function (e) {
                     alert("На ваш email відправлений лист");
                     location.href = "../../pages/login.html";
                 }
-                else if(url == "edit")
+                else if(url == "edit"){
                     location.reload();
+                }
+                else if(url == "konkurs")
+                {
+                    alert("Заявка прийнята");
+                    location.href = "../../pages/html.html";                    
+                }
 
     return false;
 });
