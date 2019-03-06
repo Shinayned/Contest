@@ -1,11 +1,12 @@
 $(document).ready(function () {
     $(".infoForConcurs").hide();
     var contestId;
+    console.log("tetstststs");
     $(".closed").click(function (e) {
         if ($(this).hasClass("unknowID")) {
             var contestId = $(this).closest(".element").attr("id");
         }
-        console.log(contestId);
+        
         var button = this;
         $.ajax({
             type: "POST",
