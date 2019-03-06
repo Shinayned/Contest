@@ -20,7 +20,7 @@
         <label class="control-label"
                th:text="${form.title}"></label>
 
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).STRING}">
+        <div class="form-group col-12 col-md-6 md-offset-3" th:case="${T(contest.form.enums.FormType).STRING}">
             <input type="text" class="form-control"
                    th:id="${form.id}"
                    th:name="${form.id}"
@@ -29,13 +29,13 @@
                    th:minlength="${form.minLength}"
                    th:required="${form.obligatory}">
         </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).DATE}">
+        <div class="form-group col col-md-6 md-offset-3" th:case="${T(contest.form.enums.FormType).DATE}">
             <input type="date" class="form-control"
                    th:id="${form.id}"
                    th:name="${form.id}"
                    th:required="${form.obligatory}">
         </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
+        <div class="form-group col col-md-6 md-offset-3" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
             <input type="text" class="form-control"
                    onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);" placeholder="+38(097)000-00-00"
                    th:id="${form.id}"
@@ -43,7 +43,7 @@
                    th:required="${form.obligatory}">
             <div class="help-block with-errors"></div>
         </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).EMAIL}">
+        <div class="form-group col col-md-6 md-offset-3" th:case="${T(contest.form.enums.FormType).EMAIL}">
             <input type="email" class="form-control" placeholder="youremail@email.com"
                    data-error="Вы не правильно ввели Ваш E-mail"
                    th:id="${form.id}"
