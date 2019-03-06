@@ -44,7 +44,7 @@ public class ParticipantController {
     }
 
     @PostMapping("/registration")
-    @ResponseStatus(HttpStatus.OK)j
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void createParticipantAccount(@Valid @RequestBody ParticipantDto participantDto, HttpServletRequest request) {
         String password = participantDto.getPassword();
