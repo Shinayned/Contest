@@ -14,9 +14,9 @@ $(document).ready(function () {
             success: function (data) {
                     $(button).hasClass("btn-danger") ? 
                     ($(button).addClass("btn-success").removeClass("btn-danger").text("Запустити"),
-                    $("close").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
+                    $("closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
                     ($(button).removeClass("btn-success").addClass("btn-danger").text("Зупинити"),
-                     $("close").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
+                     $("closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
             },
             error: function () {
                 location.href = "/error";
