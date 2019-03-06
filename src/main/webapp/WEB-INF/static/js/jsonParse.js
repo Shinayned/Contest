@@ -8,6 +8,7 @@ for (var i = input.length - 1; i >= 0; i--) {
         if(!(email.test(input[i].value)))
         {
             $("."+input[i].name).text("Некоректний email");
+            $("#"+input[i].id).focus();
             error = true;
         }
         break;
@@ -15,6 +16,7 @@ for (var i = input.length - 1; i >= 0; i--) {
         if(!(input[i].value.length == 17 && (input[i].value.indexOf("_"))))
         {
             $("."+input[i].name).text("Неправильний телефон");
+            $("#"+input[i].id).focus();
             error = true;
         }
         break;
@@ -22,11 +24,13 @@ for (var i = input.length - 1; i >= 0; i--) {
         if(input[i].value.length < 6)
         {
             $("."+input[i].name).text("Короткий пароль!");
+            $("#"+input[i].id).focus();
             error = true;
         }
         if(input[i].value != $("#inputPasswordConfirm").val())
         {
             console.log(input[i].value + " === "+ $("#inputPasswordConfirm").value);
+            $("#"+input[i].id).focus();
             $("."+input[i].name).text("Паролі не збігаються!");
             error = true;
         }
@@ -35,6 +39,7 @@ for (var i = input.length - 1; i >= 0; i--) {
         if(input[i].value == "")
         {
             $("."+input[i].name).text("Поле пусте!");
+            $("#"+input[i].id).focus();
             error = true;
         }
     }
