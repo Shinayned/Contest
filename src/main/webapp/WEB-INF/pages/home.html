@@ -140,11 +140,10 @@
                         <h3 th:text="${contest.title}"></h3>
                         <p th:text="${contest.description}"></p>
                         <p><a th:href="${contest.pageUrl}">Додаткова інформація</a></p>
-                        <button type="submit" class="btn btn-light btn-active">
-                            <a style="color: #000;"
+                        <a id="submit" class="btn btn-light btn-active" style="color: #000;"
                                th:href="'/contest/' + ${contest.id} + '/application'">
-                                Подати заявку</a>
-                        </button>
+                                Подати заявку
+                        </a>
                     </div>
                 </div>
             </div>
