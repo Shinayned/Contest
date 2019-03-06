@@ -24,9 +24,9 @@ for (var i = input.length - 1; i >= 0; i--) {
             $("."+input[i].name).text("Короткий пароль!");
             error = true;
         }
-        if(input[i].value != input[i+1].value)
+        if(input[i].value != $("#inputPasswordConfirm").value)
         {
-            console.log(input[i].value + " === "+ input[i+1].value);
+            console.log(input[i].value + " === "+ $("#inputPasswordConfirm").value);
             $("."+input[i].name).text("Паролі не збігаються!");
             error = true;
         }

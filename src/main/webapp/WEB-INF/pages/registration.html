@@ -27,13 +27,13 @@
  					<span class="heading">Реєстрація</span>
  				<div class="form-group">
  					<label for="inputName" class="control-label">Введіть ПІБ:</label>
- 					<input type="text" class="form-control" id="inputName" name="FullName" placeholder="Введите Ваше имя" required = "required">
-          <div class="FullName with-errors"></div>
+ 					<input type="text" class="form-control" id="inputName" name="fullName" placeholder="Введите Ваше имя" required = "required">
+          <div class="fullName with-errors"></div>
  				</div>
  				<div class="form-group">
  					<label for="inputDate" class="control-label">Дата народження:</label>
- 					<input type="date" class="form-control" id="inputDate" name="date" required = "required">
-          <div class="date with-errors"></div>
+ 					<input type="date" class="form-control" id="inputDate" name="birthdate" required = "required">
+          <div class="birthdate with-errors"></div>
  				</div>
  				<div class="form-group">
  					<label for="inputTel" class="control-label">Ваш телефон:</label>
@@ -52,7 +52,7 @@
         </div> 
         <div class="form-group">
             <label for="inputOrg" class="control-label">Посада</label>
-            <select name="select" required = "required"> <!--Supplement an id here instead of using 'name'--><option value="">оберіть посаду</option> 
+            <select name="position" required = "required"> <!--Supplement an id here instead of using 'name'--><option value="">оберіть посаду</option> 
                <option value="Науковий працівник">науковий працівник</option> 
                <option value="науково-педагогічний працівник">науково-педагогічний працівник</option>
                <option value="аспірант">аспірант</option>
@@ -60,17 +60,17 @@
                <option value="докторант">докторант</option>
                <option value="інженерно-технічний працівник">інженерно-технічний працівник</option>
             </select>
-            <div class="select with-errors"></div>       
+            <div class="position with-errors"></div>       
           </div>
           <div class="form-group">
           <label for="inputAdress" class="control-label">Службова адреса</label>
-          <input type="text" class="form-control" id="inputAdress" name="adress" placeholder="Введіть повну службову адресу" required = "required">
-          <div class="adress with-errors"></div>
+          <input type="text" class="form-control" id="inputAdress" name="workAddress" placeholder="Введіть повну службову адресу" required = "required">
+          <div class="workAddress with-errors"></div>
         </div>                         
  				<div class="form-group" style="margin-right: auto;margin-left: auto;">
  					<label for="inputMessage" class="control-label text-align-center">Перелік наукових праць</label>
-					<textarea name="FullInfo" id="message" class="form-control" rows="9" cols="25" style="min-height: 90px;" placeholder="Введіть перелік робіт" required = "required"></textarea>
- 					<div class="FullInfo with-errors"></div>
+					<textarea name="scienceWorks" id="message" class="form-control" rows="9" cols="25" style="min-height: 90px;" placeholder="Введіть перелік робіт" required = "required"></textarea>
+ 					<div class="scienceWorks with-errors"></div>
  				</div>
  				<div class="form-group">
  					<div class="row justify-content-center">
@@ -82,7 +82,7 @@
  								<input type="password" name="password" data-toggle="validator" data-minlength="6" class="form-control" id="inputPassword" placeholder="Пароль"  required = "required">
  							</div>
  							<div class="col-6">
- 								<input type="password" name="passwordConfirm" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Ошибка! Пароли не совпадают!" placeholder="Повторіть" required = "required">
+ 								<input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Ошибка! Пароли не совпадают!" placeholder="Повторіть" required = "required">
  							</div>
  							</div>
               <div class="password with-errors"></div>
