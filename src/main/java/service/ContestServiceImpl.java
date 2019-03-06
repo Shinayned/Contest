@@ -129,9 +129,13 @@ public class ContestServiceImpl implements ContestService {
         DataSource excelData = new ByteArrayDataSource(byteOut.toByteArray(), "application/vnd.ms-excel");
         String excelFileName = contest.getName() + "(" + new DateTime() + ")" + ".xlsx";
 
+        String messageText = "Данні заявок учасників конкурсу \"" + contest.getName() + "\".";
+
         String contestFolder = contest.getFilesFolderId();
-        String filesUrl = driveService.getLinkFor(contestFolder);
-        String messageText = "Файли учасників: " + filesUrl;
+        if (contestFolder != null) {
+            String filesUrl = driveService.getLinkFor(contestFolder);
+            messageText = messageText.concat("/nФайли учасників: " + filesUrl);
+        }
 
         emailService.sendMessageWithAttachment(sendToEmail, contest.getName(), messageText, excelFileName, excelData);
     }
@@ -256,7 +260,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     private List<FormData> uploadFiles(Contest contest, Participant participant, List<MultipartFile> files) {
-        String fileFolder = contest.getFilesFolderId();
+        String contestFolder = contest.getFilesFolderId();
+        File fileFolder = driveService.createFolder(contestFolder, participant.getFullName());
         List<FileForm> fileForms = contest.getFileForms();
 
         List<FormData> fileLinks = new ArrayList<>();
@@ -270,7 +275,7 @@ public class ContestServiceImpl implements ContestService {
                 fileId = file.getName();
 
                 if (formId.equals(fileId)) {
-                    FileInfo fileInfo = driveService.uploadFile(name, fileFolder, file);
+                    FileInfo fileInfo = driveService.uploadFile(name, fileFolder.getId(), file);
                     List<String> fileLink = Collections.singletonList(fileInfo.getId());
 
                     FormData fileData = new FormData(form.getId(), form.getType(),  fileLink);
