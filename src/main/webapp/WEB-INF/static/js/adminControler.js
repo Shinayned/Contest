@@ -3,10 +3,7 @@ $(document).ready(function () {
     var contestId;
     console.log("tetstststs");
     $(".closed").click(function (e) {
-        if ($(this).hasClass("unknowID")) {
             var contestId = $(this).closest(".element").attr("id");
-        }
-        
         var button = this;
         $.ajax({
             type: "POST",
@@ -22,7 +19,7 @@ $(document).ready(function () {
             error: function () {
                 location.href = "/error";
             }
-        });
+        })
                 return false;
     });
 
@@ -36,10 +33,14 @@ $(document).ready(function () {
             success: function (data) {
                 var obj = data;
                 contestId = obj.id;
+                var textButton = ($("closed").innerText || $("closed").textContent);
                 $("#name").text("Назва конкурсу: " + obj.name);
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);
                 $("#expirationTime").val(obj.expirationTime);
+                $(".closed2").className = $(".close").className;
+                $(".closed2").text("textButton");
+
                 $(".infoForConcurs").show();
             },
             error: function () {
