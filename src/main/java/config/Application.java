@@ -52,7 +52,7 @@ public class Application {
             participant = new Participant(
                     "oleh.melnechyk@gmail.com",
                     "qwerty",
-                    "Oleh",
+                    "Oleh Melnechyk",
                     new DateTime());
             participant.setEnabled(true);
             participant.setOrganization("HUB team");
