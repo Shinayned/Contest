@@ -1,8 +1,5 @@
 #upload-container img{
-  position: relative;
   transform: scale(1.5);
-  top: 3vh;
-  left: 3vh;
 }
 @media only screen and (max-width: 479px){
 }
@@ -96,4 +93,28 @@ body {
   font-size: 14px;
   text-align: center;
 }
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
 
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
