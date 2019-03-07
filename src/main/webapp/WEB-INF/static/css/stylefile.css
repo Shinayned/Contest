@@ -1,4 +1,10 @@
 
+#upload-container img{
+  position: relative;
+  transform: scale(1.5);
+  top: 3vh;
+  left: 3vh;
+}
 @media only screen and (max-width: 479px){
 }
 
