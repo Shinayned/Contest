@@ -1,9 +1,8 @@
 
 #upload-container img{
-  position: relative;
-  transform: scale(1.5);
-  top: 3vh;
-  left: 3vh;
+display: flex;
+  align-items: center;
+  justify-content: center
 }
 @media only screen and (max-width: 479px){
 }
