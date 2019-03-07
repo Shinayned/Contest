@@ -83,7 +83,7 @@ $(document).ready(function () {
     {
         $.ajax({
         type: "POST",
-        url: "",
+        url: "/admin/contest/setExpirationTime",
         data: "contestId="+contestId&"expirationTime="+datatime,
             success: function () {
                     alert("Термін дії зміненно");
