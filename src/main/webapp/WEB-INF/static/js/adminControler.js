@@ -79,8 +79,12 @@ $(document).ready(function () {
     var date = $("#expirationTime").val();
     var time = $("#time").val();
     var datatime = date.split("-");
-    var endDate = new Date(datatime[0],datatime[1],datatime[0]);
+    var endDate = new Date(datatime[0],datatime[1],datatime[2]);
     var todayDate = new Date();
+    console.log(date);
+    console.log(time);
+    console.log(endDate);
+    console.log(todayDate);
     if(endDate != "" && endDate > todayDate)
     {
         var data = "contestId="+contestId+"&"+"expirationTime="+date+" "+time;
