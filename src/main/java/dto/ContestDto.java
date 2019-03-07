@@ -1,7 +1,10 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import model.Contest;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class ContestDto {
     private long id;
@@ -50,8 +53,12 @@ public class ContestDto {
         this.amountOfApplications = amountOfApplications;
     }
 
-    public DateTime getExpirationTime() {
-        return expirationTime;
+    @JsonGetter("expirationTime")
+    public String getExpirationTime() {
+        String datePlusTime = "yyyy-MM-dd HH:mm";
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(datePlusTime);
+
+        return formatter.print(expirationTime);
     }
 
     public void setExpirationTime(DateTime expirationTime) {
