@@ -64,6 +64,7 @@ public class ContestController {
 
     @GetMapping("/contest/{contestId}/application")
     public String onApplicationPage(@PathVariable("contestId") long contestId,
+                                    HttpServletResponse response,
                                     Model model) {
         List<Form> forms = contestService.getAllForms(contestId);
         model.addAttribute("forms", forms);

@@ -63,8 +63,11 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<Form> getAllForms(long contestId) throws ResourceNotFoundException {
+    public List<Form> getAllForms(long contestId) throws ResourceNotFoundException, BadRequestException {
         Contest contest = getContest(contestId);
+
+        if (contest == null)
+            throw new BadRequestException("Contest " + contestId + " is not exist.");
 
         return contest.getAllForms();
     }
