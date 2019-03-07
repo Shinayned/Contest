@@ -36,19 +36,6 @@ public class ContestController {
     @Autowired
     private ContestService contestService;
 
-    @GetMapping("/contest/{contestID}")
-    public String onContestPage(@PathVariable("contestId") long contestId, Model model) {
-        Contest contest = contestService.getContest(contestId);
-        if (contest == null) {
-            model.addAttribute("status", 404);
-            model.addAttribute("error", "Contest " + contestId + " is not exist.");
-            return "error";
-        }
-
-        model.addAttribute("url", "/contest/" + contest.getId() + "/submit/application");
-        return "contests/" + contest.getId();
-    }
-
     @PostMapping("/contest/{contestId}/submit/application")
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)

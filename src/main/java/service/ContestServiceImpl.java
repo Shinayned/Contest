@@ -114,8 +114,12 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public Contest getContest(long contestId) throws ResourceNotFoundException {
-        Contest contest = contestRepository.findById(contestId).get();
-        return contest;
+        try {
+            Contest contest = contestRepository.findById(contestId).get();
+            return contest;
+        } catch (NoSuchElementException exception) {
+            return null;
+        }
     }
 
     @Override
