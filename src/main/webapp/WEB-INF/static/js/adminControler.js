@@ -82,7 +82,9 @@ $(document).ready(function () {
     var todayDate = new Date();
     if(endDate != "" && endDate > todayDate)
     {
-        var data = "contestId="+contestId&"expirationTime="+time;
+        console.log(data);
+        console.log(data);
+        var data = "contestId="+contestId+"&"+"expirationTime="+time;
         console.log(data);
         $.ajax({
         type: "POST",
