@@ -255,3 +255,9 @@ h3{font-size: 24px;}
 		padding: 10px;
 	}
 }
+#upload-container img{
+  display: flex;
+  align-items: center;
+  justify-content: center
+  transform: scale(1.5);
+}
