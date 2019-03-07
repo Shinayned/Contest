@@ -76,7 +76,8 @@ $(document).ready(function () {
         return false;
     });
     $("#data-end").click(function(e){
-    var datatime = $("#expirationTime").val().split("-");
+        var time = $("#expirationTime").val()
+    var datatime = time.split("-");
     var endDate = new Date(datatime[0],datatime[1],datatime[0]);
     var todayDate = new Date();
     if(endDate != "" && endDate > todayDate)
