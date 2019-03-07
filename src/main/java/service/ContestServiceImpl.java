@@ -160,6 +160,18 @@ public class ContestServiceImpl implements ContestService {
         return true;
     }
 
+    @Override
+    public boolean setExpirationTime(long contestId, DateTime expirationTime) {
+        Contest contest = contestRepository.findById(contestId).get();
+
+        if (contest == null)
+            return false;
+
+        contest.setExpirationTime(expirationTime);
+        contestRepository.save(contest);
+        return true;
+    }
+
     private Workbook parseApplicationsToExcel(Contest contest) {
         List<Application> applications = contest.getApplications();
         List<Form> forms = contest.getForms();

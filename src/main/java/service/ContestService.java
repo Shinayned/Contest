@@ -7,6 +7,7 @@ import exception.DuplicateException;
 import exception.ResourceNotFoundException;
 import model.Contest;
 import model.ContestPage;
+import org.joda.time.DateTime;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -26,4 +27,5 @@ public interface ContestService {
     void sendContestApplications(long contestId, String sendToEmail) throws ResourceNotFoundException, IOException;
     List<Contest> getAllContests();
     boolean closeOpenContest(long contestId);
+    boolean setExpirationTime(long contestId, DateTime expirationTime);
 }

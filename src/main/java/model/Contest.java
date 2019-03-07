@@ -81,7 +81,7 @@ public class Contest {
     public void setActive(boolean active) {
         if(active) {
             if(expirationTime != null && expirationTime.isBefore(DateTime.now())) {
-                throw new RuntimeException("Expiration time is out.");
+                this.expirationTime = null;
             }
             this.isActive = active;
         } else {
@@ -96,7 +96,7 @@ public class Contest {
 
     public void setExpirationTime(DateTime expirationTime) {
         if(expirationTime.isBefore(DateTime.now())) {
-            throw new RuntimeException("Expiration time is out.");
+            throw new RuntimeException("Expiration time must be to future.");
         } else {
             this.expirationTime = expirationTime;
         }
