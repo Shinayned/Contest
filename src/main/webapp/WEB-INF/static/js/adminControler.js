@@ -75,9 +75,7 @@ $(document).ready(function () {
         }
         return false;
     });
-});
-
-$("#data-end").click(function(e){
+    $("#data-end").click(function(e){
     var datatime = $("#expirationTime").val().split("-");
     var endDate = new Date(datatime[0],datatime[1],datatime[0]);
     var todayDate = new Date();
@@ -94,3 +92,5 @@ $("#data-end").click(function(e){
     }
     return false;
 })
+});
+
