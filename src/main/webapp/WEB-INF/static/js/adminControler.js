@@ -83,7 +83,7 @@ $(document).ready(function () {
     if(endDate != "" && endDate > todayDate)
     {
         var data = "contestId="+contestId&"expirationTime="+time;
-        console.log(time);
+        console.log(data);
         $.ajax({
         type: "POST",
         url: "/admin/contest/setExpirationTime",
