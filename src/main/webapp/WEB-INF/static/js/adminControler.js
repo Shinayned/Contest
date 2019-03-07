@@ -39,7 +39,7 @@ $(document).ready(function () {
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);
                 $("#expirationTime").val(obj.expirationTime[0]);
-                $("#time").val(obj.expirationTime[0]);
+                $("#time").val(obj.expirationTime[1]);
                 if(button.hasClass("btn-success"))
                  $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс");
                 else
