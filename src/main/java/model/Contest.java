@@ -2,8 +2,7 @@ package model;
 
 import contest.form.FileForm;
 import contest.form.Form;
-import contest.form.FormData;
-import converter.DateTimeConverter;
+import converter.DateTimeAttributeConverter;
 import contest.form.Forms;
 import org.joda.time.DateTime;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +19,7 @@ public class Contest {
     private String name;
     private boolean isActive;
 
-    @Convert(converter = DateTimeConverter.class)
+    @Convert(converter = DateTimeAttributeConverter.class)
     private DateTime expirationTime;
 
     @OneToMany(mappedBy = "contest", fetch = FetchType.EAGER)
@@ -34,7 +33,7 @@ public class Contest {
     private String imgUrl;
     private String pageUrl;
 
-    @Convert(converter = DateTimeConverter.class)
+    @Convert(converter = DateTimeAttributeConverter.class)
     private DateTime creatingTime;
 
     private String filesFolderId;

@@ -1,8 +1,7 @@
 package model;
 
-import contest.form.Form;
 import contest.form.FormData;
-import converter.DateTimeConverter;
+import converter.DateTimeAttributeConverter;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -26,7 +25,7 @@ public class Application {
     @Lob
     private ArrayList<FormData> data;
 
-    @Convert(converter = DateTimeConverter.class)
+    @Convert(converter = DateTimeAttributeConverter.class)
     private DateTime fillingDate;
 
     private String filesFolderId;
