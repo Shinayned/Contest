@@ -87,7 +87,7 @@ public class ContestController {
 
     @ExceptionHandler({BadRequestException.class, DisabledException.class, DuplicateException.class})
     @ResponseBody
-    public String onBadRequestException(HttpServletResponse response, Exception exception) throws IOException {
+    public void onBadRequestException(HttpServletResponse response, Exception exception) throws IOException {
         response.sendError(406, exception.getMessage());
     }
 }
