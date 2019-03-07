@@ -82,11 +82,12 @@ $(document).ready(function () {
     var todayDate = new Date();
     if(endDate != "" && endDate > todayDate)
     {
+        var data = "contestId="+contestId&"expirationTime="+time;
         console.log(time);
         $.ajax({
         type: "POST",
         url: "/admin/contest/setExpirationTime",
-        data: "contestId="+contestId&"expirationTime="+time,
+        data: ,
             success: function () {
                     alert("Термін дії зміненно");
                 }        
