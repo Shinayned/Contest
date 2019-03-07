@@ -76,15 +76,14 @@ $(document).ready(function () {
         return false;
     });
     $("#data-end").click(function(e){
-        var time = $("#expirationTime").val()
+    var date = $("#expirationTime").val();
+    var time = $("#time").val();
     var datatime = time.split("-");
     var endDate = new Date(datatime[0],datatime[1],datatime[0]);
     var todayDate = new Date();
     if(endDate != "" && endDate > todayDate)
     {
-        console.log(data);
-        console.log(data);
-        var data = "contestId="+contestId+"&"+"expirationTime="+time;
+        var data = "contestId="+contestId+"&"+"expirationTime="+date+" "+time;
         console.log(data);
         $.ajax({
         type: "POST",
