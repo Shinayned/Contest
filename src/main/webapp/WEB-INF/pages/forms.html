@@ -30,14 +30,14 @@
                                th:maxlength="${form.maxLength} != 0 ? ${form.maxLength} : _"
                                th:minlength="${form.minLength}"
                                th:required="${form.obligatory}">
-                        <div th:class="${form.id} + 'with-errors '"></div>
+                        <div th:class="${form.id} + ' with-errors'"></div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).DATE}">
                         <input type="date" class="form-control"
                                th:id="${form.id}"
                                th:name="${form.id}"
                                th:required="${form.obligatory}">
-                        <div th:class="${form.id} + 'with-errors '"></div>
+                        <div th:class="${form.id} + ' with-errors'"></div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
                         <input type="text" class="form-control"
@@ -46,7 +46,7 @@
                                th:id="${form.id}"
                                th:name="${form.id}"
                                th:required="${form.obligatory}">
-                        <div th:class="${form.id} + 'with-errors '"></div>
+                        <div th:class="${form.id} + ' with-errors'"></div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).EMAIL}">
                         <input type="email" class="form-control" placeholder="youremail@email.com"
@@ -54,7 +54,7 @@
                                th:id="${form.id}"
                                th:name="${form.id}"
                                th:required="${form.obligatory}">
-                        <div th:class="${form.id} + 'with-errors '"></div>
+                        <div th:class="${form.id} + ' with-errors'"></div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).MULTIPLE_SELECT_LIST}">
                         <div class="checkbox"
@@ -70,7 +70,7 @@
                                     <span th:text="${field}" th:remove="tag">title</span>
                                 </label>
                             </div>
-                            <div th:class="${form.id} + 'with-errors '"></div>
+                            <div th:class="${form.id} + ' with-errors'"></div>
                         </div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).SINGLE_SELECT_LIST}">
@@ -87,7 +87,7 @@
                                     <span th:text="${field}" th:remove="tag">title</span>
                                 </label>
                             </div>
-                            <div th:class="${form.id} + 'with-errors '"></div>
+                            <div th:class="${form.id} + ' with-errors'"></div>
                         </div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).DROPDOWN_LIST}">
@@ -100,7 +100,7 @@
                                         th:text="${field}"></option>
                             </div>
                         </select>
-                        <div th:class="${form.id} + 'with-errors '"></div>
+                        <div th:class="${form.id} + ' with-errors'"></div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).FILE}">
                         <input type="file"
@@ -108,7 +108,7 @@
                                th:name="${form.id}"
                                th:required="${form.obligatory}"
                                th:accept="${form.contentType}">
-                        <div class="help-block with-errors"></div>
+                        <div th:class="${form.id} + ' with-errors'"></div>
                         <!--<label for="file-input">Виберіть файл</label>-->
                     </div>
                 </div>
