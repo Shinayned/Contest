@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    $(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+     ajaxStop: function() { $body.removeClass("loading"); }    
+});
     $(".infoForConcurs").hide();
     var contestId;
     console.log("tetstststs");
