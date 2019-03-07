@@ -67,7 +67,7 @@ public class ContestServiceImpl implements ContestService {
         Contest contest = getContest(contestId);
 
         if (contest == null)
-            throw new BadRequestException("Contest " + contestId + " is not exist.");
+            return null;
 
         return contest.getAllForms();
     }
@@ -115,9 +115,6 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public Contest getContest(long contestId) throws ResourceNotFoundException {
         Contest contest = contestRepository.findById(contestId).get();
-        if (contest == null)
-            throw new ResourceNotFoundException("Contest №" + contestId + " is not exist.");
-
         return contest;
     }
 

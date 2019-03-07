@@ -39,6 +39,12 @@ public class ContestController {
     @GetMapping("/contest/{contestID}")
     public String onContestPage(@PathVariable("contestId") long contestId, Model model) {
         Contest contest = contestService.getContest(contestId);
+        if (contest == null) {
+            model.addAttribute("status", 404);
+            model.addAttribute("error", "Contest " + contestId + " is not exist.");
+            return "error";
+        }
+
         model.addAttribute("url", "/contest/" + contest.getId() + "/submit/application");
         return "contests/" + contest.getId();
     }
@@ -67,20 +73,21 @@ public class ContestController {
                                     HttpServletResponse response,
                                     Model model) {
         List<Form> forms = contestService.getAllForms(contestId);
+
+        if (forms == null) {
+            model.addAttribute("status", 404);
+            model.addAttribute("error", "Contest " + contestId + " is not exist.");
+            return "error";
+        }
+
         model.addAttribute("forms", forms);
         model.addAttribute("submitUrl", "/contest/" + contestId + "/submit/application");
         return "forms";
     }
 
-    @ExceptionHandler(DuplicateException.class)
+    @ExceptionHandler({BadRequestException.class, DisabledException.class, DuplicateException.class})
     @ResponseBody
-    public void onDuplicateException(HttpServletResponse response, Exception exception) throws IOException {
+    public String onBadRequestException(HttpServletResponse response, Exception exception) throws IOException {
         response.sendError(406, exception.getMessage());
-    }
-
-    @ExceptionHandler({BadRequestException.class, DisabledException.class})
-    @ResponseBody
-    public void onBadRequestException(HttpServletResponse response, Exception exception) throws IOException {
-        response.sendError(400, exception.getMessage());
     }
 }
