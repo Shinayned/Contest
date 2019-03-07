@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	var View = $('.showFilesList').clone(true,true);
-	$("#start").remove();
+	//$("#start").remove();
 
 	$.fn.multiply = function( id , name) {
     var newElements = this.clone(true,true);
