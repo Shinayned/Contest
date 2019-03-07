@@ -78,7 +78,7 @@ $(document).ready(function () {
     $("#data-end").click(function(e){
     var date = $("#expirationTime").val();
     var time = $("#time").val();
-    var datatime = time.split("-");
+    var datatime = date.split("-");
     var endDate = new Date(datatime[0],datatime[1],datatime[0]);
     var todayDate = new Date();
     if(endDate != "" && endDate > todayDate)
