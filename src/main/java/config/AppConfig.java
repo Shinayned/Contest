@@ -3,12 +3,14 @@ package config;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.DriveScopes;
+import converter.DateTimeConverter;
 import google.GoogleDrive;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -61,6 +63,11 @@ public class AppConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/static/**")
                 .addResourceLocations("/WEB-INF/static/");
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new DateTimeConverter());
     }
 
     @Bean
