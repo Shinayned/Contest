@@ -1,27 +1,23 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Подача заяви</title>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <!-- Custom styles for this template -->
-    <link href="../static/css/home.css" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <script type="text/javascript" src="../static/js/telMask.js"></script>
-
-    </script>
+    <meta charset="UTF-8">
+    <title>form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <link href="/static/css/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script type="text/javascript" src="/static/js/telMask.js"></script>
 </head>
 <body>
-  	<div class="container">
-		<div class="row text-align-center">
-			<div class="col col-md-6 col-md-offset-3">
- 				<form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
+<div class="container">
+    <div class="row text-align-center">
+      <div class="col col-md-6 col-md-offset-3">
+            <form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
                   enctype="multipart/form-data"
                   th:action="${submitUrl}">
- 					<span class="heading">Зміна інформації</span>
+                <span class="heading">Зміна інформації</span>
                 <div th:each="form : ${forms}" th:switch="${form.type}" th:remove="tag">
                     <label class="control-label"
                            th:text="${form.title}"></label>
@@ -120,10 +116,9 @@
                     <button id="submit" class="btn btn-primary a_submit">Submit</button>
                 </div>
 
- 				</form>
-        <script src="../static/js/jsonParse.js"></script>
-			</div></div></div>
-
-  </body>
-
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/jsonParse.js"></script>
+</body>
 </html>
