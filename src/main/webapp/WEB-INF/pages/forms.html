@@ -12,12 +12,12 @@
 </head>
 <body>
 <div class="container">
-    <div class="row text-align-center">
+    <div class="row text-align-center justify-content-center">
       <div class="col col-md-6 col-md-offset-3">
             <form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
                   enctype="multipart/form-data"
                   th:action="${submitUrl}">
-                <span class="heading">Зміна інформації</span>
+                <span class="heading">Інформаційна заява</span>
                 <div th:each="form : ${forms}" th:switch="${form.type}" th:remove="tag">
                     <label class="control-label"
                            th:text="${form.title}"></label>
