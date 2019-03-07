@@ -41,11 +41,11 @@
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
                         <input type="text" class="form-control"
-                               onkeyup="javascript:mask('${form.id}', '+38(000)000-00-00', event);"
-                               placeholder="+38(097)000-00-00"
+                               value="+38(___)___-__-__"
                                th:id="${form.id}"
                                th:name="${form.id}"
-                               th:required="${form.obligatory}">
+                               th:required="${form.obligatory}"
+                               onkeyup="javascript:mask('${form.id}', '+38(000)000-00-00', event);">
                         <div th:class="${form.id} + ' with-errors'"></div>
                     </div>
                     <div class="form-group" th:case="${T(contest.form.enums.FormType).EMAIL}">
