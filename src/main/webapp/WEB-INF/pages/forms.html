@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>form</title>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <link href="/static/css/home.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
     <script type="text/javascript" src="/static/js/telMask.js"></script>
@@ -12,111 +13,112 @@
 <body>
 <div class="container">
     <div class="row text-align-center">
-      <div class="col col-md-6 col-md-offset-3">
-    <form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
-      enctype="multipart/form-data"
-      th:action="${submitUrl}">
-    <span class="heading">Зміна інформації</span>
-    <div   th:each="form : ${forms}" th:switch="${form.type}" th:remove="tag">
-        <label class="control-label"
-               th:text="${form.title}"></label>
+        <div class="col col-md-6 col-md-offset-3">
+            <form data-toggle="validator" role="form" class="form-horizontal" id="my-form" method="post"
+                  enctype="multipart/form-data"
+                  th:action="${submitUrl}">
+                <span class="heading">Зміна інформації</span>
+                <div th:each="form : ${forms}" th:switch="${form.type}" th:remove="tag">
+                    <label class="control-label"
+                           th:text="${form.title}"></label>
 
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).STRING}">
-            <input type="text" class="form-control"
-                   th:id="${form.id}"
-                   th:name="${form.id}"
-                   th:placeholder="${form.placeHolder}"
-                   th:maxlength="${form.maxLength} != 0 ? ${form.maxLength} : _"
-                   th:minlength="${form.minLength}"
-                   th:required="${form.obligatory}">
-                   <div class="Вставити ім'я inputa with-errors"></div>
-        </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).DATE}">
-            <input type="date" class="form-control"
-                   th:id="${form.id}"
-                   th:name="${form.id}"
-                   th:required="${form.obligatory}">
-                   <div class="help-block inputa with-errors"></div>
-      </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
-            <input type="text" class="form-control"
-                   onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);" placeholder="+38(097)000-00-00"
-                   th:id="${form.id}"
-                   th:name="${form.id}"
-                   th:required="${form.obligatory}">
-            <div class="help-block with-errors"></div>
-        </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).EMAIL}">
-            <input type="email" class="form-control" placeholder="youremail@email.com"
-                   data-error="Вы не правильно ввели Ваш E-mail"
-                   th:id="${form.id}"
-                   th:name="${form.id}"
-                   th:required="${form.obligatory}">
-                   <div class="help-block with-errors"></div>
-        </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).MULTIPLE_SELECT_LIST}">
-              <div class="checkbox"
-                 th:id="${form.id}"
-                 th:required="${form.obligatory}">
-
-                <div th:each="field : ${form.fields}">
-                    <label>
-                        <input type="checkbox"
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).STRING}">
+                        <input type="text" class="form-control"
                                th:id="${form.id}"
                                th:name="${form.id}"
-                               th:value="${field}">
-                        <span th:text="${field}" th:remove="tag">title</span>
-                    </label>
-                </div>
-                <div class="help-block with-errors"></div>
-          </div>
-        </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).SINGLE_SELECT_LIST}">
-              <div class="radio"
-                 th:id="${form.id}">
-
-                <div th:each="field : ${form.fields}">
-                    <label>
-                        <input type="radio"
-                               th:id="${form.id}"
-                               th:name="${form.id}"
-                               th:value="${field}"
+                               th:placeholder="${form.placeHolder}"
+                               th:maxlength="${form.maxLength} != 0 ? ${form.maxLength} : _"
+                               th:minlength="${form.minLength}"
                                th:required="${form.obligatory}">
-                        <span th:text="${field}" th:remove="tag">title</span>
-                    </label>
-                </div>
-                <div class="help-block with-errors"></div>
-            </div>
-        </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).DROPDOWN_LIST}">
-              <select th:name="${form.id}"
-                    th:required="${form.obligatory}">
-                <option disabled selected style="display:none">...</option>
-                <div th:each="field : ${form.fields}">
-                    <option
-                            th:value="${field}"
-                            th:text="${field}"></option>
-                </div>
-            </select>
-            <div class="help-block with-errors"></div>
-        </div>
-        <div class="form-group" th:case="${T(contest.form.enums.FormType).FILE}">
-            <input type="file"
-                   th:id="${form.id}"
-                   th:name="${form.id}"
-                   th:required="${form.obligatory}"
-                   th:accept="${form.contentType}">
-                   <div class="help-block with-errors"></div>
-            <!--<label for="file-input">Виберіть файл</label>-->
-      </div>
-    </div>
-    <div class="form-group">
-        <button id="submit" class="btn btn-primary a_submit">Submit</button>
-    </div>
+                        <div th:class="${form.id} + 'with-errors '"></div>
+                    </div>
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).DATE}">
+                        <input type="date" class="form-control"
+                               th:id="${form.id}"
+                               th:name="${form.id}"
+                               th:required="${form.obligatory}">
+                        <div th:class="${form.id} + 'with-errors '"></div>
+                    </div>
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).PHONE_NUMBER}">
+                        <input type="text" class="form-control"
+                               onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);"
+                               placeholder="+38(097)000-00-00"
+                               th:id="${form.id}"
+                               th:name="${form.id}"
+                               th:required="${form.obligatory}">
+                        <div th:class="${form.id} + 'with-errors '"></div>
+                    </div>
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).EMAIL}">
+                        <input type="email" class="form-control" placeholder="youremail@email.com"
+                               data-error="Вы не правильно ввели Ваш E-mail"
+                               th:id="${form.id}"
+                               th:name="${form.id}"
+                               th:required="${form.obligatory}">
+                        <div th:class="${form.id} + 'with-errors '"></div>
+                    </div>
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).MULTIPLE_SELECT_LIST}">
+                        <div class="checkbox"
+                             th:id="${form.id}"
+                             th:required="${form.obligatory}">
 
-</form>
-</div>
-</div>
-<script src="/static/js/jsonParse.js"></script>
+                            <div th:each="field : ${form.fields}">
+                                <label>
+                                    <input type="checkbox"
+                                           th:id="${form.id}"
+                                           th:name="${form.id}"
+                                           th:value="${field}">
+                                    <span th:text="${field}" th:remove="tag">title</span>
+                                </label>
+                            </div>
+                            <div th:class="${form.id} + 'with-errors '"></div>
+                        </div>
+                    </div>
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).SINGLE_SELECT_LIST}">
+                        <div class="radio"
+                             th:id="${form.id}">
+
+                            <div th:each="field : ${form.fields}">
+                                <label>
+                                    <input type="radio"
+                                           th:id="${form.id}"
+                                           th:name="${form.id}"
+                                           th:value="${field}"
+                                           th:required="${form.obligatory}">
+                                    <span th:text="${field}" th:remove="tag">title</span>
+                                </label>
+                            </div>
+                            <div th:class="${form.id} + 'with-errors '"></div>
+                        </div>
+                    </div>
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).DROPDOWN_LIST}">
+                        <select th:name="${form.id}"
+                                th:required="${form.obligatory}">
+                            <option disabled selected style="display:none">...</option>
+                            <div th:each="field : ${form.fields}">
+                                <option
+                                        th:value="${field}"
+                                        th:text="${field}"></option>
+                            </div>
+                        </select>
+                        <div th:class="${form.id} + 'with-errors '"></div>
+                    </div>
+                    <div class="form-group" th:case="${T(contest.form.enums.FormType).FILE}">
+                        <input type="file"
+                               th:id="${form.id}"
+                               th:name="${form.id}"
+                               th:required="${form.obligatory}"
+                               th:accept="${form.contentType}">
+                        <div class="help-block with-errors"></div>
+                        <!--<label for="file-input">Виберіть файл</label>-->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button id="submit" class="btn btn-primary a_submit">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/jsonParse.js"></script>
 </body>
 </html>
