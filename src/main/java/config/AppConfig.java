@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-@ComponentScan({"service", "repository", "controller", "event", "exception", "component", "google", "email"})
+@ComponentScan({"service", "repository", "controller", "event", "exception", "component", "google", "email", "converter"})
 @EntityScan("model")
 @EnableJpaRepositories("repository")
 @EnableTransactionManagement
