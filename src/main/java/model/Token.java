@@ -1,6 +1,6 @@
 package model;
 
-import converter.DateTimeConverter;
+import converter.DateTimeAttributeConverter;
 import enums.TokenType;
 import org.joda.time.DateTime;
 import javax.persistence.Id;
@@ -22,7 +22,7 @@ public class Token {
     @JoinColumn(nullable = false, name = "participant_id")
     private Participant participant;
 
-    @Convert(converter = DateTimeConverter.class)
+    @Convert(converter = DateTimeAttributeConverter.class)
     private DateTime expiryDate;
 
     protected Token() {

@@ -1,20 +1,11 @@
 package converter;
 
 import org.joda.time.DateTime;
+import org.springframework.core.convert.converter.Converter;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-import java.sql.Timestamp;
-
-@Converter(autoApply = true)
-public class DateTimeConverter implements AttributeConverter<DateTime, Timestamp> {
+public class DateTimeConverter implements Converter<String, DateTime> {
     @Override
-    public Timestamp convertToDatabaseColumn(DateTime dateTime) {
-        return dateTime == null ? null : new Timestamp(dateTime.getMillis());
-    }
-
-    @Override
-    public DateTime convertToEntityAttribute(Timestamp date) {
-        return date == null ? null : new DateTime(date);
+    public DateTime convert(String s) {
+        return new DateTime(s);
     }
 }

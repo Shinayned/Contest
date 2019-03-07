@@ -1,13 +1,11 @@
 package model;
 
-import converter.DateTimeConverter;
+import converter.DateTimeAttributeConverter;
 import google.FileInfo;
 import dto.ParticipantDto;
-import org.hibernate.annotations.Fetch;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class Participant {
     private String password;
     private String fullName;
 
-    @Convert(converter = DateTimeConverter.class)
+    @Convert(converter = DateTimeAttributeConverter.class)
     private DateTime birthdate;
 
     private String phoneNumber;

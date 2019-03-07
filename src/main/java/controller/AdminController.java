@@ -55,6 +55,7 @@ public class AdminController {
     public void setContestExpirationTime(@RequestParam("contestId") long contestId,
                                          @RequestParam("expirationTime") DateTime expirationTime,
                                          HttpServletResponse response) throws IOException {
+
         if (expirationTime.isBefore(DateTime.now())) {
             response.sendError(406, "Expiration time must be to future.");
             return;
