@@ -74,6 +74,7 @@
                                 th:if="${contest.active}">Запустити</button>
                         <button class="btn closed unknowID btn-danger"
                                 th:if="!${contest.active}">Зупинити</button>
+                                
                     </div>
                 </div>
             </div>
@@ -90,7 +91,7 @@
                 <div class="row" id="amouth">Кількість заявок:</div>
                 <div class="row">Термін дії:  
                     <input type="date" id="expirationTime" class="form-control"name="expirationTime" style="width: 170px; height: 25px;">
-                    <input type="time" id="time" class="form-control"name="expirationTime" style="width: 70px; height: 25px;">
+                    <input type="time" id="time" class="form-control"name="expirationTime" style="width: 100px; height: 25px;">
                     <button id="data-end" class="btn btn-ligth" style="height: 25px; font-size: 10px;">Задати час</button></div>
             </div>
             <div class="col-12 col-md-6 mx-4">
@@ -102,7 +103,7 @@
                             <div class="with-errors"></div>
                         </div>
                         <button class="btn btn-primary" id="excelOnEmail">Відправити заявки</button>
-                        <button class="btn btn-danger closed2">Зупинити конкурс</button>
+                        <button class="btn btn-danger closed closed2">Зупинити конкурс</button>
                     </form>
                 </div>
             </div>
