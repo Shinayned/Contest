@@ -165,6 +165,10 @@ public class Participant {
         uploadedFiles.add(fileInfo);
     }
 
+    public boolean hasApplicationForContest(Contest contest) {
+        return applications.contains(contest);
+    }
+
     public void removeUploadedFile(String fileId) {
         for(FileInfo file : uploadedFiles) {
             if(file.getId().equals(fileId)) {

@@ -7,6 +7,7 @@ import exception.DuplicateException;
 import google.GoogleDrive;
 import model.Contest;
 import model.ContestPage;
+import model.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.DisabledException;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 import service.ContestService;
+import service.ParticipantService;
 
 import javax.mail.Multipart;
 import javax.servlet.ServletRequest;
@@ -35,6 +37,9 @@ import java.util.Map;
 public class ContestController {
     @Autowired
     private ContestService contestService;
+
+    @Autowired
+    private ParticipantService participantService;
 
     @PostMapping("/contest/{contestId}/submit/application")
     @ResponseBody
@@ -57,9 +62,11 @@ public class ContestController {
 
     @GetMapping("/contest/{contestId}/application")
     public String onApplicationPage(@PathVariable("contestId") long contestId,
-                                    HttpServletResponse response,
+                                    Principal principal,
                                     Model model) {
-        List<Form> forms = contestService.getAllForms(contestId);
+        Contest contest = contestService.getContest(contestId);
+        List<Form> forms = contest.getAllForms();
+        Participant participant = participantService.getParticipantByEmail(principal.getName());
 
         if (forms == null) {
             model.addAttribute("status", 404);
@@ -67,6 +74,9 @@ public class ContestController {
             return "error";
         }
 
+        model.addAttribute("contestName", contest.getName());
+        model.addAttribute("contestIsClosed", !contest.isActive());
+        model.addAttribute("duplicateApplication", participant.hasApplicationForContest(contest));
         model.addAttribute("forms", forms);
         model.addAttribute("submitUrl", "/contest/" + contestId + "/submit/application");
         return "forms";
