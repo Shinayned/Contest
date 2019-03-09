@@ -48,7 +48,23 @@ $("#submit").click(function (e) {
     if ((valideForm(input))) {
         return false;
     }
-    var result = $.ajax({
+    if(url == "forms")
+    {
+        $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        contentType: "multipart/form-data",
+        success: function () {
+                alert("Заявка прийнята");
+                location.href = "../../pages/html.html";
+        },
+        error: function () {
+            location.href = "../../pages/error.html";
+        }
+    });        
+    }
+    $.ajax({
         type: "POST",
         url: url,
         data: JSON.stringify(data),
