@@ -41,7 +41,7 @@ public class ContestController {
     @Autowired
     private ParticipantService participantService;
 
-    @PostMapping("/contest/{contestId}/submit/application")
+    @PostMapping("/contest/{contestId}/application/submit")
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void submitApplication(@PathVariable("contestId") long contestId,
@@ -78,7 +78,7 @@ public class ContestController {
         model.addAttribute("contestIsClosed", !contest.isActive());
         model.addAttribute("duplicateApplication", participant.hasApplicationForContest(contest));
         model.addAttribute("forms", forms);
-        model.addAttribute("submitUrl", "/contest/" + contestId + "/submit/application");
+        model.addAttribute("submitUrl", "/contest/" + contestId + "/application/submit");
         return "forms";
     }
 
