@@ -295,4 +295,8 @@ body.loading .modal, body.loading .disabled {
 	background-color: #fff;
 	color: #000;
 	font-size: 24px;
+	display: flex;
+	text-align: center;
+  	align-items: center;
+  	justify-content: center
 }
