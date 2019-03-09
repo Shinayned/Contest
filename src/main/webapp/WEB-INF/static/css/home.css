@@ -236,10 +236,16 @@ a:hover
   margin: 10px;
   padding:10px;
 }
+.btn-disable{
+  background-color: #B3B3B3;
+}
+.btn-closed{
+  background-color: #FC3333;
+}
 @media(min-width:1620px) {
 p{font-size: 24px;}
 h3{font-size: 32px;}
-.btn-active
+.btn-active, .btn-disable, .btn-closed
 {
   text-align: center;
   font-size: 24px;

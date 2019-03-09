@@ -140,6 +140,14 @@
                                th:href="'/contest/' + ${contest.id} + '/application'">
                                 Подати заявку
                         </a>
+                        <a id="submit" class="btn btn-light btn-closed" style="color: #fff;"
+                               th:href="'/contest/' + ${contest.id} + '/application'">
+                                Конкурс закрито
+                        </a>                        
+                        <a id="submit" class="btn btn-light btn-disable" style="color: #000;"
+                               th:href="'/contest/' + ${contest.id} + '/application'" disabled>
+                                Заявка подана
+                        </a>                        
                     </div>
                 </div>
             </div>
