@@ -1,6 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sun.org.apache.regexp.internal.RE;
 import model.Contest;
 import model.Participant;
 import org.hibernate.boot.jaxb.SourceType;
@@ -17,6 +18,7 @@ import service.ContestService;
 import service.ParticipantService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -31,11 +33,9 @@ public class MainController {
     private ContestService contestService;
 
     @RequestMapping("/")
-    public String onIndex(Principal principal, Model model) {
-        if (principal == null || principal.getName().equals("admin"))
-            model.addAttribute("isAuthenticated", false);
-        else
-            model.addAttribute("isAuthenticated", true);
+    public String onIndex(Principal principal) {
+        if (principal != null)
+            return "redirect:home";
 
         return "index";
     }
