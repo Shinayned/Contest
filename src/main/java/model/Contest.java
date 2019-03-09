@@ -176,4 +176,22 @@ public class Contest {
     public void setFilesFolderId(String filesFolderId) {
         this.filesFolderId = filesFolderId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contest contest = (Contest) o;
+
+        if (id != contest.id) return false;
+        return name.equals(contest.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }

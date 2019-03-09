@@ -39,8 +39,8 @@
     <nav class="fixed-top">
         <ul class="sidebar-nav" id="sidebar-wrapper">
             <hr>
-                <span class="head-menu" id="name" th:text="${participant.fullName}">Ім'я Прізвище</span>
-                <hr>
+            <span class="head-menu" id="name" th:text="${participant.fullName}">Ім'я Прізвище</span>
+            <hr>
             <div class="info" id="date">
                 Дата народження: <span th:text="${participant.birthdate.toString('dd.MM.yyyy')}" th:remove="tag"></span>
             </div>
@@ -111,9 +111,21 @@
                                 <h3 th:text="${contest.title}"></h3>
                                 <p th:text="${contest.description}"></p>
                                 <p><a th:href="${contest.pageUrl}">Додаткова інформація</a></p>
-                                <a type="submit" class="btn btn-light btn-active" style="color: #000;"
-                                       th:href="'/contest/' + ${contest.id} + '/application'"
-                                    >Подати заявку</a>
+                                <a id="submit" class="btn btn-light btn-active" style="color: #000;"
+                                   th:href="'/contest/' + ${contest.id} + '/application'"
+                                   th:if="${contest.isActive()} and !${participant.hasApplicationForContest(contest)}">
+                                    Подати заявку
+                                </a>
+                                <a id="submit" class="btn btn-light btn-closed" style="color: #fff;"
+                                   th:href="'/contest/' + ${contest.id} + '/application'"
+                                   th:if="!${contest.isActive()}">
+                                    Конкурс закрито
+                                </a>
+                                <a id="submit" class="btn btn-light btn-disable" style="color: #000;" disabled
+                                   th:href="'/contest/' + ${contest.id} + '/application'"
+                                   th:if="${contest.isActive()} and ${participant.hasApplicationForContest(contest)}">
+                                    Заявка подана
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -137,17 +149,20 @@
                         <p th:text="${contest.description}"></p>
                         <p><a th:href="${contest.pageUrl}">Додаткова інформація</a></p>
                         <a id="submit" class="btn btn-light btn-active" style="color: #000;"
-                               th:href="'/contest/' + ${contest.id} + '/application'">
-                                Подати заявку
+                           th:href="'/contest/' + ${contest.id} + '/application'"
+                           th:if="${contest.isActive()} and !${participant.hasApplicationForContest(contest)}">
+                            Подати заявку
                         </a>
                         <a id="submit" class="btn btn-light btn-closed" style="color: #fff;"
-                               th:href="'/contest/' + ${contest.id} + '/application'">
-                                Конкурс закрито
-                        </a>                        
-                        <a id="submit" class="btn btn-light btn-disable" style="color: #000;"
-                               th:href="'/contest/' + ${contest.id} + '/application'" disabled>
-                                Заявка подана
-                        </a>                        
+                           th:href="'/contest/' + ${contest.id} + '/application'"
+                           th:if="!${contest.isActive()}">
+                            Конкурс закрито
+                        </a>
+                        <a id="submit" class="btn btn-light btn-disable" style="color: #000;" disabled
+                           th:href="'/contest/' + ${contest.id} + '/application'"
+                           th:if="${contest.isActive()} and ${participant.hasApplicationForContest(contest)}">
+                            Заявка подана
+                        </a>
                     </div>
                 </div>
             </div>
