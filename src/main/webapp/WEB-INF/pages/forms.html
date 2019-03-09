@@ -122,7 +122,7 @@
         <div class="disabled row" th:if="${contestIsClosed} or ${duplicateApplication}">
             <span class="col-12" th:if="${contestIsClosed}">Прийом заявок закритий!</span>
             <span class="col-12" th:if="!${contestIsClosed} and ${duplicateApplication}">Ви вже подали заявку на конкурс!</span>
-            <a class="btn btn-primary col-4 offset-4" href="/home">На головну</a>
+            <a class="btn btn-primary" href="/home">На головну</a>
         </div>
 
     </div>
