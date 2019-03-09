@@ -262,10 +262,10 @@ h3{font-size: 24px;}
   transform: scale(1.5);
 }
 
-.modal {
+.modal, .disabled {
     display:    none;
     position:   fixed;
-    z-index:    1000;
+    z-index:    100000;
     top:        0;
     left:       0;
     height:     100%;
@@ -275,15 +275,24 @@ h3{font-size: 24px;}
                 50% 50% 
                 no-repeat;
 }
+.disabled{
+	background: rgba( 255, 255, 255, .8 );
+}
 
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
-body.loading .modal {
+body.loading .modal, body.loading .disabled {
     overflow: hidden;   
 }
 
 /* Anytime the body has the loading class, our
    modal element will be visible */
-body.loading .modal {
+body.loading .modal, body.loading .disabled {
     display: block;
+}
+
+.disabled span{
+	background-color: #fff;
+	color: #000;
+	font-size: 24px;
 }
