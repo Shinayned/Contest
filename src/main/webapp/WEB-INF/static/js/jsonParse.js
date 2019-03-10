@@ -92,7 +92,27 @@ $("#submit").click(function (e) {
 
     return false;
 });
-
+$("#submit-forms").click(function (e) {
+    var data = $("#my-form").serializeObject();
+    var input = $("#my-form").serializeArray();
+    if ((valideForm(input))) {
+        return false;
+    }
+        $.ajax({
+        type: "POST",
+        url: $('form').action,
+        data: data,
+        contentType: "multipart/form-data",
+        success: function () {
+                alert("Заявка прийнята");
+                location.href = "../../pages/html.html";
+        },
+        error: function () {
+            location.href = "../../pages/error.html";
+        }
+    });
+    return false;        
+    });
 
 //MAGIC
 (function ($) {
