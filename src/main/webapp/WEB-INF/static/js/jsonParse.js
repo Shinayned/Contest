@@ -50,7 +50,7 @@ $("#submit").click(function (e) {
     }
     $.ajax({
         type: "POST",
-        url: ,
+        url: url,
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function () {
