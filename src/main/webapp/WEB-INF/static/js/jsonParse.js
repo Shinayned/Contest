@@ -2,6 +2,8 @@ function valideForm(input) {
     var email = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var error = false;
     for (var i = input.length - 1; i >= 0; i--) {
+        if(input[i].required)
+        {
         switch (input[i].name) {
 
             case "email":
@@ -39,6 +41,7 @@ function valideForm(input) {
                 }
         }
     }
+}
     return error;
 }
 $("#submit").click(function (e) {
