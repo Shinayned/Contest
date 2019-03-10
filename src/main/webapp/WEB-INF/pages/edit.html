@@ -102,39 +102,39 @@
                     <div class="form-group">
                         <label for="inputName" class="control-label">Ваш ПІБ:</label>
                         <input type="text" class="form-control" id="inputName" name="fullName"
-                               th:value="${participant.fullName}">
+                               th:value="${participant.fullName}" required>
                                <div class="fullName with-errors"></div>
                     </div>
                     <div class="form-group">
                         <label for="birthdate" class="control-label">Дата народження:</label>
                         <input type="date" class="form-control" id="birthdate" name="birthdate"
-                               th:value="${participant.birthdate.toString('yyyy-MM-dd')}">
+                               th:value="${participant.birthdate.toString('yyyy-MM-dd')}" required>
                                <div class="birthdate with-errors"></div>
                     </div>
                     <div class="form-group">
                         <label for="zipCode" class="control-label">Ваш телефон:</label>
                         <input type="text" id="zipCode" class="form-control" name="phone"
                                onkeyup="javascript:mask('zipCode', '+38(000)000-00-00', event);"
-                               th:value="${participant.phoneNumber}">
+                               th:value="${participant.phoneNumber}" required>
                         <div class="phone with-errors"></div>
                     </div>
                     <div class="form-group">
                         <label for="inputEmail" class="control-label">Ваш E-mail</label>
                         <input type="email" class="form-control" id="inputEmail" name="email"
                                data-error="Вы не правильно ввели Ваш E-mail"
-                               th:value="${participant.email}">
+                               th:value="${participant.email}" required>
                                <div class="email with-errors"></div>
                     </div>
                     <div class="form-group">
                         <label for="inputOrg" class="control-label">Назва організації:</label>
                         <input type="text" class="form-control" id="inputOrg" name="organization"
                                placeholder="Введіть повну назву організації де працюєте/навчаєтесь"
-                               th:value="${participant.organization}">
+                               th:value="${participant.organization}" required>
                                <div class="organization with-errors"></div>
                     </div>
                     <div class="form-group">
                         <label for="inputOrg" class="control-label">Посада</label>
-                        <select name="position"> <!--Supplement an id here instead of using 'name'-->                           
+                        <select name="position" required> <!--Supplement an id here instead of using 'name'-->                           
                             <option value="Науковий працівник"
                                     th:selected="${participant.position} == 'Науковий працівник' ? 'required' : _">
                                 науковий працівник
@@ -165,14 +165,14 @@
                         <label for="inputAdress" class="control-label">Службова адреса</label>
                         <input type="text" class="form-control" id="inputAdress" name="workAddress"
                                placeholder="Введіть повну службову адресу"
-                               th:value="${participant.workAddress}">
+                               th:value="${participant.workAddress}" required>
                                <div class="workAddress with-errors"></div>
                     </div>
                     <div class="form-group" style="margin-right: auto;margin-left: auto;">
                         <label for="message" class="control-label text-align-center">Перелік наукових праць</label>
                         <textarea name="scienceWorks" id="message" class="form-control" rows="9" cols="25"
                                   style="min-height: 90px;" placeholder="Введіть перелік робіт"
-                                  th:text="${participant.scienceWorks}"></textarea>
+                                  th:text="${participant.scienceWorks}" required></textarea>
                         <div class="scienceWorks with-errors"></div>
                     </div>
                     <div class="form-group">

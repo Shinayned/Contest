@@ -2,6 +2,7 @@ function valideForm(input) {
     var email = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var error = false;
     for (var i = input.length - 1; i >= 0; i--) {
+        console.log(input[i].required);
         if(input[i].required)
         {
         switch (input[i].name) {
@@ -46,7 +47,7 @@ function valideForm(input) {
 }
 $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
-    var input = $("#my-form").serializeArray();
+    var input = $("input");
     var url = this.name;
     if ((valideForm(input))) {
         return false;
