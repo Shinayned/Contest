@@ -55,6 +55,9 @@ public class ContestDto {
 
     @JsonGetter("expirationTime")
     public String getExpirationTime() {
+        if (expirationTime == null)
+            return null;
+
         String datePlusTime = "yyyy-MM-dd HH:mm";
         DateTimeFormatter formatter = DateTimeFormat.forPattern(datePlusTime);
 

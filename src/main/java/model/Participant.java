@@ -166,7 +166,12 @@ public class Participant {
     }
 
     public boolean hasApplicationForContest(Contest contest) {
-        return applications.contains(contest);
+        for(Application application : applications) {
+            boolean hasApplication = application.getContest().equals(contest);
+            if (hasApplication)
+                return true;
+        }
+        return false;
     }
 
     public void removeUploadedFile(String fileId) {
