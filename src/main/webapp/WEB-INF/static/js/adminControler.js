@@ -20,9 +20,9 @@ $(document).ready(function () {
             success: function (data) {
                 $(button).hasClass("btn-danger")?
                     ($(button).addClass("btn-success").removeClass("btn-danger").text("Запустити"),($(button).hasClass("active")?
-                        $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс"))) :
+                        $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
                     ($(button).removeClass("btn-success").addClass("btn-danger").text("Зупинити"),
-                        ($(button).hasClass("active")?$(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс")));
+                        ($(button).hasClass("active")?$(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
             },
             error: function () {
                 location.href = "/error";
