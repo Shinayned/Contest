@@ -85,7 +85,7 @@
         </div>
         <hr>
         <div class="row infoForConcurs">
-            <div class="col-12 сol-md-5" style="margin-left: 15px;">
+            <div class="col сol-md-5" style="margin-left: 15px;">
                 <div class="row px-0 mx-0" id="name">Назва конкурсу:</div>
                 <div class="row" id="description">Короткий опис:</div>
                 <div class="row" id="amouth">Кількість заявок:</div>
@@ -103,15 +103,18 @@
                     </div>                    
                     
             </div>
-            <div class="col-12 col-md-5 col-md-offset-1">
+            <div class="col col-md-5">
                     <form>
                         <div class="form-group">
                             <input type="email" class="form-control my-3" id="inputAdress" name="SpamEmail"
                                    placeholder="Введіть пошту куди відіслати заявки">
                             <div class="with-errors"></div>
                         </div>
-                        <button class="btn btn-primary" id="excelOnEmail">Відправити заявки</button>
-                        <button class="btn btn-danger closed closed2">Зупинити конкурс</button>
+                        <div style="margin-right: auto;">
+                            <button class="btn btn-primary" id="excelOnEmail">Відправити заявки</button>
+                            <button class="btn btn-danger closed closed2">Зупинити конкурс</button>
+                        </div>
+                       
                     </form>
             </div>
         </div>
