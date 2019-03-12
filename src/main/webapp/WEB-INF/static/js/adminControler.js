@@ -18,11 +18,11 @@ $(document).ready(function () {
             url: "/admin/contest/changeStatus",
             data: "contestId=" + contestId,
             success: function (data) {
-                $(button).hasClass("btn-danger") ?
-                    ($(button).addClass("btn-success").removeClass("btn-danger").text("Запустити"),
-                        $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
+                $(button).hasClass("btn-danger")?
+                    ($(button).addClass("btn-success").removeClass("btn-danger").text("Запустити"),($(button).hasClass("active")?
+                        $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс"))) :
                     ($(button).removeClass("btn-success").addClass("btn-danger").text("Зупинити"),
-                        $(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
+                        ($(button).hasClass("active")?$(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс")));
             },
             error: function () {
                 location.href = "/error";
@@ -45,7 +45,7 @@ $(document).ready(function () {
                 $("#name").text("Назва конкурсу: " + obj.name);
                 $("#description").text("Короткий опис: " + obj.description);
                 $("#amouth").text("К-ть заявок: " + obj.amountOfApplications);
-
+                button.addClass("active");
                 if (obj.expirationTime != null) {
                     obj.expirationTime = obj.expirationTime.split(" ");
                     $("#expirationTime").val(obj.expirationTime[0]);
