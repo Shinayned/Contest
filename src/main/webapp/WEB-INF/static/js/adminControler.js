@@ -1,12 +1,4 @@
 $(document).ready(function () {
-    $(document).on({
-        ajaxStart: function () {
-            $body.addClass("loading");
-        },
-        ajaxStop: function () {
-            $body.removeClass("loading");
-        }
-    });
     $(".infoForConcurs").hide();
     var contestId;
     console.log("tetstststs");
@@ -20,9 +12,9 @@ $(document).ready(function () {
             success: function (data) {
                 $(button).hasClass("btn-danger")?
                     ($(button).addClass("btn-success").removeClass("btn-danger").text("Запустити"),($(button).hasClass("active")?
-                        $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс")) :
+                        $(".closed2").addClass("btn-success").removeClass("btn-danger").text("Запустити конкурс"): false)) :
                     ($(button).removeClass("btn-success").addClass("btn-danger").text("Зупинити"),
-                        ($(button).hasClass("active")?$(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"));
+                        ($(button).hasClass("active")?$(".closed2").removeClass("btn-success").addClass("btn-danger").text("Зупинити конкурс"):false));
             },
             error: function () {
                 location.href = "/error";
