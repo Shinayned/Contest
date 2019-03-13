@@ -8,7 +8,10 @@ body
 	overflow-x: hidden;
 	font-family: Century Gothic;
 }
-
+a.disabled {
+    pointer-events: none; /* делаем ссылку некликабельной */
+    cursor: default;  /* устанавливаем курсор в виде стрелки */
+}
 /* Form Style */
 .form-horizontal{
  background: #fff;
