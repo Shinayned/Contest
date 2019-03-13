@@ -83,7 +83,7 @@ $("#submit-forms").click(function (e) {
     }
         $.ajax({
         type: "POST",
-        url: $("#my-form").attr("action"),
+        url: $("form").attr("action"),
         data: data,
         contentType: "multipart/form-data",
         success: function () {
