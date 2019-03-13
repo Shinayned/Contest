@@ -1,5 +1,5 @@
 $(document).ready(function () {
-   // $(".infoForConcurs").hide();
+    $(".infoForConcurs").hide();
     var contestId;
     console.log("tetstststs");
     $(".closed").click(function (e) {
