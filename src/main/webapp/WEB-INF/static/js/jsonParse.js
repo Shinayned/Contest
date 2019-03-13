@@ -83,15 +83,15 @@ $("#submit-forms").click(function (e) {
     }
         $.ajax({
         type: "POST",
-        url: $('form').action,
+        url: $("#my-form").attr("action"),
         data: data,
         contentType: "multipart/form-data",
         success: function () {
                 alert("Заявка прийнята");
-                location.href = "../../pages/html.html";
+                location.href = "/home";
         },
         error: function () {
-            location.href = "../../pages/error.html";
+            location.href = "/error";
         }
     });
     return false;        
