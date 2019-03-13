@@ -94,7 +94,7 @@ $("#submit-forms").click(function (e) {
             location.href = "/error";
         }
     });
-    return false;        
+    return false;
     });
 
 //MAGIC
@@ -164,7 +164,3 @@ $("#submit-forms").click(function (e) {
         return json;
     };
 })(jQuery);
-
-
-
-
