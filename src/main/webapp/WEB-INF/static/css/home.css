@@ -22,6 +22,10 @@
 body {
   overflow-x: hidden;
 }
+a.disable {
+    pointer-events: none; /* делаем ссылку некликабельной */
+    cursor: default;  /* устанавливаем курсор в виде стрелки */
+}
 
 /* Sidebar Styles */
 #sidebar-wrapper {
