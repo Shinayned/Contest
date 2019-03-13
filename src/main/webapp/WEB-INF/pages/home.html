@@ -118,12 +118,12 @@
                                 </a>
                                 <a id="submit" class="btn btn-light btn-closed" style="color: #fff;"
                                    th:href="'/contest/' + ${contest.id} + '/application'"
-                                   th:if="!${contest.isActive()}">
+                                   th:if="!${contest.isActive()}" disabled>
                                     Конкурс закрито
                                 </a>
-                                <a id="submit" class="btn btn-light btn-disable" style="color: #000;" disabled
+                                <a id="submit" class="btn btn-light btn-disable" style="color: #000;"
                                    th:href="'/contest/' + ${contest.id} + '/application'"
-                                   th:if="${contest.isActive()} and ${participant.hasApplicationForContest(contest)}">
+                                   th:if="${contest.isActive()} and ${participant.hasApplicationForContest(contest)}" disabled>
                                     Заявка подана
                                 </a>
                             </div>
