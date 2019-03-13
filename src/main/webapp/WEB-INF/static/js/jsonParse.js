@@ -2,7 +2,6 @@ function valideForm(input) {
     var email = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var error = false;
     for (var i = input.length - 1; i >= 0; i--) {
-        console.log(input[i].required);
         if(input[i].required)
         {
         switch (input[i].name) {
@@ -81,7 +80,7 @@ $("#submit-forms").click(function (e) {
     console.log(data);
     if ((valideForm(input))) {
         return false;
-    }
+    }/*
         $.ajax({
         type: "POST",
         url: $("form").attr("action"),
@@ -94,7 +93,7 @@ $("#submit-forms").click(function (e) {
         error: function () {
             location.href = "/error";
         }
-    });
+    });*/
     return false;        
     });
 

@@ -123,10 +123,10 @@
             </form>
         </div>
     </div>
-        <div class="disabled row justify-content-center" th:if="${contestIsClosed} or ${duplicateApplication}">
+        <div class="disabled row justify-content-center align-items-center" th:if="${contestIsClosed} or ${duplicateApplication}">
             <span class="col-12" th:if="${contestIsClosed}">Прийом заявок закритий!</span>
             <span class="col-12" th:if="!${contestIsClosed} and ${duplicateApplication}">Ви вже подали заявку на конкурс!</span>
-            <a class="btn btn-primary col-3 align-self-center" href="/home">На головну</a>
+            <a class="btn btn-primary col-12 align-self-center" href="/home">На головну</a>
         </div>
 
     </div>
