@@ -41,7 +41,7 @@ public class ContestController {
     @Autowired
     private ParticipantService participantService;
 
-    @PostMapping("/contest/{contestId}/application/submit")
+    @PostMapping("/contest/{contestId}/application")
     @ResponseBody
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void submitApplication(@PathVariable("contestId") long contestId,
