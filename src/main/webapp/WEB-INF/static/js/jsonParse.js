@@ -75,7 +75,7 @@ $("#submit").click(function (e) {
     return false;
 });
 $("#submit-forms").click(function (e) {
-    var data = $("form").serializeObject();
+    var data = $("#my-form").serializeObject();
     var input = $("input");
     console.log(data);
     if ((valideForm(input))) {
