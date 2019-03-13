@@ -75,12 +75,12 @@ $("#submit").click(function (e) {
     return false;
 });
 $("#submit-forms").click(function (e) {
-    var data = $("#my-form").serializeObject();
+    var data = $("#my-form").serializeArray();
     var input = $("input");
     console.log(data);
     if ((valideForm(input))) {
         return false;
-    }/*
+    }
         $.ajax({
         type: "POST",
         url: $("form").attr("action"),
@@ -93,7 +93,7 @@ $("#submit-forms").click(function (e) {
         error: function () {
             location.href = "/error";
         }
-    });*/
+    });
     return false;        
     });
 
