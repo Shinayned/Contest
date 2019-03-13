@@ -78,6 +78,7 @@ $("#submit").click(function (e) {
 $("#submit-forms").click(function (e) {
     var data = $("form").serializeObject();
     var input = $("input");
+    console.log(data);
     if ((valideForm(input))) {
         return false;
     }

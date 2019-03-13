@@ -12,10 +12,6 @@ a.disable {
     pointer-events: none; /* делаем ссылку некликабельной */
     cursor: default;  /* устанавливаем курсор в виде стрелки */
 }
-.btn-home{
-	display: flex;
-	justify-content: center;
-}
 /* Form Style */
 .form-horizontal{
  background: #fff;
