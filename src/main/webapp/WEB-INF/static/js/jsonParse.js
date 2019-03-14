@@ -82,17 +82,16 @@ $("#submit-forms").click(function (e) {
     if ((valideForm(input))) {
         return false;
     }
-    $('#file-input').change(function () {
-        let files = this.files;
-        sendFiles(files);
-    });
+    var url = $("form").attr("action");
+
+
         $.ajax({
         type: "POST",
-        url: $("form").attr("action"),
+        url: url,
         data: data,
         success: function () {
-                alert("Заявка прийнята");
-                location.href = "/home";
+          let files = $('#file-input').files
+          sendFiles(files, url);
         },
         error: function () {
             location.href = "/error";
@@ -169,7 +168,7 @@ $("#submit-forms").click(function (e) {
     };
 })(jQuery);
 
-function sendFiles(files) {
+function sendFiles(files, url) {
     let maxFileSize = 15242880;
     let Data = new FormData();
     $(files).each(function (index, file) {
@@ -179,11 +178,18 @@ function sendFiles(files) {
     });
     Data.append("testVar", "IT'S WORKING!!!!!!");
     $.ajax({
-        url: $("form").attr("action"),
+        url: url,
         type: "POST",
         data: Data,
         contentType: false,
-        processData: false
+        processData: false,
+        success: function () {
+                alert("Заявка прийнята");
+                location.href = "/home";
+        },
+        error: function () {
+            location.href = "/error";
+        }
     });
 
     return false;
