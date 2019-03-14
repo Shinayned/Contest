@@ -90,7 +90,7 @@ $("#submit-forms").click(function (e) {
         url: url,
         data: data,
         success: function () {
-          let files = $('#file-input').files
+          let files = $('.file-input').files
           sendFiles(files, url);
         },
         error: function () {
