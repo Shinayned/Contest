@@ -90,7 +90,6 @@ $("#submit-forms").click(function (e) {
         type: "POST",
         url: $("form").attr("action"),
         data: data,
-        contentType: "multipart/form-data",
         success: function () {
                 alert("Заявка прийнята");
                 location.href = "/home";
