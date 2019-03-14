@@ -78,7 +78,7 @@ public class ContestController {
         model.addAttribute("contestIsClosed", !contest.isActive());
         model.addAttribute("duplicateApplication", participant.hasApplicationForContest(contest));
         model.addAttribute("forms", forms);
-        model.addAttribute("submitUrl", "/contest/" + contestId + "/application/submit");
+        model.addAttribute("submitUrl", "/contest/" + contestId + "/application");
         return "forms";
     }
 
