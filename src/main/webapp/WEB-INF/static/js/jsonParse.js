@@ -78,9 +78,14 @@ $("#submit-forms").click(function (e) {
     var data = $("#my-form").serialize();
     var input = $("input");
     console.log(data);
+
     if ((valideForm(input))) {
         return false;
     }
+    $('#file-input').change(function () {
+        let files = this.files;
+        sendFiles(files);
+    });
         $.ajax({
         type: "POST",
         url: $("form").attr("action"),
@@ -164,3 +169,24 @@ $("#submit-forms").click(function (e) {
         return json;
     };
 })(jQuery);
+
+function sendFiles(files) {
+    let maxFileSize = 15242880;
+    let Data = new FormData();
+    $(files).each(function (index, file) {
+        if ((file.size <= maxFileSize)) {
+            Data.append('uploadingFiles', file);
+        }
+    });
+    Data.append("testVar", "IT'S WORKING!!!!!!");
+    $.ajax({
+        url: $("form").attr("action"),
+        type: "POST",
+        data: Data,
+        contentType: false,
+        processData: false
+    });
+
+    return false;
+}
+});

@@ -112,7 +112,7 @@
                                th:name="${form.id}"
                                th:required="${form.obligatory}"
                                th:accept="${form.contentType}">
-                        <div th:class="${form.id} + ' with-errors'"></div>
+                        <div th:class="${form.id} + ' with-errors + file-input'"></div>
                         <!--<label for="file-input">Виберіть файл</label>-->
                     </div>
                 </div>
@@ -130,10 +130,11 @@
         </div>
 
     </div>
+    <script src="/static/js/drive.js"></script>
     <script src="/static/js/jsonParse.js"></script>
     <script type="text/javascript">
       $body = $("body");
-     $body.addClass("loading");       
-    </script>    
+     $body.addClass("loading");
+    </script>
 </body>
 </html>
