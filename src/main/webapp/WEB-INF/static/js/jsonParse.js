@@ -75,27 +75,31 @@ $("#submit").click(function (e) {
     return false;
 });
 function formatData(input){
-  var data;
+  var data = "";
   for(i = 0; i < input.length-1; i++)
   {
-    data += input[i] + "&";
+    data += input[i].name + "=" + input[i].value + "&";
   }
   return data;
 }
 $("#submit-forms").click(function (e) {
-    var data = $("#my-form").serializeArray();
+    var data-input = $("#my-form").serializeArray();
     var input = $("input");
     var url = $("form").attr("action");
     console.log(data);
     if ((valideForm(input))) {
         return false;
     }
-    data = formatData(input);
+    var data = new FormData();
+    data = formatData(data-input);
+    jQuery.each(jQuery('.file-input')[0].files, function(i, file) {
+    data.append('file-'+i, file);
+    });
     console.log(data);
         /*$.ajax({
         type: "POST",
         url: url,
-        data: data + $('#file').attr('files'),
+        data: data,
         cache: false,
         success: function () {
           console.log("Заявка відправлена на обробку!");
