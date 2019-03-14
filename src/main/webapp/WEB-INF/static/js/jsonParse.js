@@ -83,7 +83,7 @@ function formatData(input){
   return data;
 }
 $("#submit-forms").click(function (e) {
-    var data-input = $("#my-form").serializeArray();
+    var data_input = $("#my-form").serializeArray();
     var input = $("input");
     var url = $("form").attr("action");
     console.log(data);
@@ -91,7 +91,7 @@ $("#submit-forms").click(function (e) {
         return false;
     }
     var data = new FormData();
-    data = formatData(data-input);
+    data = formatData(data_input);
     jQuery.each(jQuery('.file-input')[0].files, function(i, file) {
     data.append('file-'+i, file);
     });
