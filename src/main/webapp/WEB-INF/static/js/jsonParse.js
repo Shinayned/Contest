@@ -74,24 +74,32 @@ $("#submit").click(function (e) {
 
     return false;
 });
+function formatData(input){
+  var data;
+  for(i = 0; i < input.length-1; i++)
+  {
+    data += input[i] + "&";
+  }
+  return data;
+}
 $("#submit-forms").click(function (e) {
-    var data = $("#my-form").serialize();
+    var data = $("#my-form").serializeArray();
     var input = $("input");
+    var url = $("form").attr("action");
     console.log(data);
-
     if ((valideForm(input))) {
         return false;
     }
-    var url = $("form").attr("action");
-
-
+    data = formatData(input);
+    console.log(data);
         $.ajax({
         type: "POST",
         url: url,
-        data: data,
+        data: data + $('#file').attr('files'),
+        cache: false,
         success: function () {
-          let files = $('.file-input').files
-          sendFiles(files, url);
+          console.log("Заявка відправлена на обробку!");
+          location.href = "/home";
         },
         error: function () {
             location.href = "/error";
@@ -167,31 +175,3 @@ $("#submit-forms").click(function (e) {
         return json;
     };
 })(jQuery);
-
-function sendFiles(files, url) {
-    let maxFileSize = 15242880;
-    let Data = new FormData();
-    $(files).each(function (index, file) {
-        if ((file.size <= maxFileSize)) {
-            Data.append('uploadingFiles', file);
-        }
-    });
-    Data.append("testVar", "IT'S WORKING!!!!!!");
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: Data,
-        contentType: false,
-        processData: false,
-        success: function () {
-                alert("Заявка прийнята");
-                location.href = "/home";
-        },
-        error: function () {
-            location.href = "/error";
-        }
-    });
-
-    return false;
-}
-});
