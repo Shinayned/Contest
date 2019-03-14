@@ -92,7 +92,7 @@ $("#submit-forms").click(function (e) {
     }
     data = formatData(input);
     console.log(data);
-        $.ajax({
+        /*$.ajax({
         type: "POST",
         url: url,
         data: data + $('#file').attr('files'),
@@ -104,7 +104,7 @@ $("#submit-forms").click(function (e) {
         error: function () {
             location.href = "/error";
         }
-    });
+    });*/
     return false;
     });
 
