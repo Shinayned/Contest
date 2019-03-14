@@ -92,7 +92,7 @@ $("#submit-forms").click(function (e) {
     }
     var data = new FormData();
     data = formatData(data_input);
-    jQuery.each(jQuery('.file-input')[0].files, function(i, file) {
+    $('.file-input')[0].files, function(i, file) {
     data.append('file-'+i, file);
     });
     console.log(data);
