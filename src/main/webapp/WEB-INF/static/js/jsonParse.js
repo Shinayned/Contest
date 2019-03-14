@@ -86,7 +86,7 @@ $("#submit-forms").click(function (e) {
     var data_input = $("#my-form").serializeArray();
     var input = $("input");
     var url = $("form").attr("action");
-    console.log(data);
+    console.log(data_input);
     if ((valideForm(input))) {
         return false;
     }
