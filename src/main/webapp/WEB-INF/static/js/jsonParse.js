@@ -84,16 +84,15 @@ function formatData(input){
   return data;
 }
 $("#submit-forms").click(function (e) {
-    var data_input = $("#my-form").serializeArray();
-    var input = $("#my-form");
+    var input = $("#my-form > input");
     var url = $("form").attr("action");
     console.log(data_input);
     console.log(input);
     if ((valideForm(input))) {
         return false;
     }
-    var data = formatData(data_input);
-    data += $('.file-input')[0].files;
+    var data = formatData(input);
+    data += $('.file-input').files;
     console.log(data);
         /*$.ajax({
         type: "POST",
