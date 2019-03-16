@@ -76,25 +76,24 @@ $("#submit").click(function (e) {
 });
 function formatData(input){
   var data = "";
-  for(i = 0; i < input.length-1; i++)
+  for(i = 0; i < input.length; i++)
   {
-    data += input[i].name + "=" + input[i].value + "&";
+    if(!input[i].hasClass("file-input"))
+     data += input[i].name + "=" + input[i].value + "&";
   }
   return data;
 }
 $("#submit-forms").click(function (e) {
     var data_input = $("#my-form").serializeArray();
-    var input = $("input");
+    var input = $("#my-form");
     var url = $("form").attr("action");
     console.log(data_input);
+    console.log(input);
     if ((valideForm(input))) {
         return false;
     }
-    var data = new FormData();
-    data = formatData(data_input);
-    $('.file-input')[0].files, function(i, file) {
-    data.append('file-'+i, file);
-    });
+    var data = formatData(data_input);
+    data += $('.file-input')[0].files;
     console.log(data);
         /*$.ajax({
         type: "POST",
