@@ -12,6 +12,12 @@ body
 	position: relative;
 	left: -300px;
 }
+@media(min-width: 1666px){
+  #submits{
+	position: relative;
+	left: -1000px;
+}
+}
 /* Form Style */
 .form-horizontal{
  background: #fff;
