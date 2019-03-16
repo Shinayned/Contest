@@ -58,14 +58,14 @@ $("#submit").click(function (e) {
         success: function () {
             if (url == "registration") {
                 alert("На ваш email відправлений лист");
-                location.href = "//pages/login.html";
+                location.href = "../../pages/login.html";
             }
             else if (url == "edit") {
                 location.reload();
             }
         },
         error: function () {
-            location.href = "//pages/error.html";
+            location.href = "../../pages/error.html";
         }
     });
 
