@@ -116,8 +116,8 @@ $('#multiForm').on('submit', function(e){
      location.href = "/home";
    }
 });
-return false;
-});*/
+return false;*/
+});
 //MAGIC
 (function ($) {
     $.fn.serializeObject = function () {
