@@ -78,42 +78,35 @@ function formatData(input){
   var data = "";
   for(i = 0; i < input.length; i++)
   {
-    if(input[i].hasClass("file-input"))
-    {
-       data += input[i].name + "=";
-       break;
-    }
      data += input[i].name + "=" + input[i].value + "&";
   }
   return data;
 }
+$('#multiForm').on('submit', function(e){
+   e.preventDefault();
+   var url = $("form").attr("action");
+   var input = $("input");
 
-$("#submit-forms").click(function (e) {
-    var url = $("form").attr("action");
-    var input = $("input");
-    console.log(input);
-    if ((valideForm(input))) {
-        return false;
-    }
-    var data = formatData(input);
-    data += $('.file-input').files;
-    console.log(data);
-        /*$.ajax({
-        type: "POST",
-        url: url,
-        data: data,
-        cache: false,
-        success: function () {
-          console.log("Заявка відправлена на обробку!");
-          location.href = "/home";
-        },
-        error: function () {
-            location.href = "/error";
-        }
-    });*/
-    return false;
-    });
-
+   if ((valideForm(input))) {
+       return false;
+   }
+   var $that = $(this),
+   data = new FormData($that.get(0)); // создаем новый экземпляр объекта и передаем ему нашу форму (*)
+   $.ajax({
+   type: "POST",
+   url: url,
+   data: data,
+   cache: false,
+   success: function () {
+     console.log("Заявка відправлена на обробку!");
+     location.href = "/home";
+   },
+   error: function () {
+       location.href = "/error";
+   }
+});
+return false;
+ });
 //MAGIC
 (function ($) {
     $.fn.serializeObject = function () {
