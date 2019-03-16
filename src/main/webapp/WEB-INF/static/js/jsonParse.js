@@ -114,10 +114,10 @@ $('#multiForm').on('submit', function(e){
    success: function () {
      console.log("Заявка відправлена на обробку!");
      location.href = "/home";
-   }*/
+   }
 });
 return false;
- });
+});*/
 //MAGIC
 (function ($) {
     $.fn.serializeObject = function () {
