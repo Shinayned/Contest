@@ -8,7 +8,10 @@ body
 	overflow-x: hidden;
 	font-family: Century Gothic;
 }
-
+#submits{
+	position: relative;
+	left: -300px;
+}
 /* Form Style */
 .form-horizontal{
  background: #fff;
@@ -247,7 +250,7 @@ h3{font-size: 24px;}
 	font-size: 18px;
 }
 @media(max-width: 500px;)
-{	
+{
 	.SpamEmail
 	{
 		border-top: 3px;
@@ -270,9 +273,9 @@ h3{font-size: 24px;}
     left:       0;
     height:     100%;
     width:      100%;
-    background: rgba( 255, 255, 255, .8 ) 
-                url('http://i.stack.imgur.com/FhHRx.gif') 
-                50% 50% 
+    background: rgba( 255, 255, 255, .8 )
+                url('http://i.stack.imgur.com/FhHRx.gif')
+                50% 50%
                 no-repeat;
 }
 .disabled{
@@ -282,7 +285,7 @@ h3{font-size: 24px;}
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
 body.loading .modal, body.loading .disabled {
-    overflow: hidden;   
+    overflow: hidden;
 }
 
 /* Anytime the body has the loading class, our
