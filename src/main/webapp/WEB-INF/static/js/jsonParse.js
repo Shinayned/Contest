@@ -80,6 +80,8 @@ function formatData(input) {
     return data;
 }
 $('#multiForm').on('submit', function (e) {
+    $("body").addClass("loading");
+
     e.preventDefault();
 
     var url = $("form").attr("action");
@@ -92,10 +94,12 @@ $('#multiForm').on('submit', function (e) {
         processData: false, // важно - убираем преобразование строк по умолчанию
         data: formData,
         success: function () {
+            $("body").removeClass("loading");
             alert("Заявка відправлена на обробку!");
             location.href = "/home";
         },
         error: function (request, status, error) {
+            $("body").removeClass("loading");
             // do something!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     });
