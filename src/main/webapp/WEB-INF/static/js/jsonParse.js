@@ -2,46 +2,45 @@ function valideForm(input) {
     var email = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var error = false;
     for (var i = input.length - 1; i >= 0; i--) {
-        if(input[i].required)
-        {
-        switch (input[i].name) {
+        if (input[i].required) {
+            switch (input[i].name) {
 
-            case "email":
-                if (!(email.test(input[i].value))) {
-                    $("." + input[i].name).text("Некоректний email");
-                    $("#" + input[i].id).focus();
-                    error = true;
-                }
-                break;
-            case "phone":
-                if (!(input[i].value.length == 17 && (input[i].value.indexOf("_")))) {
-                    $("." + input[i].name).text("Неправильний телефон");
-                    $("#" + input[i].id).focus();
-                    error = true;
-                }
-                break;
-            case "password":
-                if (input[i].value.length < 6) {
-                    $("." + input[i].name).text("Короткий пароль!");
-                    $("#" + input[i].id).focus();
-                    error = true;
-                }
-                if (input[i].value != $("#inputPasswordConfirm").val()) {
-                    console.log(input[i].value + " === " + $("#inputPasswordConfirm").value);
-                    $("#" + input[i].id).focus();
-                    $("." + input[i].name).text("Паролі не збігаються!");
-                    error = true;
-                }
-                break;
-            default:
-                if (input[i].value == "") {
-                    $("." + input[i].name).text("Поле пусте!");
-                    $("#" + input[i].id).focus();
-                    error = true;
-                }
+                case "email":
+                    if (!(email.test(input[i].value))) {
+                        $("." + input[i].name).text("Некоректний email");
+                        $("#" + input[i].id).focus();
+                        error = true;
+                    }
+                    break;
+                case "phone":
+                    if (!(input[i].value.length == 17 && (input[i].value.indexOf("_")))) {
+                        $("." + input[i].name).text("Неправильний телефон");
+                        $("#" + input[i].id).focus();
+                        error = true;
+                    }
+                    break;
+                case "password":
+                    if (input[i].value.length < 6) {
+                        $("." + input[i].name).text("Короткий пароль!");
+                        $("#" + input[i].id).focus();
+                        error = true;
+                    }
+                    if (input[i].value != $("#inputPasswordConfirm").val()) {
+                        console.log(input[i].value + " === " + $("#inputPasswordConfirm").value);
+                        $("#" + input[i].id).focus();
+                        $("." + input[i].name).text("Паролі не збігаються!");
+                        error = true;
+                    }
+                    break;
+                default:
+                    if (input[i].value == "") {
+                        $("." + input[i].name).text("Поле пусте!");
+                        $("#" + input[i].id).focus();
+                        error = true;
+                    }
+            }
         }
     }
-}
     return error;
 }
 $("#submit").click(function (e) {
@@ -57,12 +56,11 @@ $("#submit").click(function (e) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function () {
-            if(url == "registration")
-            {
+            if (url == "registration") {
                 alert("На ваш email відправлений лист");
                 location.href = "../../pages/login.html";
             }
-            else if(url == "edit"){
+            else if (url == "edit") {
                 location.reload();
             }
         },
@@ -74,50 +72,36 @@ $("#submit").click(function (e) {
 
     return false;
 });
-function formatData(input){
-  var data = "";
-  for(i = 0; i < input.length; i++)
-  {
-     data += input[i].name + "=" + input[i].value + "&";
-  }
-  return data;
-}
-/*$('#multiForm').on('submit', function(e){
-  e.preventDefault();
-  var $that = $(this),
-  formData = new FormData($that.get(0)); // создаем новый экземпляр объекта и передаем ему нашу форму (*)
-  $.ajax({
-    contentType: false, // важно - убираем форматирование данных по умолчанию
-    processData: false, // важно - убираем преобразование строк по умолчанию
-    data: formData,
-    success: function(json){
-      if(json){
-        // тут что-то делаем с полученным результатом
-      }
+function formatData(input) {
+    var data = "";
+    for (i = 0; i < input.length; i++) {
+        data += input[i].name + "=" + input[i].value + "&";
     }
-  });
-   e.preventDefault();
-   var url = $("form").attr("action");
-   var input = $("input");
+    return data;
+}
+$('#multiForm').on('submit', function (e) {
+    e.preventDefault();
 
-   if ((valideForm(input))) {
-       return false;
-   }
-   var $that = $(this),
-   data = new FormData($that.get(0));
-   console.log(data); // создаем новый экземпляр объекта и передаем ему нашу форму (*)
-   $.ajax({
-   type: "POST",
-   url: url,
-   data: data,
-   cache: false,
-   success: function () {
-     console.log("Заявка відправлена на обробку!");
-     location.href = "/home";
-   }
+    var url = $("form").attr("action");
+    var formData = new FormData(document.querySelector('#multiForm'));
+
+    $.ajax({
+        url: url,
+        method: 'POST',
+        contentType: false, // важно - убираем форматирование данных по умолчанию
+        processData: false, // важно - убираем преобразование строк по умолчанию
+        data: formData,
+        success: function () {
+            alert("Заявка відправлена на обробку!");
+            location.href = "/home";
+        },
+        error: function (request, status, error) {
+            // do something!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+    });
+    return false;
 });
-return false;
-});*/
+
 //MAGIC
 (function ($) {
     $.fn.serializeObject = function () {
