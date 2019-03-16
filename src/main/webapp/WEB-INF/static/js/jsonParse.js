@@ -91,7 +91,8 @@ $('#multiForm').on('submit', function(e){
        return false;
    }
    var $that = $(this),
-   data = new FormData($that.get(0)); // создаем новый экземпляр объекта и передаем ему нашу форму (*)
+   data = new FormData($that.get(0));
+   console.log(data); // создаем новый экземпляр объекта и передаем ему нашу форму (*)
    $.ajax({
    type: "POST",
    url: url,
@@ -100,9 +101,6 @@ $('#multiForm').on('submit', function(e){
    success: function () {
      console.log("Заявка відправлена на обробку!");
      location.href = "/home";
-   },
-   error: function () {
-       location.href = "/error";
    }
 });
 return false;
