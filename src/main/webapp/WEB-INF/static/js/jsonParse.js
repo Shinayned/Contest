@@ -83,7 +83,20 @@ function formatData(input){
   return data;
 }
 $('#multiForm').on('submit', function(e){
-   e.preventDefault();
+  e.preventDefault();
+  var $that = $(this),
+  formData = new FormData($that.get(0)); // создаем новый экземпляр объекта и передаем ему нашу форму (*)
+  $.ajax({
+    contentType: false, // важно - убираем форматирование данных по умолчанию
+    processData: false, // важно - убираем преобразование строк по умолчанию
+    data: formData,
+    success: function(json){
+      if(json){
+        // тут что-то делаем с полученным результатом
+      }
+    }
+  });
+   /*e.preventDefault();
    var url = $("form").attr("action");
    var input = $("input");
 
@@ -98,7 +111,7 @@ $('#multiForm').on('submit', function(e){
    url: url,
    data: data,
    cache: false,
-   /*success: function () {
+   success: function () {
      console.log("Заявка відправлена на обробку!");
      location.href = "/home";
    }*/
