@@ -82,7 +82,7 @@ function formatData(input){
   }
   return data;
 }
-$('#multiForm').on('submit', function(e){
+/*$('#multiForm').on('submit', function(e){
   e.preventDefault();
   var $that = $(this),
   formData = new FormData($that.get(0)); // создаем новый экземпляр объекта и передаем ему нашу форму (*)
@@ -96,7 +96,7 @@ $('#multiForm').on('submit', function(e){
       }
     }
   });
-   /*e.preventDefault();
+   e.preventDefault();
    var url = $("form").attr("action");
    var input = $("input");
 
@@ -116,8 +116,8 @@ $('#multiForm').on('submit', function(e){
      location.href = "/home";
    }
 });
-return false;*/
-});
+return false;
+});*/
 //MAGIC
 (function ($) {
     $.fn.serializeObject = function () {
