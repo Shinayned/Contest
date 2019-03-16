@@ -78,15 +78,14 @@ function formatData(input){
   var data = "";
   for(i = 0; i < input.length; i++)
   {
-    if(!input[i].hasClass("file-input"))
      data += input[i].name + "=" + input[i].value + "&";
   }
   return data;
 }
+
 $("#submit-forms").click(function (e) {
-    var input = $("#my-form > input");
     var url = $("form").attr("action");
-    console.log(data_input);
+    var input = $("input");
     console.log(input);
     if ((valideForm(input))) {
         return false;
