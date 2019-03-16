@@ -1,4 +1,3 @@
-
 function valideForm(input) {
     var email = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     var error = false;
@@ -9,30 +8,34 @@ function valideForm(input) {
                 case "email":
                     if (!(email.test(input[i].value))) {
                         $("." + input[i].name).text("Некоректний email");
+                        $("#" + input[i].id).focus();
                         error = true;
                     }
                     break;
                 case "phone":
                     if (!(input[i].value.length == 17 && (input[i].value.indexOf("_")))) {
                         $("." + input[i].name).text("Неправильний телефон");
+                        $("#" + input[i].id).focus();
                         error = true;
                     }
                     break;
                 case "password":
                     if (input[i].value.length < 6) {
                         $("." + input[i].name).text("Короткий пароль!");
+                        $("#" + input[i].id).focus();
                         error = true;
                     }
                     if (input[i].value != $("#inputPasswordConfirm").val()) {
                         console.log(input[i].value + " === " + $("#inputPasswordConfirm").value);
+                        $("#" + input[i].id).focus();
                         $("." + input[i].name).text("Паролі не збігаються!");
                         error = true;
                     }
                     break;
                 default:
-                    if (input[i].value == "" || input[i].value == " ") {
-
+                    if (input[i].value == "") {
                         $("." + input[i].name).text("Поле пусте!");
+                        $("#" + input[i].id).focus();
                         error = true;
                     }
             }
@@ -42,7 +45,7 @@ function valideForm(input) {
 }
 $("#submit").click(function (e) {
     var data = $("#my-form").serializeObject();
-    var input = $("#my-form").serializeArray();
+    var input = $("input");
     var url = this.name;
     if ((valideForm(input))) {
         return false;
@@ -69,7 +72,13 @@ $("#submit").click(function (e) {
 
     return false;
 });
-
+function formatData(input) {
+    var data = "";
+    for (i = 0; i < input.length; i++) {
+        data += input[i].name + "=" + input[i].value + "&";
+    }
+    return data;
+}
 $('#multiForm').on('submit', function (e) {
     e.preventDefault();
 
