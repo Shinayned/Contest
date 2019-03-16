@@ -78,7 +78,11 @@ function formatData(input){
   var data = "";
   for(i = 0; i < input.length; i++)
   {
-    if(!input[i].hasClass("file-input"))
+    if(input[i].hasClass("file-input"))
+    {
+       data += input[i].name + "=";
+       break;
+    }
      data += input[i].name + "=" + input[i].value + "&";
   }
   return data;
