@@ -111,8 +111,9 @@
                                th:id="${form.id}"
                                th:name="${form.id}"
                                th:required="${form.obligatory}"
-                               th:accept="${form.contentType}">
-                        <div th:class="${form.id} + ' with-errors + file-input'"></div>
+                               th:accept="${form.contentType}"
+                               class="file-input">
+                        <div th:class="${form.id} + ' with-errors'"></div>
                         <!--<label for="file-input">Виберіть файл</label>-->
                     </div>
                 </div>
