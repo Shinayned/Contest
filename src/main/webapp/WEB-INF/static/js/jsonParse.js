@@ -65,8 +65,8 @@ $("#submit").on('click',function(){
             }
         },
         error: function () {
-            if()
-            location.href = "../../pages/error.html";
+            $("." + input[i].name).text("Цей email вже зареєстрований");
+            //location.href = "../../pages/error.html";
         }
     });
 
