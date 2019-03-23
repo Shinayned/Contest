@@ -63,9 +63,6 @@ $("#submit").on('click',function(){
             else if (url == "edit") {
                 location.reload();
             }
-        },
-        error: function () {
-            location.href = "../../pages/error.html";
         }
     });
 
