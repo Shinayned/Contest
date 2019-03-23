@@ -43,7 +43,7 @@ function valideForm(input) {
     }
     return error;
 }
-$('#my-form').on('submit', function (e) {
+$("#submit").on('click',function(){
     var data = $("#my-form").serializeObject();
     var input = $("input");
     var url = this.name;
