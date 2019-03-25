@@ -64,10 +64,9 @@ $("#submit").on('click',function(){
             }
         },
         error: function (request, status, error) {
-            var response = jQuery.parseJSON(request);
-            if (response.message.includes("account with that email"))
+            if (status == 500)
             {
-                $("." + input[i].name).text("Цей email вже зареєстрований");
+                $(".email").text("Цей email вже зареєстрований");
             }
             else
                 location.href = "../../pages/error.html";
