@@ -35,7 +35,6 @@ function valideForm(input) {
                 default:
                     if (input[i].value == "") {
                         $("." + input[i].name).text("Поле пусте!");
-                        $("#" + input[i].id).focus();
                         error = true;
                     }
             }
@@ -64,22 +63,22 @@ $("#submit").on('click',function(){
                 location.reload();
             }
         },
-        error: function () {
-            $("." + input[i].name).text("Цей email вже зареєстрований");
-            //location.href = "../../pages/error.html";
+        error: function (request, status, error) {
+            var response = $.parseJSON(request);
+            if (response.message.includes("account with that email"))
+            {
+                $("." + input[i].name).text("Цей email вже зареєстрований");
+            }
+            else
+                location.href = "../../pages/error.html";
         }
     });
 
 
     return false;
 });
-function formatData(input) {
-    var data = "";
-    for (i = 0; i < input.length; i++) {
-        data += input[i].name + "=" + input[i].value + "&";
-    }
-    return data;
-}
+
+
 $('#multiForm').on('submit', function (e) {
     $("body").addClass("loading");
 
