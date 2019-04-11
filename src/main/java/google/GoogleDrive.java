@@ -76,7 +76,6 @@ public class GoogleDrive {
 
     private Drive getDriveService() throws IOException, GeneralSecurityException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-
         Credential credential = getCredentials(HTTP_TRANSPORT);
         return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential) //
                 .setApplicationName(APPLICATION_NAME).build();

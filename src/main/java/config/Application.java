@@ -39,12 +39,12 @@ public class Application {
             Participant participant = new Participant(
                     "rim.maxim@gmail.com",
                     "qwerty",
-                    "Vas Vas",
+                    "Rymar Maksym",
                     new DateTime());
             participant.setEnabled(true);
             participant.setOrganization("organization");
-            participant.setWorkAddress("NAUaddress");
-            participant.setPhoneNumber("+38(063)374-51-46");
+            participant.setWorkAddress("NAU address");
+            participant.setPhoneNumber("+38(800)555-35-35");
             participant.setPosition("докторант");
             participant.setScienceWorks("no works");
             participantService.registerNewAccount(participant);
@@ -68,11 +68,11 @@ public class Application {
 
     public void contestTest() {
         List<Form> forms = testForms();
-        Contest contest = new Contest("Avionica", forms, "Some title","something", "/static/img/stipendium.png",  "/avionica");
+        Contest contest = new Contest("Good Avionica", forms, "Good Avionica","description", "/static/img/stipendium.png",  "/nowhere");
         contest.setActive(true);
         contestService.createContest(contest);
 
-        contest = new Contest("IEEE", forms, "Title", "description", "/static/img/stipendium.png", "/ieee");
+        contest = new Contest("Bad Avionica", forms, "Bad Avionica", "description", "/static/img/stipendium.png", "/nowhere");
         contestService.createContest(contest);
     }
 
@@ -80,16 +80,16 @@ public class Application {
         List<Form> forms = new ArrayList<>();
 
         Form email = new EmailForm("Email");
-//        email.setTitle("Enter your second email address.");
+        email.setTitle("Enter your second email address");
 
         Form date = new DateForm("Date");
-        date.setTitle("Enter best date.");
+        date.setTitle("Enter your best date");
 
         Form phone = new PhoneForm("Phone");
-        phone.setTitle("Enter your second phone number.");
+        phone.setTitle("Enter your second phone number");
 
         StringForm string = new StringForm("Some text");
-        string.setTitle("Enter something sweet :)");
+        string.setTitle("Enter something sweet");
         string.setPlaceHolder("place holder....");
         string.setObligatory(true);
 
@@ -98,19 +98,19 @@ public class Application {
         selectFields.add("KPI");
 
         SelectForm singleSelect = new SelectForm("University", SelectFormType.SINGLE_SELECT_LIST, selectFields);
-        singleSelect.setTitle("What is your favorite university?");
+        singleSelect.setTitle("Which is the best university?");
         singleSelect.setObligatory(true);
 
         SelectForm multipleSelect = new SelectForm("University", SelectFormType.MULTIPLE_SELECT_LIST, selectFields);
-        multipleSelect.setTitle("What is your favorite university?");
+        multipleSelect.setTitle("Which is the best university?");
         multipleSelect.setObligatory(true);
 
         SelectForm listSelect = new SelectForm("University", SelectFormType.DROPDOWN_LIST, selectFields);
-        listSelect.setTitle("What is your favorite university?");
+        listSelect.setTitle("Which is the best university?");
         listSelect.setObligatory(true);
 
         FileForm file = new FileForm("File");
-        file.setTitle("Файлик))s");
+        file.setTitle("Some file");
         file.setContentType("application/pdf");
         file.setObligatory(true);
 
