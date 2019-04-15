@@ -119,7 +119,7 @@ public class Application {
                 "<b>Хто може прийняти участь:</b><br>" +
                 "<b>Вік учасників:</b> не менше 35 років<br>";
         String imgUrl = "/static/img/stipendium.png";
-        String pageUrl = "http://www.kdpu-nt.gov.ua/content/umovi-ta-poryadok-provedennya-konkursu-na-zdobuttya-stipendiy-kabinetu-ministriv-ukrayini-dl?fbclid=IwAR3VFbvxZUQN5MINi8sJodD9NEp3nkm2FUeAEnqRapH1f5i8DUCbVXM0jWk";
+        String pageUrl = "https://drive.google.com/open?id=1gyaDepzFr4lU9hCB12fNtXxpypx82vtv";
 
         Form education = new StringForm("Освіта", "Освіта");
         Form specialty = new StringForm("Спеціальність", "Спеціальність");
