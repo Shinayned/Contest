@@ -110,7 +110,7 @@
                             <img class="img-fluid" th:src="${contest.imgUrl}" alt="...">
                             <div class="carousel-caption">
                                 <h3 th:text="${contest.title}"></h3>
-                                <p th:text="${contest.description}"></p>
+                                <p th:utext="${contest.description}"></p>
                                 <p><a th:href="${contest.pageUrl}">Додаткова інформація</a></p>
                                 <a id="submit" class="btn btn-light btn-active" style="color: #000;"
                                    th:href="'/contest/' + ${contest.id} + '/application'"
@@ -147,7 +147,7 @@
                     <img class="img-fluid" th:src="${contest.imgUrl}" alt="...">
                     <div class="content">
                         <h3 th:text="${contest.title}"></h3>
-                        <p th:text="${contest.description}"></p>
+                        <p th:utext="${contest.description}"></p>
                         <p><a th:href="${contest.pageUrl}">Додаткова інформація</a></p>
                         <a id="submit" class="btn btn-light btn-active" style="color: #000;"
                            th:href="'/contest/' + ${contest.id} + '/application'"
