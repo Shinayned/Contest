@@ -67,13 +67,9 @@ public class Application {
     }
 
     public void contestTest() {
-        List<Form> forms = testForms();
-        Contest contest = new Contest("Good Avionica", forms, "Good Avionica","description", "/static/img/stipendium.png",  "/nowhere");
-        contest.setActive(true);
-        contestService.createContest(contest);
-
-        contest = new Contest("Bad Avionica", forms, "Bad Avionica", "description", "/static/img/stipendium.png", "/nowhere");
-        contestService.createContest(contest);
+        contestService.createContest(firstContest());
+        contestService.createContest(secondContest());
+        contestService.createContest(thirdContest());
     }
 
     public Contest firstContest() {
@@ -91,6 +87,7 @@ public class Application {
         forms.add(files);
 
         Contest contest = new Contest(contestName, forms, contestTitle, contestDescription, imgUrl, pageUrl);
+        contest.setActive(true);
         return contest;
     }
 
@@ -109,6 +106,7 @@ public class Application {
         forms.add(files);
 
         Contest contest = new Contest(contestName, forms, contestTitle, contestDescription, imgUrl, pageUrl);
+        contest.setActive(true);
         return contest;
     }
 
@@ -141,6 +139,7 @@ public class Application {
         forms.add(files);
 
         Contest contest = new Contest(contestName, forms, contestTitle, contestDescription, imgUrl, pageUrl);
+        contest.setActive(true);
         return contest;
     }
 
