@@ -29,6 +29,7 @@ public class Contest {
     private Forms forms;
 
     private String title;
+    @Column(length = 65353)
     private String description;
     private String imgUrl;
     private String pageUrl;
